@@ -1,0 +1,1261 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Dashboard GM</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=DM+Serif+Display:ital@0;1&display=swap');
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#0D1B35;--purple:#7C3AED;--purple2:#EDE9FE;
+  --blue:#1D4ED8;--blue2:#DBEAFE;
+  --teal:#0D9488;--teal2:#CCFBF1;
+  --green:#16A34A;--green2:#DCFCE7;
+  --gold:#D97706;--gold2:#FEF3C7;
+  --red:#DC2626;--red2:#FEE2E2;
+  --orange:#EA580C;--orange2:#FFEDD5;
+  --surface:#F8FAFC;--card:#FFFFFF;
+  --border:#E2E8F0;--text:#0F172A;--muted:#64748B;
+  --sidebar:230px;--font:Inter,sans-serif;
+}
+body.dark{--surface:#0F172A;--card:#1E293B;--border:#334155;--text:#F1F5F9;--muted:#94A3B8}
+body{font-family:var(--font);background:var(--surface);color:var(--text);font-size:13.5px;line-height:1.5}
+.shell{display:flex;min-height:100vh}
+
+/* SIDEBAR */
+.sidebar{width:var(--sidebar);background:#0D1B35;color:#fff;position:fixed;top:0;left:0;height:100vh;display:flex;flex-direction:column;z-index:100;overflow-y:auto}
+.sb-top{padding:16px;border-bottom:1px solid rgba(255,255,255,.08)}
+.sb-logo{font-family:'DM Serif Display',serif;font-size:17px;color:#fff;margin-bottom:2px}
+.sb-role{font-size:10.5px;color:rgba(255,255,255,.4);letter-spacing:.3px}
+.sb-nav{flex:1;padding:10px 0}
+.sb-group-lbl{font-size:9px;font-weight:700;color:rgba(255,255,255,.3);letter-spacing:1.2px;text-transform:uppercase;padding:12px 16px 4px}
+.sb-item{display:flex;align-items:center;gap:9px;padding:9px 16px;font-size:12.5px;font-weight:500;color:rgba(255,255,255,.6);cursor:pointer;border-left:3px solid transparent;transition:all .15s}
+.sb-item:hover{color:#fff;background:rgba(255,255,255,.06)}
+.sb-item.active{color:#fff;background:rgba(255,255,255,.1);border-left-color:#F59E0B}
+.sb-icon{font-size:14px;width:18px;text-align:center;flex-shrink:0}
+.sb-badge{margin-left:auto;font-size:9px;font-weight:800;padding:2px 6px;border-radius:10px}
+.sb-badge.red{background:var(--red);color:#fff}
+.sb-badge.gold{background:var(--gold);color:#fff}
+.sb-footer{padding:12px 16px;border-top:1px solid rgba(255,255,255,.08)}
+.sb-darkmode{display:flex;align-items:center;gap:8px;font-size:12px;color:rgba(255,255,255,.4);cursor:pointer}
+.sb-darkmode:hover{color:#fff}
+
+/* MAIN */
+.main{margin-left:var(--sidebar);flex:1;display:flex;flex-direction:column;min-height:100vh}
+.topbar{background:var(--card);border-bottom:1px solid var(--border);padding:11px 22px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
+.topbar-title{font-family:'DM Serif Display',serif;font-size:15px;color:var(--navy)}
+body.dark .topbar-title{color:var(--text)}
+.topbar-right{display:flex;align-items:center;gap:10px}
+.live-badge{display:flex;align-items:center;gap:6px;padding:5px 12px;border-radius:20px;background:var(--surface);border:1px solid var(--border);font-size:12px;font-weight:600;cursor:pointer;position:relative;color:var(--muted)}
+.live-dot{width:7px;height:7px;border-radius:50%;background:var(--muted)}
+.live-badge.live .live-dot{background:var(--green);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.sync-menu{display:none;position:absolute;top:calc(100% + 6px);right:0;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:10px;min-width:230px;box-shadow:0 4px 16px rgba(0,0,0,.1);z-index:200}
+.sync-menu.open{display:block}
+.sync-menu-item{font-size:12px;color:var(--muted);padding:4px 0}
+.sync-btn{width:100%;padding:7px 10px;border-radius:7px;border:1px solid var(--border);background:none;color:var(--text);font-size:12px;cursor:pointer;text-align:left;margin-top:4px;font-family:var(--font)}
+.sync-btn:hover{background:var(--surface)}
+.content{padding:18px 22px;flex:1}
+.page{display:none}.page.active{display:block}
+
+/* STAT CARDS */
+.stat-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:12px;margin-bottom:18px}
+.stat-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 16px}
+.stat-lbl{font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-bottom:5px}
+.stat-val{font-family:'DM Serif Display',serif;font-size:22px;font-weight:700}
+.stat-val.gold{color:var(--gold)}.stat-val.green{color:var(--green)}.stat-val.teal{color:var(--teal)}.stat-val.red{color:var(--red)}.stat-val.blue{color:var(--blue)}.stat-val.purple{color:var(--purple)}
+.stat-sub{font-size:11px;color:var(--muted);margin-top:3px}
+
+/* SECTION */
+.sec{background:var(--card);border:1px solid var(--border);border-radius:12px;margin-bottom:14px;overflow:hidden}
+.sec-head{padding:13px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:10px}
+.sec-title{font-weight:700;font-size:13.5px;display:flex;align-items:center;gap:7px}
+.sec-body{padding:14px 16px}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+
+/* STATUS SUBMIT */
+.submit-card{background:var(--surface);border:1.5px solid var(--border);border-radius:10px;padding:12px 14px;display:flex;align-items:center;gap:12px}
+.submit-card.ok{border-color:#BBF7D0;background:var(--green2)}
+.submit-card.belum{border-color:#FCA5A5;background:var(--red2)}
+.submit-icon{font-size:22px;flex-shrink:0}
+.submit-info{}
+.submit-divisi{font-weight:700;font-size:13px}
+.submit-status{font-size:12px;margin-top:2px}
+.submit-card.ok .submit-status{color:var(--green)}
+.submit-card.belum .submit-status{color:var(--red)}
+
+/* PROGRESS BAR */
+.prog-wrap{margin-bottom:10px}
+.prog-label{display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px}
+.prog-label-name{font-weight:600}
+.prog-label-val{color:var(--muted)}
+.prog-bar{height:8px;background:var(--surface);border-radius:4px;overflow:hidden;border:1px solid var(--border)}
+.prog-fill{height:100%;border-radius:4px;transition:width .5s;min-width:2px}
+.prog-pct{font-size:11px;color:var(--muted);margin-top:3px;text-align:right}
+
+/* ALERT STRIP */
+.alert-strip{display:flex;align-items:flex-start;gap:10px;padding:10px 13px;border-radius:9px;font-size:12.5px;margin-bottom:8px;border:.5px solid transparent}
+.alert-strip.danger{background:var(--red2);border-color:#FCA5A5;color:#7F1D1D}
+.alert-strip.warn{background:var(--gold2);border-color:#FDE68A;color:#78350F}
+.alert-strip.info{background:#EFF6FF;border-color:#BFDBFE;color:#1E40AF}
+.alert-strip.ok{background:var(--green2);border-color:#BBF7D0;color:#14532D}
+
+/* TABEL */
+.tbl-wrap{overflow-x:auto}
+table.gm-tbl{width:100%;border-collapse:collapse;font-size:12.5px}
+.gm-tbl th{text-align:left;font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;padding:8px 10px;border-bottom:2px solid var(--border);background:var(--surface);white-space:nowrap}
+.gm-tbl td{padding:9px 10px;border-bottom:1px solid var(--border);vertical-align:middle}
+.gm-tbl tr:last-child td{border-bottom:none}
+.gm-tbl tr:hover td{background:var(--surface)}
+.tbl-empty{text-align:center;padding:28px;color:var(--muted);font-size:13px}
+
+/* KANBAN */
+.kanban{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.k-col{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:12px}
+.k-col-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;font-weight:700;font-size:12.5px}
+.k-cnt{font-size:11px;background:var(--border);color:var(--muted);padding:2px 7px;border-radius:10px}
+.k-card{background:var(--card);border:1px solid var(--border);border-radius:9px;padding:11px 12px;margin-bottom:8px;cursor:pointer;transition:box-shadow .15s}
+.k-card:hover{box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.k-card.urgent{border-left:3px solid var(--red)}
+.k-card.tinggi{border-left:3px solid var(--orange)}
+.k-card-title{font-weight:600;font-size:13px;margin-bottom:4px}
+.k-card-meta{font-size:11px;color:var(--muted);display:flex;gap:8px;flex-wrap:wrap;margin-top:6px;align-items:center}
+.k-card-actions{margin-top:8px;display:flex;gap:4px}
+.divisi-tag{display:inline-block;font-size:10px;font-weight:700;padding:2px 7px;border-radius:10px}
+.divisi-adm{background:var(--teal2);color:#134E4A}
+.divisi-keu{background:var(--green2);color:#14532D}
+.divisi-mkt{background:var(--purple2);color:#5B21B6}
+.divisi-all{background:var(--gold2);color:#92400E}
+
+/* PILLS */
+.pill{display:inline-block;font-size:11px;font-weight:700;padding:3px 9px;border-radius:20px;white-space:nowrap}
+.pill-belum{background:var(--red2);color:var(--red)}
+.pill-proses{background:var(--gold2);color:#92400E}
+.pill-selesai{background:var(--green2);color:#14532D}
+.pill-rendah{background:var(--surface);color:var(--muted);border:1px solid var(--border)}
+.pill-sedang{background:var(--blue2);color:var(--blue)}
+.pill-tinggi{background:var(--orange2);color:var(--orange)}
+.pill-urgent{background:var(--red2);color:var(--red)}
+
+/* TARGET INPUT */
+.target-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
+.target-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px 14px}
+.target-label{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+.target-inp{width:100%;border:1.5px solid var(--border);border-radius:7px;padding:7px 10px;font-size:13px;font-family:var(--font);color:var(--text);background:var(--card);text-align:right;outline:none}
+.target-inp:focus{border-color:#F59E0B}
+.target-real{font-size:12px;color:var(--muted);margin-top:4px;text-align:right}
+.target-bar{margin-top:6px}
+
+/* MODAL */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:400;align-items:center;justify-content:center;padding:20px}
+.modal-overlay.open{display:flex}
+.modal-box{background:var(--card);border-radius:14px;width:100%;max-width:500px;max-height:90vh;overflow-y:auto;box-shadow:0 8px 32px rgba(0,0,0,.2)}
+.modal-head{padding:16px 20px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:var(--card);z-index:1}
+.modal-title{font-family:'DM Serif Display',serif;font-size:17px;color:var(--navy)}
+body.dark .modal-title{color:var(--text)}
+.modal-close{width:28px;height:28px;border-radius:8px;border:1px solid var(--border);background:none;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center}
+.modal-close:hover{background:var(--surface)}
+.modal-body{padding:18px 20px}
+.modal-foot{padding:14px 20px 18px;border-top:1px solid var(--border);display:flex;gap:8px;justify-content:flex-end;position:sticky;bottom:0;background:var(--card)}
+.f-row{margin-bottom:14px}
+.f-row-2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
+.f-lbl{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px}
+.f-inp,.f-sel,.f-ta{width:100%;border:1.5px solid var(--border);border-radius:8px;padding:9px 12px;font-size:13px;font-family:var(--font);color:var(--text);background:var(--card);outline:none}
+.f-inp:focus,.f-sel:focus,.f-ta:focus{border-color:#F59E0B}
+.f-ta{min-height:80px;resize:vertical}
+
+/* TABS */
+.lap-tabs{display:flex;gap:4px;margin-bottom:16px;border-bottom:1px solid var(--border)}
+.lap-tab{padding:8px 16px;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px}
+.lap-tab.active{color:#F59E0B;border-bottom-color:#F59E0B}
+.lap-tab-content{display:none}.lap-tab-content.active{display:block}
+
+/* BTN */
+.btn{padding:8px 14px;border-radius:8px;border:1.5px solid var(--border);font-size:12.5px;font-weight:600;cursor:pointer;font-family:var(--font);background:none;color:var(--muted);display:inline-flex;align-items:center;gap:6px}
+.btn:hover{background:var(--surface)}
+.btn.primary{background:#F59E0B;color:#fff;border-color:#F59E0B}
+.btn.primary:hover{background:#D97706}
+.btn.sm{padding:5px 10px;font-size:12px}
+.btn.danger{border-color:var(--red);color:var(--red)}
+.btn.danger:hover{background:var(--red2)}
+.btn.success{background:var(--green);color:#fff;border-color:var(--green)}
+.f-sel-inline{border:1.5px solid var(--border);border-radius:8px;padding:7px 10px;font-size:12.5px;font-family:var(--font);color:var(--text);background:var(--card);outline:none}
+.f-sel-inline:focus{border-color:#F59E0B}
+
+/* RINGKASAN DIVISI */
+.divisi-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)}
+.divisi-row:last-child{border-bottom:none}
+.divisi-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.divisi-name{font-weight:600;font-size:13px;width:120px;flex-shrink:0}
+.divisi-stats{flex:1;display:flex;gap:16px;flex-wrap:wrap}
+.divisi-stat{font-size:12px;color:var(--muted)}
+.divisi-stat b{color:var(--text)}
+
+/* TOAST & SETUP */
+.toast{position:fixed;bottom:20px;right:20px;z-index:999;background:#0D1B35;color:#fff;border-radius:10px;padding:12px 18px;min-width:200px;max-width:320px;box-shadow:0 4px 20px rgba(0,0,0,.2);transform:translateY(80px);opacity:0;transition:all .25s;pointer-events:none}
+.toast.show{transform:translateY(0);opacity:1}
+.toast-title{font-weight:700;font-size:13px;margin-bottom:2px}
+.toast-body{font-size:12px;color:rgba(255,255,255,.75)}
+.setup-overlay{position:fixed;inset:0;background:rgba(13,27,53,.95);z-index:500;display:flex;align-items:center;justify-content:center;padding:20px}
+.setup-overlay.hidden{display:none}
+.setup-box{background:var(--card);border-radius:16px;padding:30px 32px;max-width:440px;width:100%}
+.setup-title{font-family:'DM Serif Display',serif;font-size:21px;color:var(--navy);margin-bottom:5px}
+body.dark .setup-title{color:var(--text)}
+.setup-sub{font-size:13px;color:var(--muted);margin-bottom:18px;line-height:1.6}
+
+/* ── RESPONSIVE: sidebar jadi menu geser (drawer) di layar HP/tablet ── */
+.hamburger-btn{display:none;background:none;border:none;font-size:20px;cursor:pointer;color:var(--navy);padding:2px 6px;margin-right:2px;line-height:1;flex-shrink:0}
+body.dark .hamburger-btn{color:var(--text)}
+.sidebar-backdrop{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:99}
+.sidebar-backdrop.open{display:block}
+@media(max-width:860px){
+  .sidebar{transform:translateX(-100%);transition:transform .25s ease;box-shadow:none}
+  .sidebar.mobile-open{transform:translateX(0);box-shadow:6px 0 24px rgba(0,0,0,.3)}
+  .main{margin-left:0}
+  .hamburger-btn{display:inline-flex;align-items:center}
+  .topbar{padding:11px 14px;gap:8px}
+  .topbar-title{font-size:13.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1;min-width:0}
+  .content{padding:14px}
+}
+</style>
+</head>
+<body>
+<div class="shell">
+
+<nav class="sidebar">
+  <div class="sb-top">
+    <div class="sb-logo">🏢 General Manager</div>
+    <div class="sb-role">Dashboard Manajemen</div>
+  </div>
+  <div class="sb-nav">
+    <div class="sb-group-lbl">Command Center</div>
+    <div class="sb-item active" onclick="nav(this,'page-beranda')"><span class="sb-icon">🏠</span> Beranda</div>
+
+    <div class="sb-group-lbl">Laporan Tim</div>
+    <div class="sb-item" onclick="nav(this,'page-keuangan')"><span class="sb-icon">💰</span> Keuangan</div>
+    <div class="sb-item" onclick="nav(this,'page-administrasi')"><span class="sb-icon">📂</span> Administrasi</div>
+    <div class="sb-item" onclick="nav(this,'page-marketing')"><span class="sb-icon">📊</span> Marketing</div>
+
+    <div class="sb-group-lbl">Manajemen</div>
+    <div class="sb-item" onclick="nav(this,'page-tugas')">
+      <span class="sb-icon">📋</span> Tugas ke Tim
+      <span class="sb-badge red" id="badge-tugas" style="display:none">0</span>
+    </div>
+    <div class="sb-item" onclick="nav(this,'page-target')"><span class="sb-icon">🎯</span> Target &amp; Realisasi</div>
+    <div class="sb-item" onclick="nav(this,'page-ringkasan')"><span class="sb-icon">📈</span> Ringkasan Bulanan</div>
+
+    <div class="sb-group-lbl">Sistem</div>
+    <div class="sb-item" onclick="nav(this,'page-karyawan')"><span class="sb-icon">👥</span> Data Karyawan</div>
+  </div>
+  <div class="sb-footer">
+    <div class="sb-darkmode" onclick="toggleDark()"><span id="dark-icon">🌙</span> Mode Gelap</div>
+  </div>
+</nav>
+<div class="sidebar-backdrop" id="sidebar-backdrop" onclick="closeMobileSidebar()"></div>
+
+<div class="main">
+  <div class="topbar">
+    <button class="hamburger-btn" onclick="toggleMobileSidebar()" aria-label="Buka menu">☰</button>
+    <div class="topbar-title" id="topbar-title">🏠 Beranda</div>
+    <div class="topbar-right">
+      <div style="font-size:12px;color:var(--muted)" id="topbar-date"></div>
+      <div class="live-badge" id="sync-badge" onclick="document.getElementById('sync-menu').classList.toggle('open')">
+        <span class="live-dot"></span><span id="sync-label">Offline</span>
+        <div class="sync-menu" id="sync-menu">
+          <div class="sync-menu-item">Backend: <b id="sync-url">Belum tersambung</b></div>
+          <div class="sync-menu-item">Terakhir: <b id="sync-time">—</b></div>
+          <button class="sync-btn" onclick="manualRefresh()">🔄 Refresh data</button>
+          <button class="sync-btn" onclick="openSetup()">⚙️ Ganti URL</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="content">
+
+<!-- PAGE: BERANDA -->
+<div id="page-beranda" class="page active">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px">
+    <div>
+      <div style="font-family:'DM Serif Display',serif;font-size:18px">Selamat datang, GM 👋</div>
+      <div style="font-size:12.5px;color:var(--muted);margin-top:2px" id="beranda-tanggal"></div>
+    </div>
+    <button class="btn primary sm" onclick="manualRefresh()">🔄 Refresh</button>
+  </div>
+
+  <!-- Status Submit Harian -->
+  <div class="sec" style="margin-bottom:14px">
+    <div class="sec-head"><div class="sec-title">✅ Status Laporan Hari Ini</div><span style="font-size:12px;color:var(--muted)" id="submit-tanggal-lbl"></span></div>
+    <div class="sec-body">
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px" id="submit-status-grid">
+        <div class="submit-card belum"><span class="submit-icon">⏳</span><div class="submit-info"><div class="submit-divisi">Keuangan</div><div class="submit-status">Memuat...</div></div></div>
+        <div class="submit-card belum"><span class="submit-icon">⏳</span><div class="submit-info"><div class="submit-divisi">Administrasi</div><div class="submit-status">Memuat...</div></div></div>
+        <div class="submit-card belum"><span class="submit-icon">⏳</span><div class="submit-info"><div class="submit-divisi">Marketing</div><div class="submit-status">Memuat...</div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Alert masalah urgent -->
+  <div id="alert-masalah-section" style="margin-bottom:14px"></div>
+
+  <!-- Stat Cards hari ini -->
+  <div class="stat-row">
+    <div class="stat-card"><div class="stat-lbl">Dana Masuk Hari Ini</div><div class="stat-val green" id="home-dana-masuk">—</div><div class="stat-sub">3 program</div></div>
+    <div class="stat-card"><div class="stat-lbl">Closing Hari Ini</div><div class="stat-val gold" id="home-closing">—</div><div class="stat-sub" id="home-closing-sub">mahasiswa baru</div></div>
+    <div class="stat-card"><div class="stat-lbl">Lead Baru</div><div class="stat-val purple" id="home-lead">—</div><div class="stat-sub">masuk hari ini</div></div>
+    <div class="stat-card"><div class="stat-lbl">Masalah Aktif</div><div class="stat-val red" id="home-masalah">—</div><div class="stat-sub">semua divisi</div></div>
+  </div>
+
+  <!-- Progress target bulan ini -->
+  <div class="sec" style="margin-bottom:14px">
+    <div class="sec-head">
+      <div class="sec-title">🎯 Progress Target Bulan Ini</div>
+      <span style="font-size:12px;color:var(--muted)" id="home-periode-lbl"></span>
+    </div>
+    <div class="sec-body" id="home-target-progress"></div>
+  </div>
+
+  <!-- Ringkasan per divisi -->
+  <div class="grid-2" style="margin-bottom:14px">
+    <div class="sec">
+      <div class="sec-head"><div class="sec-title">📊 Laporan Harian per Divisi</div></div>
+      <div class="sec-body" id="home-divisi-summary"></div>
+    </div>
+    <div class="sec">
+      <div class="sec-head"><div class="sec-title">📋 Tugas GM Terbaru</div><button class="btn sm" onclick="nav(document.querySelector('.sb-item[onclick*=page-tugas]'),'page-tugas')">Lihat semua</button></div>
+      <div class="sec-body" id="home-tugas-list"></div>
+    </div>
+  </div>
+</div><!-- /page-beranda -->
+
+
+<!-- PAGE: KEUANGAN -->
+<div id="page-keuangan" class="page">
+  <div class="lap-tabs">
+    <div class="lap-tab active" onclick="switchTab(this,'keu-harian')">📅 Harian</div>
+    <div class="lap-tab" onclick="switchTab(this,'keu-bulanan')">🗓️ Bulanan</div>
+  </div>
+
+  <div class="lap-tab-content active" id="keu-harian">
+    <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;align-items:center">
+      <label style="font-size:12.5px;color:var(--muted)">Tanggal:</label>
+      <input type="date" class="f-sel-inline" id="keu-h-tgl"/>
+      <button class="btn primary sm" onclick="loadKeuHarian()">Tampilkan</button>
+    </div>
+    <div id="keu-h-content"><div class="tbl-empty">Pilih tanggal dan klik Tampilkan.</div></div>
+  </div>
+
+  <div class="lap-tab-content" id="keu-bulanan">
+    <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap">
+      <select class="f-sel-inline" id="keu-b-periode"></select>
+      <button class="btn primary sm" onclick="loadKeuBulanan()">Tampilkan</button>
+    </div>
+    <div id="keu-b-content"><div class="tbl-empty">Pilih periode dan klik Tampilkan.</div></div>
+  </div>
+</div><!-- /page-keuangan -->
+
+
+<!-- PAGE: ADMINISTRASI -->
+<div id="page-administrasi" class="page">
+  <div class="lap-tabs">
+    <div class="lap-tab active" onclick="switchTab(this,'adm-harian')">📅 Harian</div>
+    <div class="lap-tab" onclick="switchTab(this,'adm-bulanan')">🗓️ Bulanan</div>
+  </div>
+
+  <div class="lap-tab-content active" id="adm-harian">
+    <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;align-items:center">
+      <label style="font-size:12.5px;color:var(--muted)">Tanggal:</label>
+      <input type="date" class="f-sel-inline" id="adm-h-tgl"/>
+      <button class="btn primary sm" onclick="loadAdmHarian()">Tampilkan</button>
+    </div>
+    <div id="adm-h-content"><div class="tbl-empty">Pilih tanggal dan klik Tampilkan.</div></div>
+  </div>
+
+  <div class="lap-tab-content" id="adm-bulanan">
+    <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap">
+      <select class="f-sel-inline" id="adm-b-periode"></select>
+      <button class="btn primary sm" onclick="loadAdmBulanan()">Tampilkan</button>
+    </div>
+    <div id="adm-b-content"><div class="tbl-empty">Pilih periode dan klik Tampilkan.</div></div>
+  </div>
+</div><!-- /page-administrasi -->
+
+
+<!-- PAGE: MARKETING -->
+<div id="page-marketing" class="page">
+  <div class="lap-tabs">
+    <div class="lap-tab active" onclick="switchTab(this,'mkt-harian')">📅 Harian</div>
+    <div class="lap-tab" onclick="switchTab(this,'mkt-bulanan')">🗓️ Bulanan</div>
+  </div>
+
+  <div class="lap-tab-content active" id="mkt-harian">
+    <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;align-items:center">
+      <label style="font-size:12.5px;color:var(--muted)">Tanggal:</label>
+      <input type="date" class="f-sel-inline" id="mkt-h-tgl"/>
+      <button class="btn primary sm" onclick="loadMktHarian()">Tampilkan</button>
+    </div>
+    <div id="mkt-h-content"><div class="tbl-empty">Pilih tanggal dan klik Tampilkan.</div></div>
+  </div>
+
+  <div class="lap-tab-content" id="mkt-bulanan">
+    <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap">
+      <select class="f-sel-inline" id="mkt-b-periode"></select>
+      <button class="btn primary sm" onclick="loadMktBulanan()">Tampilkan</button>
+    </div>
+    <div id="mkt-b-content"><div class="tbl-empty">Pilih periode dan klik Tampilkan.</div></div>
+  </div>
+</div><!-- /page-marketing -->
+
+
+<!-- PAGE: TUGAS GM KE TIM -->
+<div id="page-tugas" class="page">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:10px">
+    <div>
+      <div style="font-weight:700;font-size:15px">📋 Tugas &amp; Instruksi ke Tim</div>
+      <div style="font-size:12.5px;color:var(--muted);margin-top:2px">Tugas yang dibuat GM akan muncul di kanban divisi terkait</div>
+    </div>
+    <div style="display:flex;gap:8px">
+      <select class="f-sel-inline" id="tg-f-divisi" onchange="renderTugas()">
+        <option value="">Semua Divisi</option>
+        <option>Administrasi</option><option>Keuangan</option><option>Marketing</option><option>Semua</option>
+      </select>
+      <button class="btn primary" onclick="openTugasModal()">＋ Buat Tugas</button>
+    </div>
+  </div>
+  <div class="kanban">
+    <div class="k-col">
+      <div class="k-col-head"><span>⭕ Belum Mulai</span><span class="k-cnt" id="kn-belum-cnt">0</span></div>
+      <div id="kn-belum"></div>
+    </div>
+    <div class="k-col">
+      <div class="k-col-head"><span>🔄 Proses</span><span class="k-cnt" id="kn-proses-cnt">0</span></div>
+      <div id="kn-proses"></div>
+    </div>
+    <div class="k-col">
+      <div class="k-col-head"><span>✅ Selesai</span><span class="k-cnt" id="kn-selesai-cnt">0</span></div>
+      <div id="kn-selesai"></div>
+    </div>
+  </div>
+</div><!-- /page-tugas -->
+
+
+<!-- PAGE: TARGET & REALISASI -->
+<div id="page-target" class="page">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:10px">
+    <div>
+      <div style="font-weight:700;font-size:15px">🎯 Target &amp; Realisasi</div>
+      <div style="font-size:12.5px;color:var(--muted);margin-top:2px">Set target bulanan. Progress dihitung otomatis dari laporan tim.</div>
+    </div>
+    <div style="display:flex;gap:8px">
+      <select class="f-sel-inline" id="target-periode"></select>
+      <button class="btn primary sm" onclick="loadTarget()">Muat</button>
+      <button class="btn success sm" onclick="saveAllTarget()">💾 Simpan Target</button>
+    </div>
+  </div>
+
+  <!-- Marketing -->
+  <div class="sec" style="margin-bottom:14px">
+    <div class="sec-head"><div class="sec-title">📊 Marketing</div></div>
+    <div class="sec-body">
+      <div class="target-grid" id="target-marketing"></div>
+    </div>
+  </div>
+
+  <!-- Administrasi -->
+  <div class="sec" style="margin-bottom:14px">
+    <div class="sec-head"><div class="sec-title">📂 Administrasi</div></div>
+    <div class="sec-body">
+      <div class="target-grid" id="target-administrasi"></div>
+    </div>
+  </div>
+
+  <!-- Keuangan -->
+  <div class="sec" style="margin-bottom:14px">
+    <div class="sec-head"><div class="sec-title">💰 Keuangan</div></div>
+    <div class="sec-body">
+      <div class="target-grid" id="target-keuangan"></div>
+    </div>
+  </div>
+</div><!-- /page-target -->
+
+
+<!-- PAGE: RINGKASAN BULANAN -->
+<div id="page-ringkasan" class="page">
+  <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;align-items:center">
+    <select class="f-sel-inline" id="rs-periode"></select>
+    <button class="btn primary" onclick="loadRingkasan()">Tampilkan</button>
+    <button class="btn" onclick="window.print()">🖨️ Print / Export</button>
+  </div>
+  <div id="rs-content"></div>
+</div><!-- /page-ringkasan -->
+
+
+<!-- PAGE: DATA KARYAWAN -->
+<div id="page-karyawan" class="page">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:10px">
+    <div style="font-weight:700;font-size:15px">👥 Data Karyawan</div>
+    <button class="btn primary" onclick="openKaryawanModal()">＋ Tambah Karyawan</button>
+  </div>
+  <div class="sec">
+    <div class="tbl-wrap">
+      <table class="gm-tbl">
+        <thead><tr><th>Nama</th><th>Divisi</th><th>Jabatan</th><th>Status</th><th>Aksi</th></tr></thead>
+        <tbody id="karyawan-tbody"><tr><td colspan="5" class="tbl-empty">⏳ Memuat...</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+</div><!-- /page-karyawan -->
+
+  </div><!-- /content -->
+</div><!-- /main -->
+</div><!-- /shell -->
+
+<!-- MODAL: TUGAS -->
+<div class="modal-overlay" id="modal-tugas">
+  <div class="modal-box">
+    <div class="modal-head"><div class="modal-title" id="modal-tugas-title">Buat Tugas ke Tim</div><button class="modal-close" onclick="closeModal('modal-tugas')">✕</button></div>
+    <div class="modal-body">
+      <div class="f-row"><div class="f-lbl">Judul Tugas *</div><input class="f-inp" id="tg-judul" placeholder="cth: Cek rekap piutang STISDU bulan ini"/></div>
+      <div class="f-row-2">
+        <div><div class="f-lbl">Ditujukan ke Divisi</div>
+          <select class="f-sel" id="tg-divisi">
+            <option>Semua</option><option>Administrasi</option><option>Keuangan</option><option>Marketing</option>
+          </select>
+        </div>
+        <div><div class="f-lbl">Prioritas</div>
+          <select class="f-sel" id="tg-prioritas">
+            <option>Rendah</option><option selected>Sedang</option><option>Tinggi</option><option>Urgent</option>
+          </select>
+        </div>
+      </div>
+      <div class="f-row-2">
+        <div><div class="f-lbl">Status</div>
+          <select class="f-sel" id="tg-status">
+            <option>Belum Mulai</option><option>Proses</option><option>Selesai</option>
+          </select>
+        </div>
+        <div><div class="f-lbl">Deadline</div><input class="f-inp" type="date" id="tg-deadline"/></div>
+      </div>
+      <div class="f-row"><div class="f-lbl">Deskripsi / Instruksi</div>
+        <textarea class="f-ta" id="tg-deskripsi" placeholder="Detail instruksi untuk tim..."></textarea>
+      </div>
+    </div>
+    <div class="modal-foot"><button class="btn" onclick="closeModal('modal-tugas')">Batal</button><button class="btn primary" onclick="saveTugas()">💾 Simpan</button></div>
+  </div>
+</div>
+
+<!-- MODAL: KARYAWAN -->
+<div class="modal-overlay" id="modal-karyawan">
+  <div class="modal-box">
+    <div class="modal-head"><div class="modal-title" id="modal-kryw-title">Tambah Karyawan</div><button class="modal-close" onclick="closeModal('modal-karyawan')">✕</button></div>
+    <div class="modal-body">
+      <div class="f-row"><div class="f-lbl">Nama Lengkap *</div><input class="f-inp" id="kryw-nama" placeholder="Nama karyawan"/></div>
+      <div class="f-row-2">
+        <div><div class="f-lbl">Divisi</div>
+          <select class="f-sel" id="kryw-divisi">
+            <option>Administrasi</option><option>Keuangan</option><option>Marketing</option><option>Manajemen</option>
+          </select>
+        </div>
+        <div><div class="f-lbl">Jabatan</div><input class="f-inp" id="kryw-jabatan" placeholder="cth: Staff Administrasi"/></div>
+      </div>
+    </div>
+    <div class="modal-foot"><button class="btn" onclick="closeModal('modal-karyawan')">Batal</button><button class="btn primary" onclick="saveKaryawan()">💾 Simpan</button></div>
+  </div>
+</div>
+
+<!-- SETUP -->
+<div class="setup-overlay" id="setup-overlay">
+  <div class="setup-box">
+    <div class="setup-title">Dashboard General Manager</div>
+    <div class="setup-sub">Masukkan Web App URL dari Google Apps Script. URL ini sama dengan semua dashboard tim.</div>
+    <input class="f-inp" id="setup-url-inp" type="url" placeholder="https://script.google.com/macros/s/.../exec" style="margin-bottom:10px"/>
+    <div id="setup-status" style="font-size:12px;color:var(--red);min-height:16px;margin-bottom:10px"></div>
+    <button onclick="connectBackend()" style="width:100%;padding:11px;border-radius:9px;border:none;background:#F59E0B;color:#fff;font-weight:700;font-size:14px;cursor:pointer;font-family:var(--font);margin-bottom:8px">Hubungkan</button>
+    <button onclick="demoMode()" style="width:100%;padding:9px;border-radius:9px;border:1.5px solid var(--border);background:none;color:var(--muted);font-weight:600;font-size:13px;cursor:pointer;font-family:var(--font)">Coba Mode Demo</button>
+  </div>
+</div>
+<div class="toast" id="toast"><div class="toast-title" id="toast-title"></div><div class="toast-body" id="toast-body"></div></div>
+<script>
+// ── State ─────────────────────────────────────────────────────────
+let BACKEND='', DEMO=false;
+let ALL_TUGAS=[], ALL_TARGET=[], ALL_KARYAWAN=[];
+let GM_DATA=null;
+let editingId={tugas:null, karyawan:null};
+
+// ── Init ──────────────────────────────────────────────────────────
+// ── RESPONSIVE: buka/tutup sidebar di layar HP ─────────────────────
+function toggleMobileSidebar(){
+  document.querySelector('.sidebar')?.classList.toggle('mobile-open');
+  document.getElementById('sidebar-backdrop')?.classList.toggle('open');
+}
+function closeMobileSidebar(){
+  document.querySelector('.sidebar')?.classList.remove('mobile-open');
+  document.getElementById('sidebar-backdrop')?.classList.remove('open');
+}
+document.addEventListener('click', (e)=>{ if(e.target.closest('.sb-item')) closeMobileSidebar(); });
+
+document.addEventListener('DOMContentLoaded',()=>{
+  setDefaults();
+  try{
+    const url=localStorage.getItem('shared-backend-url')||localStorage.getItem('mkt-backend-url');
+    if(url){BACKEND=url;document.getElementById('setup-overlay').classList.add('hidden');setSyncStatus('live');}
+  }catch(e){}
+  initTheme();
+  if(BACKEND||DEMO) initialLoad();
+});
+
+// ── Auto-refresh saat aplikasi dibuka kembali (dari background/bfcache/tab lain) ──
+let _lastAutoRefresh = 0;
+function _autoRefreshIfStale(){
+  if(!BACKEND&&!DEMO) return;
+  const now = Date.now();
+  if(now - _lastAutoRefresh < 3000) return;
+  _lastAutoRefresh = now;
+  initialLoad();
+}
+window.addEventListener('pageshow', (e)=>{ if(e.persisted) _autoRefreshIfStale(); });
+document.addEventListener('visibilitychange', ()=>{ if(document.visibilityState==='visible') _autoRefreshIfStale(); });
+window.addEventListener('focus', _autoRefreshIfStale);
+
+function setDefaults(){
+  const today=todayStr();
+  const e=id=>document.getElementById(id);
+  if(e('keu-h-tgl'))  e('keu-h-tgl').value=today;
+  if(e('adm-h-tgl'))  e('adm-h-tgl').value=today;
+  if(e('mkt-h-tgl'))  e('mkt-h-tgl').value=today;
+  if(e('beranda-tanggal'))e('beranda-tanggal').textContent=new Date().toLocaleDateString('id-ID',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+  if(e('topbar-date'))e('topbar-date').textContent=new Date().toLocaleDateString('id-ID',{day:'numeric',month:'short',year:'numeric'});
+  const d=new Date();const bln=['','Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
+  const opts=[];
+  for(let i=0;i<12;i++){const dd=new Date(d.getFullYear(),d.getMonth()-i,1);const val=dd.getFullYear()+'-'+String(dd.getMonth()+1).padStart(2,'0');opts.push('<option value="'+val+'">'+bln[dd.getMonth()+1]+' '+dd.getFullYear()+'</option>');}
+  ['keu-b-periode','adm-b-periode','mkt-b-periode','target-periode','rs-periode'].forEach(id=>{const el=e(id);if(el)el.innerHTML=opts.join('');});
+  const curPeriode=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0');
+  const el=e('home-periode-lbl');if(el)el.textContent=bln[d.getMonth()+1]+' '+d.getFullYear();
+  const el2=e('submit-tanggal-lbl');if(el2)el2.textContent=today;
+}
+
+async function initialLoad(){
+  await Promise.all([loadBerandaData(), loadTugas(), loadKaryawan()]);
+}
+
+// ── API ───────────────────────────────────────────────────────────
+async function apiGet(params){
+  if(DEMO) return getGMDemoResponse(params);
+  if(!BACKEND) return null;
+  const res  = await fetch(BACKEND+'?'+new URLSearchParams(params), {redirect:'follow',credentials:'omit'});
+  const text = await res.text();
+  let json;
+  try{ json = JSON.parse(text); }catch(e){ throw new Error('Response tidak valid'); }
+  if(json.success === false) throw new Error(json.error||'Server error');
+  return json.data !== undefined ? json.data : json;
+}async function apiPost(action, payload){
+  if(DEMO||!BACKEND) return { id: 'DEMO-'+Date.now() };
+  const res  = await fetch(BACKEND, {
+    method:'POST', redirect:'follow', credentials:'omit',
+    headers:{'Content-Type':'text/plain'},
+    body: JSON.stringify({action, ...payload})
+  });
+  const text = await res.text();
+  let json;
+  try{ json = JSON.parse(text); }catch(e){ throw new Error('Response tidak valid'); }
+  if(json.success === false) throw new Error(json.error||'Server error');
+  return json.data !== undefined ? json.data : json;
+}
+
+// ── Data Demo (Mode Demo) ─────────────────────────────────────────
+function getGMDemoResponse(params){
+  const today=todayStr();
+  switch(params.action){
+    case 'getGMDashboard': return {
+      submitStatus:{Keuangan:true,Administrasi:true,Marketing:false},
+      lapHariIni:{
+        Keuangan:{tanggal:today,divisi:'Keuangan',status:'submitted',khusus_pk:2500000,khusus_stisdu:1200000,khusus_stitbu:800000,reguler_pk:1500000,reguler_stisdu:900000,reguler_stitbu:600000,karyawan_pk:1000000,karyawan_stisdu:500000,karyawan_stitbu:300000,danaKeluarDetail:'[{"kategori":"Operasional Kantor","sub":"ATK","keterangan":"Beli kertas & tinta","nominal":250000}]'},
+        Administrasi:{tanggal:today,divisi:'Administrasi',status:'submitted',progresAdm:'[{"jenis":"Data Baru","program":"RPL Khusus","jumlah":8,"kampus":"STISDU","catatan":""}]'},
+        Marketing:{tanggal:today,divisi:'Marketing',status:'draft',leadBaru:5,fuCount:12,closingBaru:2,catatan:''}
+      },
+      masalahAktif:{total:2}
+    };
+    case 'getGMTugas': return { tugas:[
+      {id:'GT-001',judul:'Cek status berkas PDDikti STISDU',deskripsi:'Pastikan semua berkas bulan ini sudah terkirim.',divisi:'Administrasi',prioritas:'Tinggi',status:'Belum Mulai',deadline:today},
+      {id:'GT-002',judul:'Kirim laporan mingguan ke direktur',deskripsi:'Rekap data masuk minggu ini.',divisi:'Semua',prioritas:'Sedang',status:'Proses',deadline:''}
+    ]};
+    case 'getGMTarget': return { target:[
+      {id:'TAR-001',periode:params.periode,kategori:'Closing',divisi:'Marketing',target_nilai:30,satuan:'mahasiswa'},
+      {id:'TAR-002',periode:params.periode,kategori:'Lead Baru',divisi:'Marketing',target_nilai:100,satuan:'lead'},
+      {id:'TAR-003',periode:params.periode,kategori:'Berkas PDDikti',divisi:'Administrasi',target_nilai:200,satuan:'berkas'},
+      {id:'TAR-004',periode:params.periode,kategori:'Dana Masuk',divisi:'Keuangan',target_nilai:150000000,satuan:'Rp'}
+    ]};
+    case 'getRollupBulanan': return {
+      keuangan:{ totalDanaMasuk:78500000, totalDanaKeluar:12750000, rplKhusus:{total:32000000} },
+      administrasi:{ totalBerkas:96, suratMasuk:14, suratKeluar:9 },
+      marketing:{ totalClosing:18, totalClosingTimPMB:12, totalClosingKoordinator:6, totalLead:64,
+        perTimPMB:[{nama:'Tito Ersha',total:6},{nama:'Yuyun Dwi Firma',total:4},{nama:'Bimantara',total:3}] },
+      progress:{ totalHariKerja:26, Keuangan:{hariTerisi:12}, Administrasi:{hariTerisi:12}, Marketing:{hariTerisi:10} }
+    };
+    case 'getKaryawan': return { karyawan:[
+      {id:'KRY-001',nama:'Ismawati',divisi:'Administrasi',jabatan:'Staff Administrasi',aktif:true},
+      {id:'KRY-002',nama:'Nadia Putri',divisi:'Keuangan',jabatan:'Staff Keuangan',aktif:true}
+    ]};
+    case 'getLaporanHarianByTanggal': {
+      const map={
+        Keuangan:{tanggal:params.tanggal,divisi:'Keuangan',status:'submitted',rplKhusus_pk:2500000,rplKhusus_stisdu:1200000,rplKhusus_stitbu:800000,rplBiasa_pk:1500000,rplBiasa_stisdu:900000,rplBiasa_stitbu:600000,kKaryawan_pk:1000000,kKaryawan_stisdu:500000,kKaryawan_stitbu:300000,danaKeluarDetail:'[{"kategori":"Operasional Kantor","sub":"ATK","keterangan":"Beli kertas & tinta","nominal":250000}]'},
+        Administrasi:{tanggal:params.tanggal,divisi:'Administrasi',status:'submitted',progresAdm:'[{"jenis":"Data Baru","program":"RPL Khusus","jumlah":8,"kampus":"STISDU","catatan":""},{"jenis":"Data On PDDikti","program":"RPL Reguler (6 Bln)","jumlah":5,"kampus":"STITBU","catatan":""}]'},
+        Marketing:{tanggal:params.tanggal,divisi:'Marketing',status:'draft',leadBaru:5,fuCount:12,closingBaru:2,catatan:'Follow up 3 lead lama masih berlangsung.'}
+      };
+      return { laporan: map[params.divisi] || null };
+    }
+    case 'getAdmMasalah': return { masalah:[
+      {id:'AM-001',judul:'KTP tidak terbaca',kampus:'STISDU',program:'RPL Khusus',jenis:'Revisi Dokumen',status:'Proses',prioritas:'Tinggi',pic:'Ismawati'},
+      {id:'AM-002',judul:'Foto tidak sesuai ketentuan',kampus:'STITBU',program:'RPL Reguler',jenis:'Revisi Dokumen',status:'Belum Ditangani',prioritas:'Sedang',pic:'Ismawati'}
+    ]};
+    case 'getMktLead': return { leads:[
+      {id:'LD-001',nama_lengkap:'Andi Susanto',program_minat:'RPL Khusus',sumber_lead:'Instagram',status:'Tertarik',pic:'Tito Ersha',tanggal_masuk:today,tanggal_update:today}
+    ]};
+    case 'getMktClosing': return { closing:[
+      {id:'CL-001',nama_lengkap:'Rizky Pratama',program:'RPL Khusus',perguruan_tinggi:'STISDU',pic:'Tito Ersha',status:'Daftar Ulang',tanggal_closing:today,tanggal_update:today}
+    ]};
+    default: return null;
+  }
+}
+// ── Beranda ───────────────────────────────────────────────────────
+async function loadBerandaData(){
+  try{
+    const today=todayStr();
+    const d=await apiGet({action:'getGMDashboard',tanggal:today});
+    GM_DATA=d||{};
+    // Ambil rollup bulan berjalan supaya realisasi target di Beranda akurat
+    try{
+      const periodeIni=today.slice(0,7);
+      GM_DATA.rollup=await apiGet({action:'getRollupBulanan',periode:periodeIni});
+    }catch(e){ GM_DATA.rollup=null; }
+    renderSubmitStatus(d?.submitStatus||{});
+    renderHomStats(d);
+    renderHomeTargetProgress();
+    renderHomeDivisiSummary(d);
+    renderHomeTugasPreview();
+    renderAlertMasalah(d?.masalahAktif);
+  }catch(e){
+    renderSubmitStatus({});
+    renderHomeDivisiSummary(null);
+  }
+}
+
+function renderSubmitStatus(status){
+  const divisi=[
+    {key:'Keuangan', icon:'💰', label:'Keuangan'},
+    {key:'Administrasi', icon:'📂', label:'Administrasi'},
+    {key:'Marketing', icon:'📊', label:'Marketing'},
+  ];
+  const el=document.getElementById('submit-status-grid');if(!el)return;
+  el.innerHTML=divisi.map(d=>{
+    const ok=status[d.key];
+    return '<div class="submit-card '+(ok?'ok':'belum')+'">'+
+      '<span class="submit-icon">'+(ok?'✅':'⏳')+'</span>'+
+      '<div class="submit-info"><div class="submit-divisi">'+d.icon+' '+d.label+'</div>'+
+      '<div class="submit-status">'+(ok?'Laporan sudah masuk':'Belum submit hari ini')+'</div></div></div>';
+  }).join('');
+}
+
+function renderHomStats(d){
+  if(!d)return;
+  const lap=d.lapHariIni||{};
+  const keu=lap.Keuangan;
+  const mkt=lap.Marketing;
+
+  // Dana masuk keuangan hari ini
+  let danaMasuk=0;
+  if(keu){['rplKhusus_pk','rplKhusus_stisdu','rplKhusus_stitbu','rplBiasa_pk','rplBiasa_stisdu','rplBiasa_stitbu','kKaryawan_pk','kKaryawan_stisdu','kKaryawan_stitbu'].forEach(f=>{danaMasuk+=Number(keu[f])||0;});}
+  setEl('home-dana-masuk', danaMasuk>0?formatRp(danaMasuk):'—');
+
+  const masalahTotal=d.masalahAktif?.total||0;
+  setEl('home-masalah', masalahTotal);
+
+  // Lead & closing dari laporan harian marketing
+  const mktLap = d.lapHariIni?.Marketing;
+  if(mktLap){
+    setEl('home-lead',    (mktLap.leadBaru||0).toString());
+    setEl('home-closing', (mktLap.closingBaru||0).toString());
+  } else {
+    setEl('home-lead','—'); setEl('home-closing','—');
+  }
+}
+
+function renderHomeTargetProgress(){
+  const el=document.getElementById('home-target-progress');if(!el)return;
+  if(!ALL_TARGET.length){
+    el.innerHTML='<div style="color:var(--muted);font-size:12.5px">Belum ada target. Set target di menu "Target &amp; Realisasi".</div>';
+    return;
+  }
+  const rollup=GM_DATA?.rollup;
+  const realisasi={
+    'Closing':         rollup?.marketing?.totalClosing||0,
+    'Lead Baru':       rollup?.marketing?.totalLead||0,
+    'Berkas PDDikti':  rollup?.administrasi?.totalBerkas||0,
+    'Surat':           (rollup?.administrasi?.suratMasuk||0)+(rollup?.administrasi?.suratKeluar||0),
+    'Dana Masuk':      rollup?.keuangan?.totalDanaMasuk||0,
+  };
+  const html=ALL_TARGET.slice(0,4).map(t=>{
+    const real=realisasi[t.kategori]||0;
+    const pct=t.target_nilai>0?Math.min(100,Math.round(real/t.target_nilai*100)):0;
+    const clr=pct>=100?'var(--green)':pct>=70?'var(--gold)':'var(--red)';
+    const isRp=t.satuan==='Rp';
+    const realLabel=isRp?formatRp(real):real.toLocaleString('id-ID');
+    const targetLabel=isRp?formatRp(t.target_nilai):Number(t.target_nilai).toLocaleString('id-ID');
+    return '<div class="prog-wrap">'+
+      '<div class="prog-label"><span class="prog-label-name">'+escH(t.kategori)+'</span>'+
+      '<span class="prog-label-val">'+realLabel+' / '+targetLabel+'</span></div>'+
+      '<div class="prog-bar"><div class="prog-fill" style="width:'+pct+'%;background:'+clr+'"></div></div>'+
+      '<div class="prog-pct">'+pct+'%</div></div>';
+  }).join('');
+  el.innerHTML=html||'<div style="color:var(--muted);font-size:12.5px">Data realisasi belum tersedia.</div>';
+}
+
+function renderAlertMasalah(masalah){
+  const el=document.getElementById('alert-masalah-section');if(!el)return;
+  if(!masalah||masalah.total===0){el.innerHTML='';return;}
+  const urgent=[
+    ...(masalah.administrasi||[]).filter(m=>m.prioritas==='Urgent'),
+    ...(masalah.keuangan||[]).filter(m=>m.prioritas==='Urgent'),
+    ...(masalah.marketing||[]).filter(m=>m.prioritas==='Urgent'),
+  ];
+  if(!urgent.length){el.innerHTML='';return;}
+  el.innerHTML='<div style="margin-bottom:12px"><div style="font-weight:700;font-size:13px;color:var(--red);margin-bottom:8px">🚨 Masalah Urgent ('+urgent.length+')</div>'+
+    urgent.map(m=>'<div class="alert-strip danger">⚠️ <b>'+escH(m.judul||m.deskripsi||'Masalah')+'</b>'+(m.kampus?' — '+escH(m.kampus):'')+'</div>').join('')+'</div>';
+}
+
+function renderHomeDivisiSummary(d){
+  const el=document.getElementById('home-divisi-summary');if(!el)return;
+  const lap=d?.lapHariIni||{};
+  const submit=d?.submitStatus||{};
+  const divisi=[
+    {key:'Keuangan',     dot:'#16A34A', icon:'💰'},
+    {key:'Administrasi', dot:'#0D9488', icon:'📂'},
+    {key:'Marketing',    dot:'#7C3AED', icon:'📊'},
+  ];
+  el.innerHTML=divisi.map(dv=>{
+    const ok=submit[dv.key];
+    const lap_dv=lap[dv.key];
+    let stats='';
+    if(dv.key==='Keuangan'&&lap_dv){
+      let total=0;['rplKhusus_pk','rplKhusus_stisdu','rplKhusus_stitbu','rplBiasa_pk','rplBiasa_stisdu','rplBiasa_stitbu','kKaryawan_pk','kKaryawan_stisdu','kKaryawan_stitbu'].forEach(f=>{total+=Number(lap_dv[f])||0;});
+      stats='<span class="divisi-stat">Dana masuk: <b>'+formatRp(total)+'</b></span>';
+    } else if(dv.key==='Administrasi'&&lap_dv){
+      let rows=[];try{rows=JSON.parse(lap_dv.progresAdm||'[]');}catch(e){}
+      const total=rows.reduce((a,r)=>a+(Number(r.jumlah)||0),0);
+      stats='<span class="divisi-stat">'+rows.length+' jenis data · <b>'+total+' berkas</b></span>';
+    } else {
+      stats='<span class="divisi-stat" style="color:var(--muted)">'+(ok?'Laporan masuk':'Belum ada laporan')+'</span>';
+    }
+    return '<div class="divisi-row">'+
+      '<div class="divisi-dot" style="background:'+dv.dot+'"></div>'+
+      '<div class="divisi-name">'+dv.icon+' '+dv.key+'</div>'+
+      '<div class="divisi-stats">'+stats+'<span class="divisi-stat"><span style="color:'+(ok?'var(--green)':'var(--red)');stat=stat+(ok?'">✓ Submit':'">✗ Belum')+'</span></span></div></div>';
+  }).join('');
+  // Fix template literal issue above:
+  el.innerHTML=divisi.map(dv=>{
+    const ok=submit[dv.key];const ld=lap[dv.key];
+    let stats='';
+    if(dv.key==='Keuangan'&&ld){let t=0;['rplKhusus_pk','rplKhusus_stisdu','rplKhusus_stitbu','rplBiasa_pk','rplBiasa_stisdu','rplBiasa_stitbu','kKaryawan_pk','kKaryawan_stisdu','kKawan_stitbu'].forEach(f=>{t+=Number(ld[f])||0;});stats='<span class="divisi-stat">Dana masuk: <b>'+formatRp(t)+'</b></span>';}
+    else if(dv.key==='Administrasi'&&ld){let rows=[];try{rows=JSON.parse(ld.progresAdm||'[]');}catch(e){}const t=rows.reduce((a,r)=>a+(Number(r.jumlah)||0),0);stats='<span class="divisi-stat">'+rows.length+' jenis · <b>'+t+' berkas</b></span>';}
+    else{stats='<span class="divisi-stat">'+(ok?'Laporan masuk':'Belum ada laporan')+'</span>';}
+    const sc=ok?'var(--green)':'var(--red)';const sl=ok?'✓ Submit':'✗ Belum submit';
+    return '<div class="divisi-row"><div class="divisi-dot" style="background:'+dv.dot+'"></div><div class="divisi-name">'+dv.icon+' '+dv.key+'</div><div class="divisi-stats">'+stats+'<span class="divisi-stat"><b style="color:'+sc+'">'+sl+'</b></span></div></div>';
+  }).join('');
+}
+
+function renderHomeTugasPreview(){
+  const el=document.getElementById('home-tugas-list');if(!el)return;
+  const aktif=ALL_TUGAS.filter(t=>t.status!=='Selesai').slice(0,4);
+  if(!aktif.length){el.innerHTML='<div style="color:var(--muted);font-size:12.5px;padding:8px 0">Tidak ada tugas aktif ke tim 🎉</div>';return;}
+  el.innerHTML=aktif.map(t=>{
+    const divCls={'Administrasi':'divisi-adm','Keuangan':'divisi-keu','Marketing':'divisi-mkt','Semua':'divisi-all'}[t.divisi]||'divisi-all';
+    return '<div style="padding:9px 0;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px">'+
+      '<span class="divisi-tag '+divCls+'">'+escH(t.divisi)+'</span>'+
+      '<div style="flex:1;font-size:12.5px;font-weight:500">'+escH(t.judul)+'</div>'+
+      '<span class="pill pill-'+(t.prioritas||'sedang').toLowerCase()+'">'+escH(t.prioritas||'Sedang')+'</span></div>';
+  }).join('');
+}
+
+// ── Navigation ────────────────────────────────────────────────────
+function nav(el,pageId){
+  document.querySelectorAll('.sb-item').forEach(i=>i.classList.remove('active'));
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  if(el)el.classList.add('active');
+  document.getElementById(pageId)?.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+  const titles={'page-beranda':'🏠 Beranda','page-keuangan':'💰 Laporan Keuangan','page-administrasi':'📂 Laporan Administrasi','page-marketing':'📊 Laporan Marketing','page-tugas':'📋 Tugas ke Tim','page-target':'🎯 Target & Realisasi','page-ringkasan':'📈 Ringkasan Bulanan','page-karyawan':'👥 Data Karyawan'};
+  const ttl=document.getElementById('topbar-title');if(ttl)ttl.textContent=titles[pageId]||'GM';
+  if(pageId==='page-beranda')      loadBerandaData();
+  if(pageId==='page-keuangan')     { /* user pilih tab harian/bulanan */ }
+  if(pageId==='page-administrasi') { /* user pilih tab */ }
+  if(pageId==='page-marketing')    { /* user pilih tab */ }
+  if(pageId==='page-tugas')        { loadTugas(); }
+  if(pageId==='page-target')       loadTarget();
+  if(pageId==='page-ringkasan')    { /* user klik Tampilkan */ }
+  if(pageId==='page-karyawan')     { loadKaryawan(); renderKaryawan(); }
+}
+function switchTab(el,id){document.querySelectorAll('.lap-tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.lap-tab-content').forEach(c=>c.classList.remove('active'));el.classList.add('active');document.getElementById(id)?.classList.add('active');}
+
+// ── Laporan per divisi ────────────────────────────────────────────
+const rp=n=>'Rp '+(Math.round(Number(n)||0)).toLocaleString('id-ID');
+
+async function loadKeuHarian(){
+  const tgl=document.getElementById('keu-h-tgl')?.value;const el=document.getElementById('keu-h-content');if(!el||!tgl)return;
+  el.innerHTML='<div style="color:var(--muted);padding:16px">⏳ Memuat...</div>';
+  try{
+    const d=await apiGet({action:'getLaporanHarianByTanggal',tanggal:tgl,divisi:'Keuangan'});
+    const lap=d?.laporan;
+    if(!lap){el.innerHTML='<div style="color:var(--muted);padding:16px">Belum ada laporan Keuangan untuk '+escH(tgl)+'.</div>';return;}
+    const mk=n=>Number(lap[n])||0;
+    const khusus=mk('rplKhusus_pk')+mk('rplKhusus_stisdu')+mk('rplKhusus_stitbu');
+    const reguler=mk('rplBiasa_pk')+mk('rplBiasa_stisdu')+mk('rplBiasa_stitbu');
+    const karyawan=mk('kKaryawan_pk')+mk('kKaryawan_stisdu')+mk('kKaryawan_stitbu');
+    const total=khusus+reguler+karyawan;
+    let dk=[];try{dk=JSON.parse(lap.danaKeluarDetail||'[]');}catch(e){}
+    const totalKeluar=dk.reduce((a,d)=>a+(Number(d.nominal)||0),0);
+    let html='<div style="font-family:DM Serif Display,serif;font-size:16px;margin-bottom:14px">Laporan Keuangan — '+escH(tgl)+'</div>';
+    html+='<div class="stat-row" style="margin-bottom:16px"><div class="stat-card"><div class="stat-lbl">Total Dana Masuk</div><div class="stat-val green" style="font-size:18px">'+rp(total)+'</div></div><div class="stat-card"><div class="stat-lbl">Total Dana Keluar</div><div class="stat-val red" style="font-size:18px">'+rp(totalKeluar)+'</div></div><div class="stat-card"><div class="stat-lbl">Saldo</div><div class="stat-val '+(total-totalKeluar>=0?'green':'red')+'" style="font-size:18px">'+rp(total-totalKeluar)+'</div></div></div>';
+    html+='<div class="sec"><div class="sec-head"><div class="sec-title">Dana Masuk per Program</div></div><div class="sec-body"><table class="gm-tbl"><thead><tr><th>Program</th><th>Internal</th><th>STISDU</th><th>STITBU</th><th>Total</th></tr></thead><tbody>';
+    html+='<tr><td>RPL Khusus</td><td>'+rp(lap.rplKhusus_pk)+'</td><td>'+rp(lap.rplKhusus_stisdu)+'</td><td>'+rp(lap.rplKhusus_stitbu)+'</td><td style="font-weight:700">'+rp(khusus)+'</td></tr>';
+    html+='<tr><td>RPL Reguler</td><td>'+rp(lap.rplBiasa_pk)+'</td><td>'+rp(lap.rplBiasa_stisdu)+'</td><td>'+rp(lap.rplBiasa_stitbu)+'</td><td style="font-weight:700">'+rp(reguler)+'</td></tr>';
+    html+='<tr><td>Kelas Karyawan</td><td>'+rp(lap.kKaryawan_pk)+'</td><td>'+rp(lap.kKaryawan_stisdu)+'</td><td>'+rp(lap.kKaryawan_stitbu)+'</td><td style="font-weight:700">'+rp(karyawan)+'</td></tr>';
+    html+='<tr style="font-weight:700;background:var(--surface)"><td>TOTAL</td><td>—</td><td>—</td><td>—</td><td style="color:var(--green);font-size:14px">'+rp(total)+'</td></tr>';
+    html+='</tbody></table></div></div>';
+    if(dk.length){html+='<div class="sec" style="margin-top:12px"><div class="sec-head"><div class="sec-title">Dana Keluar</div></div><div class="sec-body"><table class="gm-tbl"><thead><tr><th>Kategori</th><th>Sub</th><th>Keterangan</th><th>Nominal</th></tr></thead><tbody>'+dk.map(d=>'<tr><td>'+escH(d.kategori||'—')+'</td><td>'+escH(d.sub||'—')+'</td><td>'+escH(d.keterangan||'—')+'</td><td style="text-align:right;font-weight:600;color:var(--red)">'+rp(d.nominal)+'</td></tr>').join('')+'</tbody></table></div></div>';}
+    el.innerHTML=html;
+  }catch(e){el.innerHTML='<div style="color:var(--muted);padding:16px">Gagal: '+e.message+'</div>';}
+}
+
+async function loadKeuBulanan(){
+  const periode=document.getElementById('keu-b-periode')?.value;const el=document.getElementById('keu-b-content');if(!el||!periode)return;
+  el.innerHTML='<div style="color:var(--muted);padding:16px">⏳ Memuat...</div>';
+  try{
+    const d=await apiGet({action:'getRollupBulanan',periode,divisi:'Keuangan'});
+    const k=d?.keuangan||{};const bln=['','Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+    const [y,m]=periode.split('-');const label=bln[parseInt(m)]+' '+y;
+    let html='<div style="font-family:DM Serif Display,serif;font-size:16px;margin-bottom:14px">Laporan Keuangan Bulanan — '+escH(label)+'</div>';
+    html+='<div class="stat-row" style="margin-bottom:16px"><div class="stat-card"><div class="stat-lbl">Total Dana Masuk</div><div class="stat-val green" style="font-size:18px">'+rp(k.totalDanaMasuk)+'</div></div><div class="stat-card"><div class="stat-lbl">Total Dana Keluar</div><div class="stat-val red" style="font-size:18px">'+rp(k.totalDanaKeluar)+'</div></div></div>';
+    el.innerHTML=html;
+  }catch(e){el.innerHTML='<div style="color:var(--muted);padding:16px">Gagal: '+e.message+'</div>';}
+}
+
+async function loadAdmHarian(){
+  const tgl=document.getElementById('adm-h-tgl')?.value;const el=document.getElementById('adm-h-content');if(!el||!tgl)return;
+  el.innerHTML='<div style="color:var(--muted);padding:16px">⏳ Memuat...</div>';
+  try{
+    const d=await apiGet({action:'getLaporanHarianByTanggal',tanggal:tgl,divisi:'Administrasi'});
+    const lap=d?.laporan;
+    if(!lap){el.innerHTML='<div style="color:var(--muted);padding:16px">Belum ada laporan Administrasi untuk '+escH(tgl)+'.</div>';return;}
+    let rows=[];try{rows=JSON.parse(lap.progresAdm||'[]');}catch(e){}
+    const total=rows.reduce((a,r)=>a+(Number(r.jumlah)||0),0);
+    let html='<div style="font-family:DM Serif Display,serif;font-size:16px;margin-bottom:14px">Laporan Administrasi — '+escH(tgl)+'</div>';
+    html+='<div class="stat-row" style="margin-bottom:16px"><div class="stat-card"><div class="stat-lbl">Total Berkas</div><div class="stat-val teal" style="font-size:22px">'+total+'</div></div><div class="stat-card"><div class="stat-lbl">Jenis Laporan</div><div class="stat-val blue" style="font-size:22px">'+rows.length+'</div></div></div>';
+    if(rows.length){
+      html+='<div class="sec"><div class="sec-head"><div class="sec-title">Detail Laporan Harian</div></div><div class="sec-body"><table class="gm-tbl"><thead><tr><th>Jenis Data</th><th>Program</th><th>Jumlah</th><th>Kampus</th><th>Catatan</th></tr></thead><tbody>'+
+        rows.map(r=>'<tr><td><b>'+escH(r.jenis||'—')+'</b></td><td>'+escH(r.program||'—')+'</td><td style="text-align:center;font-weight:700;color:var(--teal)">'+(r.jumlah||0)+'</td><td>'+escH(r.kampus||'—')+'</td><td style="font-size:12px;color:var(--muted)">'+escH(r.catatan||'—')+'</td></tr>').join('')+
+        '</tbody></table></div></div>';
+    }
+    // Masalah aktif
+    const masalah=await apiGet({action:'getAdmMasalah'});
+    const aktif=(masalah?.masalah||[]).filter(m=>m.status!=='Selesai');
+    if(aktif.length){html+='<div class="sec" style="margin-top:12px"><div class="sec-head"><div class="sec-title">Masalah Aktif ('+aktif.length+')</div></div><div class="sec-body"><table class="gm-tbl"><thead><tr><th>Masalah</th><th>Kampus</th><th>Jenis</th><th>Prioritas</th><th>Status</th></tr></thead><tbody>'+aktif.map(m=>'<tr><td>'+escH(m.judul)+'</td><td>'+escH(m.kampus||'—')+'</td><td>'+escH(m.jenis||'—')+'</td><td><span class="pill pill-'+((m.prioritas||'Sedang').toLowerCase())+'">'+escH(m.prioritas||'—')+'</span></td><td><span class="pill pill-'+(m.status==='Proses'?'proses':'belum')+'">'+m.status+'</span></td></tr>').join('')+'</tbody></table></div></div>';}
+    el.innerHTML=html;
+  }catch(e){el.innerHTML='<div style="color:var(--muted);padding:16px">Gagal: '+e.message+'</div>';}
+}
+
+async function loadAdmBulanan(){
+  const periode=document.getElementById('adm-b-periode')?.value;const el=document.getElementById('adm-b-content');if(!el||!periode)return;
+  el.innerHTML='<div style="color:var(--muted);padding:16px">⏳ Memuat...</div>';
+  try{
+    const d=await apiGet({action:'getRollupBulanan',periode,divisi:'Administrasi'});
+    const a=d?.administrasi||{};const bln=['','Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+    const [y,m]=periode.split('-');
+    let html='<div style="font-family:DM Serif Display,serif;font-size:16px;margin-bottom:14px">Laporan Administrasi Bulanan — '+bln[parseInt(m)]+' '+y+'</div>';
+    html+='<div class="stat-row"><div class="stat-card"><div class="stat-lbl">Total Berkas</div><div class="stat-val teal" style="font-size:22px">'+(a.totalBerkas||0)+'</div></div><div class="stat-card"><div class="stat-lbl">Surat Masuk</div><div class="stat-val blue" style="font-size:22px">'+(a.suratMasuk||0)+'</div></div><div class="stat-card"><div class="stat-lbl">Surat Keluar</div><div class="stat-val blue" style="font-size:22px">'+(a.suratKeluar||0)+'</div></div></div>';
+    el.innerHTML=html;
+  }catch(e){el.innerHTML='<div style="color:var(--muted);padding:16px">Gagal: '+e.message+'</div>';}
+}
+
+async function loadMktHarian(){
+  const tgl=document.getElementById('mkt-h-tgl')?.value;const el=document.getElementById('mkt-h-content');if(!el||!tgl)return;
+  el.innerHTML='<div style="color:var(--muted);padding:16px">⏳ Memuat...</div>';
+  try{
+    // Ambil laporan harian yang di-submit tim marketing
+    let lapHarian=null;
+    try{const ld=await apiGet({action:'getLaporanHarianByTanggal',tanggal:tgl,divisi:'Marketing'});lapHarian=ld?.laporan;}catch(e){}
+    const leads=await apiGet({action:'getMktLead'});const closing=await apiGet({action:'getMktClosing'});
+    const allLeads=(leads?.leads||[]).filter(l=>l.tanggal_masuk===tgl||l.tanggal_update===tgl);
+    const allClosing=(closing?.closing||[]).filter(c=>c.tanggal_closing===tgl||c.tanggal_update===tgl);
+    const lapLead    = lapHarian?.leadBaru    || allLeads.length;
+    const lapClosing = lapHarian?.closingBaru || allClosing.length;
+    const lapFU      = lapHarian?.fuCount     || 0;
+    const lapCatatan = lapHarian?.catatan     || '';
+    const submitOk   = lapHarian?.status === 'submitted';
+    let html='<div style="font-family:DM Serif Display,serif;font-size:16px;margin-bottom:14px">Laporan Marketing — '+escH(tgl)+'</div>';
+    if(lapHarian){ html+='<div style="font-size:12px;padding:6px 12px;border-radius:8px;margin-bottom:12px;display:inline-block;background:'+(submitOk?'var(--green2)':'var(--gold2)')+';color:'+(submitOk?'#14532D':'#92400E')+'">'+( submitOk?'✅ Laporan sudah disubmit':'⏳ Status: Draft')+'</div>'; }
+    html+='<div class="stat-row" style="margin-bottom:16px"><div class="stat-card"><div class="stat-lbl">Lead Baru</div><div class="stat-val purple" style="font-size:22px">'+lapLead+'</div></div><div class="stat-card"><div class="stat-lbl">Follow Up</div><div class="stat-val blue" style="font-size:22px">'+lapFU+'</div></div><div class="stat-card"><div class="stat-lbl">Closing Baru</div><div class="stat-val gold" style="font-size:22px">'+lapClosing+'</div></div></div>';
+    if(lapCatatan)html+='<div style="padding:10px 14px;background:var(--surface);border-radius:8px;font-size:12.5px;margin-bottom:14px;border-left:3px solid var(--gold)"><b>📝 Catatan:</b> '+escH(lapCatatan)+'</div>';
+    if(allLeads.length){html+='<div class="sec"><div class="sec-head"><div class="sec-title">Lead Hari Ini</div></div><div class="sec-body"><table class="gm-tbl"><thead><tr><th>Nama</th><th>Program</th><th>Sumber</th><th>Status</th><th>PIC</th></tr></thead><tbody>'+allLeads.map(l=>'<tr><td>'+escH(l.nama_lengkap)+'</td><td>'+escH(l.program_minat||'—')+'</td><td>'+escH(l.sumber_lead||'—')+'</td><td><span class="pill" style="background:var(--surface);border:1px solid var(--border)">'+escH(l.status||'—')+'</span></td><td>'+escH(l.pic||'—')+'</td></tr>').join('')+'</tbody></table></div></div>';}
+    if(allClosing.length){html+='<div class="sec" style="margin-top:12px"><div class="sec-head"><div class="sec-title">Closing Hari Ini</div></div><div class="sec-body"><table class="gm-tbl"><thead><tr><th>Nama</th><th>Program</th><th>PT</th><th>Status</th><th>PIC</th></tr></thead><tbody>'+allClosing.map(c=>'<tr><td>'+escH(c.nama_lengkap)+'</td><td>'+escH(c.program||'—')+'</td><td>'+escH(c.perguruan_tinggi||'—')+'</td><td><span class="pill" style="background:var(--surface);border:1px solid var(--border)">'+escH(c.status||'—')+'</span></td><td>'+escH(c.pic||'—')+'</td></tr>').join('')+'</tbody></table></div></div>';}
+    el.innerHTML=html;
+  }catch(e){el.innerHTML='<div style="color:var(--muted);padding:16px">Gagal: '+e.message+'</div>';}
+}
+
+async function loadMktBulanan(){
+  const periode=document.getElementById('mkt-b-periode')?.value;const el=document.getElementById('mkt-b-content');if(!el||!periode)return;
+  el.innerHTML='<div style="color:var(--muted);padding:16px">⏳ Memuat...</div>';
+  try{
+    const d=await apiGet({action:'getRollupBulanan',periode,divisi:'Marketing'});
+    const mkt=d?.marketing||{};const bln=['','Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+    const [y,m]=periode.split('-');
+    let html='<div style="font-family:DM Serif Display,serif;font-size:16px;margin-bottom:14px">Laporan Marketing Bulanan — '+bln[parseInt(m)]+' '+y+'</div>';
+    html+='<div class="stat-row" style="margin-bottom:16px"><div class="stat-card"><div class="stat-lbl">Total Closing</div><div class="stat-val gold" style="font-size:22px">'+(mkt.totalClosing||0)+'</div></div><div class="stat-card"><div class="stat-lbl">Tim PMB</div><div class="stat-val purple" style="font-size:22px">'+(mkt.totalClosingTimPMB||0)+'</div></div><div class="stat-card"><div class="stat-lbl">Koordinator</div><div class="stat-val blue" style="font-size:22px">'+(mkt.totalClosingKoordinator||0)+'</div></div></div>';
+    if(mkt.perTimPMB?.length){html+='<div class="sec"><div class="sec-head"><div class="sec-title">🏆 Ranking PIC Closing</div></div><div class="sec-body"><table class="gm-tbl"><thead><tr><th>#</th><th>PIC</th><th>Closing</th></tr></thead><tbody>'+mkt.perTimPMB.map((p,i)=>'<tr><td style="font-weight:700">'+(i===0?'🥇':i===1?'🥈':i===2?'🥉':i+1)+'</td><td>'+escH(p.nama)+'</td><td style="font-weight:700;color:var(--gold)">'+p.total+'</td></tr>').join('')+'</tbody></table></div></div>';}
+    el.innerHTML=html;
+  }catch(e){el.innerHTML='<div style="color:var(--muted);padding:16px">Gagal: '+e.message+'</div>';}
+}
+
+// ── TUGAS GM ──────────────────────────────────────────────────────
+async function loadTugas(){
+  try{const d=await apiGet({action:'getGMTugas'});ALL_TUGAS=d?.tugas||[];}catch(e){ALL_TUGAS=[];}
+  renderTugas();updateBadge();
+}
+
+function renderTugas(){
+  const divFilter=document.getElementById('tg-f-divisi')?.value||'';
+  const list=ALL_TUGAS.filter(t=>!divFilter||t.divisi===divFilter);
+  const byStat={'Belum Mulai':[],'Proses':[],'Selesai':[]};
+  list.forEach(t=>(byStat[t.status]||byStat['Belum Mulai']).push(t));
+  setEl('kn-belum-cnt', byStat['Belum Mulai'].length);
+  setEl('kn-proses-cnt',byStat['Proses'].length);
+  setEl('kn-selesai-cnt',byStat['Selesai'].length);
+  const DIVISI_CLS={'Administrasi':'divisi-adm','Keuangan':'divisi-keu','Marketing':'divisi-mkt','Semua':'divisi-all'};
+  const PRIO_CLS={'Urgent':'urgent','Tinggi':'tinggi'};
+  const rCard=t=>{
+    const dc=DIVISI_CLS[t.divisi]||'divisi-all';const pc=PRIO_CLS[t.prioritas]||'';
+    const late=t.deadline&&t.deadline<todayStr()&&t.status!=='Selesai';
+    const catatan=t.catatan||'';
+    const adaBalasan=catatan.includes('→GM]');
+    const balasanText=adaBalasan?catatan.replace(/\[.*?→GM\]\s*/,''):'';
+    return '<div class="k-card '+(late?'urgent':pc)+'" onclick="openTugasModal(\''+t.id+'\')">'+
+      '<div class="k-card-title">'+escH(t.judul)+'</div>'+
+      (t.deskripsi?'<div style="font-size:12px;color:var(--muted);margin-top:3px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">'+escH(t.deskripsi)+'</div>':'') +
+      '<div class="k-card-meta"><span class="divisi-tag '+dc+'">'+escH(t.divisi)+'</span>'+
+      '<span class="pill pill-'+((t.prioritas||'Sedang').toLowerCase())+'">'+escH(t.prioritas||'Sedang')+'</span>'+
+      (t.deadline?'<span style="'+(late?'color:var(--red)':'')+'">⏰ '+t.deadline+'</span>':'')+'</div>'+
+      (adaBalasan?'<div style="margin-top:8px;padding:7px 10px;background:var(--green2);border-radius:7px;font-size:12px;color:#14532D">'+
+        '<b>💬 Balasan tim:</b> '+escH(balasanText)+
+      '</div>':'')+
+      (adaBalasan?'':'<div style="margin-top:6px;font-size:11.5px;color:var(--muted)">Belum ada balasan dari tim</div>')+
+      '<div class="k-card-actions" onclick="event.stopPropagation()">'+
+      (t.status!=='Belum Mulai'?'<button class="btn sm" onclick="updTugas(\''+t.id+'\',\'Belum Mulai\')">⭕</button>':'')+
+      (t.status!=='Proses'?'<button class="btn sm" onclick="updTugas(\''+t.id+'\',\'Proses\')">🔄</button>':'')+
+      (t.status!=='Selesai'?'<button class="btn sm success" onclick="updTugas(\''+t.id+'\',\'Selesai\')">✅</button>':'')+
+      '<button class="btn sm danger" onclick="delTugas(\''+t.id+'\')">✕</button></div></div>';
+  };
+  ['Belum Mulai','Proses','Selesai'].forEach((s,i)=>{
+    const el=document.getElementById(['kn-belum','kn-proses','kn-selesai'][i]);
+    if(el)el.innerHTML=byStat[s].map(rCard).join('')||'<div style="font-size:12px;color:var(--muted);text-align:center;padding:20px">'+(s==='Selesai'?'Belum ada':'Kosong')+'</div>';
+  });
+  updateBadge();renderHomeTugasPreview();
+}
+
+function updateBadge(){
+  const n=ALL_TUGAS.filter(t=>t.status!=='Selesai').length;
+  const el=document.getElementById('badge-tugas');if(!el)return;
+  el.style.display=n>0?'inline-flex':'none';el.textContent=n;
+}
+
+function openTugasModal(id){
+  const t=id?ALL_TUGAS.find(x=>x.id===id):null;editingId.tugas=id||null;
+  setEl('modal-tugas-title',id?'Edit Tugas':'Buat Tugas ke Tim');
+  setInp('tg-judul',t?.judul||'');setInp('tg-deskripsi',t?.deskripsi||'');setInp('tg-deadline',t?.deadline||'');
+  const td=document.getElementById('tg-divisi');if(td)td.value=t?.divisi||'Semua';
+  const tp=document.getElementById('tg-prioritas');if(tp)tp.value=t?.prioritas||'Sedang';
+  const ts=document.getElementById('tg-status');if(ts)ts.value=t?.status||'Belum Mulai';
+  openModal('modal-tugas');
+}
+async function saveTugas(){
+  const judul=getInp('tg-judul');if(!judul){toast('⚠️','Judul wajib diisi.','warn');return;}
+  const p={judul,deskripsi:getInp('tg-deskripsi'),divisi:getSel('tg-divisi'),prioritas:getSel('tg-prioritas'),status:getSel('tg-status'),deadline:getInp('tg-deadline'),dibuat_oleh:'GM'};
+  try{
+    if(editingId.tugas){p.id=editingId.tugas;await apiPost('updateGMTugas',p);const idx=ALL_TUGAS.findIndex(x=>x.id===editingId.tugas);if(idx>=0)ALL_TUGAS[idx]={...ALL_TUGAS[idx],...p};}
+    else{const res=await apiPost('addGMTugas',p);p.id=(DEMO?'GT-'+Date.now():res?.id)||'GT-'+Date.now();ALL_TUGAS.push(p);}
+    closeModal('modal-tugas');renderTugas();toast('✅ Tugas Tersimpan','');
+  }catch(e){toast('❌ Gagal',e.message,'err');}
+}
+async function updTugas(id,status){const t=ALL_TUGAS.find(x=>x.id===id);if(!t)return;try{await apiPost('updateGMTugasStatus',{id,status});t.status=status;renderTugas();}catch(e){toast('❌ Gagal',e.message,'err');}}
+async function delTugas(id){if(!confirm('Hapus tugas ini?'))return;try{await apiPost('deleteGMTugas',{id});ALL_TUGAS=ALL_TUGAS.filter(x=>x.id!==id);renderTugas();toast('🗑️ Dihapus','');}catch(e){toast('❌ Gagal',e.message,'err');}}
+
+// ── TARGET ────────────────────────────────────────────────────────
+const TARGET_DEFS=[
+  {kategori:'Closing',        divisi:'Marketing',      satuan:'mahasiswa',  label:'Closing Marketing'},
+  {kategori:'Lead Baru',      divisi:'Marketing',      satuan:'lead',       label:'Lead Baru'},
+  {kategori:'Berkas PDDikti', divisi:'Administrasi',   satuan:'berkas',     label:'Berkas ke PDDikti'},
+  {kategori:'Surat',          divisi:'Administrasi',   satuan:'surat',      label:'Surat (Masuk+Keluar)'},
+  {kategori:'Dana Masuk',     divisi:'Keuangan',       satuan:'Rp',         label:'Dana Masuk'},
+];
+
+async function loadTarget(){
+  const periode=document.getElementById('target-periode')?.value||todayStr().slice(0,7);
+  try{const d=await apiGet({action:'getGMTarget',periode});ALL_TARGET=d?.target||[];}catch(e){ALL_TARGET=[];}
+  // Ambil rollup utk periode yg sedang dipilih (bisa beda dari bulan berjalan)
+  let rollup=null;
+  try{ rollup=await apiGet({action:'getRollupBulanan',periode}); }catch(e){ rollup=GM_DATA?.rollup||null; }
+  const realisasi={
+    'Closing':        rollup?.marketing?.totalClosing||0,
+    'Lead Baru':      rollup?.marketing?.totalLead||0,
+    'Berkas PDDikti': rollup?.administrasi?.totalBerkas||0,
+    'Dana Masuk':     rollup?.keuangan?.totalDanaMasuk||0,
+    'Surat':          (rollup?.administrasi?.suratMasuk||0)+(rollup?.administrasi?.suratKeluar||0)
+  };
+
+  ['Marketing','Administrasi','Keuangan'].forEach(divisi=>{
+    const el=document.getElementById('target-'+divisi.toLowerCase());if(!el)return;
+    const defs=TARGET_DEFS.filter(d=>d.divisi===divisi);
+    el.innerHTML=defs.map(def=>{
+      const existing=ALL_TARGET.find(t=>t.kategori===def.kategori&&t.divisi===def.divisi);
+      const targetVal=existing?.target_nilai||0;
+      const real=realisasi[def.kategori]||0;
+      const pct=targetVal>0?Math.min(100,Math.round(real/targetVal*100)):0;
+      const clr=pct>=100?'var(--green)':pct>=70?'var(--gold)':'var(--red)';
+      const isRp=def.satuan==='Rp';
+      const realLabel=isRp?rp(real):real.toLocaleString('id-ID');
+      return '<div class="target-card">'+
+        '<div class="target-label">'+escH(def.label)+'</div>'+
+        '<input class="target-inp" type="number" min="0" placeholder="Masukkan target..." value="'+(targetVal||'')+'" id="t-'+divisi+'-'+def.kategori.replace(/\s/g,'_')+'"/>'+
+        '<div class="target-real" style="margin-top:4px">Realisasi: <b>'+realLabel+'</b></div>'+
+        (targetVal>0?'<div class="target-bar"><div class="prog-bar"><div class="prog-fill" style="width:'+pct+'%;background:'+clr+'"></div></div><div class="prog-pct">'+pct+'%</div></div>':'')+'</div>';
+    }).join('');
+  });
+}
+
+async function saveAllTarget(){
+  const periode=document.getElementById('target-periode')?.value||todayStr().slice(0,7);
+  try{
+    const saves=TARGET_DEFS.map(def=>{
+      const eid='t-'+def.divisi+'-'+def.kategori.replace(/\s/g,'_');
+      const el=document.getElementById(eid);
+      const val=Number(el?.value)||0;
+      if(!val)return null;
+      return apiPost('saveGMTarget',{periode,kategori:def.kategori,divisi:def.divisi,target_nilai:val,satuan:def.satuan,dibuat_oleh:'GM'});
+    }).filter(Boolean);
+    await Promise.all(saves);
+    await loadTarget();
+    renderHomeTargetProgress();
+    toast('✅ Target Tersimpan','Target bulanan berhasil disimpan.');
+  }catch(e){toast('❌ Gagal',e.message,'err');}
+}
+
+// ── RINGKASAN BULANAN ─────────────────────────────────────────────
+async function loadRingkasan(){
+  const periode=document.getElementById('rs-periode')?.value;const el=document.getElementById('rs-content');if(!el||!periode)return;
+  el.innerHTML='<div style="color:var(--muted);padding:20px">⏳ Memuat ringkasan...</div>';
+  try{
+    const d=await apiGet({action:'getRollupBulanan',periode});
+    const k=d?.keuangan||{},a=d?.administrasi||{},m=d?.marketing||{},p=d?.progress||{};
+    const bln=['','Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+    const [y,mo]=periode.split('-');const label=bln[parseInt(mo)]+' '+y;
+    let html='<div style="font-family:DM Serif Display,serif;font-size:20px;margin-bottom:6px">Ringkasan Bulanan — '+escH(label)+'</div>';
+    html+='<div style="font-size:12.5px;color:var(--muted);margin-bottom:20px">Progress hari kerja: '+((p.Keuangan?.hariTerisi||0))+'/'+((p.totalHariKerja||0))+' hari terisi</div>';
+    // Keuangan
+    html+='<div class="sec" style="margin-bottom:14px"><div class="sec-head"><div class="sec-title">💰 Keuangan</div></div><div class="sec-body">';
+    html+='<div class="stat-row"><div class="stat-card"><div class="stat-lbl">Total Dana Masuk</div><div class="stat-val green" style="font-size:18px">'+rp(k.totalDanaMasuk)+'</div></div><div class="stat-card"><div class="stat-lbl">Dana Keluar</div><div class="stat-val red" style="font-size:18px">'+rp(k.totalDanaKeluar)+'</div></div><div class="stat-card"><div class="stat-lbl">RPL Khusus</div><div class="stat-val gold" style="font-size:18px">'+rp(k.rplKhusus?.total)+'</div></div></div>';
+    html+='</div></div>';
+    // Marketing
+    html+='<div class="sec" style="margin-bottom:14px"><div class="sec-head"><div class="sec-title">📊 Marketing</div></div><div class="sec-body">';
+    html+='<div class="stat-row"><div class="stat-card"><div class="stat-lbl">Total Closing</div><div class="stat-val gold" style="font-size:18px">'+(m.totalClosing||0)+'</div></div><div class="stat-card"><div class="stat-lbl">Tim PMB</div><div class="stat-val purple" style="font-size:18px">'+(m.totalClosingTimPMB||0)+'</div></div><div class="stat-card"><div class="stat-lbl">Koordinator</div><div class="stat-val blue" style="font-size:18px">'+(m.totalClosingKoordinator||0)+'</div></div></div>';
+    if(m.perTimPMB?.length){html+='<div style="margin-top:12px"><b style="font-size:12.5px">Ranking PIC:</b> '+m.perTimPMB.slice(0,3).map((p,i)=>(i===0?'🥇':i===1?'🥈':'🥉')+' '+escH(p.nama)+' ('+p.total+')').join(' · ')+'</div>';}
+    html+='</div></div>';
+    // Administrasi
+    html+='<div class="sec"><div class="sec-head"><div class="sec-title">📂 Administrasi</div></div><div class="sec-body">';
+    html+='<div class="stat-row"><div class="stat-card"><div class="stat-lbl">Total Berkas</div><div class="stat-val teal" style="font-size:18px">'+(a.totalBerkas||0)+'</div></div><div class="stat-card"><div class="stat-lbl">Surat Masuk</div><div class="stat-val blue" style="font-size:18px">'+(a.suratMasuk||0)+'</div></div><div class="stat-card"><div class="stat-lbl">Surat Keluar</div><div class="stat-val blue" style="font-size:18px">'+(a.suratKeluar||0)+'</div></div></div>';
+    html+='</div></div>';
+    el.innerHTML=html;
+  }catch(e){el.innerHTML='<div style="color:var(--muted);padding:20px">Gagal memuat: '+e.message+'</div>';}
+}
+
+// ── KARYAWAN ──────────────────────────────────────────────────────
+async function loadKaryawan(){
+  try{const d=await apiGet({action:'getKaryawan'});ALL_KARYAWAN=d?.karyawan||[];}catch(e){ALL_KARYAWAN=[];}
+  renderKaryawan();
+}
+function renderKaryawan(){
+  const tb=document.getElementById('karyawan-tbody');if(!tb)return;
+  tb.innerHTML=ALL_KARYAWAN.length?ALL_KARYAWAN.map(k=>'<tr><td style="font-weight:600">'+escH(k.nama)+'</td><td>'+escH(k.divisi||'—')+'</td><td>'+escH(k.jabatan||'—')+'</td><td><span class="pill '+(k.aktif!==false?'pill-selesai':'pill-belum')+'">'+(k.aktif!==false?'Aktif':'Nonaktif')+'</span></td><td><div style="display:flex;gap:4px"><button class="btn sm" onclick="openKaryawanModal(\''+k.id+'\')">✏️</button><button class="btn sm danger" onclick="toggleKaryawan(\''+k.id+'\','+(k.aktif!==false)+')">'+(k.aktif!==false?'Nonaktifkan':'Aktifkan')+'</button></div></td></tr>').join(''):'<tr><td colspan="5" class="tbl-empty">Belum ada data karyawan.</td></tr>';
+}
+function openKaryawanModal(id){
+  const k=id?ALL_KARYAWAN.find(x=>x.id===id):null;editingId.karyawan=id||null;
+  setEl('modal-kryw-title',id?'Edit Karyawan':'Tambah Karyawan');
+  setInp('kryw-nama',k?.nama||'');setInp('kryw-jabatan',k?.jabatan||'');
+  const kd=document.getElementById('kryw-divisi');if(kd)kd.value=k?.divisi||'Administrasi';
+  openModal('modal-karyawan');
+}
+async function saveKaryawan(){
+  const nama=getInp('kryw-nama');if(!nama){toast('⚠️','Nama wajib diisi.','warn');return;}
+  const p={nama,divisi:getSel('kryw-divisi'),jabatan:getInp('kryw-jabatan'),aktif:true};
+  try{
+    if(editingId.karyawan){p.id=editingId.karyawan;await apiPost('updateKaryawan',p);const idx=ALL_KARYAWAN.findIndex(x=>x.id===editingId.karyawan);if(idx>=0)ALL_KARYAWAN[idx]={...ALL_KARYAWAN[idx],...p};}
+    else{const res=await apiPost('addKaryawan',p);p.id=(DEMO?'KRY-'+Date.now():res?.id)||'KRY-'+Date.now();ALL_KARYAWAN.push(p);}
+    closeModal('modal-karyawan');renderKaryawan();toast('✅ Tersimpan','');
+  }catch(e){toast('❌ Gagal',e.message,'err');}
+}
+async function toggleKaryawan(id,aktifSaat){
+  try{await apiPost('setKaryawanAktif',{id,aktif:!aktifSaat});const k=ALL_KARYAWAN.find(x=>x.id===id);if(k)k.aktif=!aktifSaat;renderKaryawan();toast('✅ Status diperbarui','');}catch(e){toast('❌ Gagal',e.message,'err');}
+}
+
+// ── Setup & Koneksi ───────────────────────────────────────────────
+async function connectBackend(){
+  const url  = document.getElementById('setup-url-inp').value.trim();
+  const stEl = document.getElementById('setup-status');
+  if(!url.includes('script.google.com')){
+    stEl.textContent='⚠️ URL tidak valid. Harus berisi script.google.com'; return;
+  }
+  stEl.textContent='⏳ Menghubungkan...';
+  try{
+    const res  = await fetch(url+'?action=getGMDashboard', {redirect:'follow',credentials:'omit'});
+    const text = await res.text();
+    let json;
+    try{ json = JSON.parse(text); }
+    catch(e){ throw new Error('Response bukan JSON. Pastikan deploy Web App dengan akses: Anyone.'); }
+    if(json.success === false) throw new Error(json.error || 'Backend error');
+    BACKEND = url;
+    try{ localStorage.setItem('shared-backend-url',url); }catch(e){}
+    const data = json.data || json;
+    if(data.pengaturan) PENGATURAN = {...PENGATURAN, ...data.pengaturan};
+    if(data.karyawan)   KARYAWAN   = data.karyawan;
+    if(data.timPMB)     TIM_PMB    = data.timPMB;
+    if(data.koordinator) KOORDINATOR = data.koordinator;
+    document.getElementById('setup-overlay').classList.add('hidden');
+    if(document.getElementById('sync-url')) document.getElementById('sync-url').textContent='Google Sheets';
+    setSyncStatus('live');
+    initialLoad();
+    toast('✅ Terhubung!','Dashboard siap digunakan.');
+  }catch(err){
+    stEl.innerHTML='❌ <b>Gagal:</b> '+err.message+
+      '<br><small>Cek: (1) URL benar? (2) Web App sudah di-deploy ulang? (3) Akses diset ke <b>Anyone</b>?</small>';
+  }
+}function demoMode(){DEMO=true;document.getElementById('setup-overlay').classList.add('hidden');setSyncStatus('demo');initialLoad();toast('🧪 Mode Demo','');}
+function openSetup(){document.getElementById('sync-menu').classList.remove('open');document.getElementById('setup-overlay').classList.remove('hidden');}
+function manualRefresh(){document.getElementById('sync-menu').classList.remove('open');initialLoad();toast('🔄 Refresh','Data diperbarui.');}
+function setSyncStatus(s){const b=document.getElementById('sync-badge');const d=b?.querySelector('.live-dot');const l=document.getElementById('sync-label');b?.classList.toggle('live',s==='live');if(d)d.style.background=s==='live'?'var(--green)':s==='demo'?'var(--gold)':'var(--muted)';if(l)l.textContent=s==='live'?'Live':s==='demo'?'Demo':'Offline';}
+
+// ── Dark mode & Toast ─────────────────────────────────────────────
+function toggleDark(){const on=document.body.classList.toggle('dark');const ei=document.getElementById('dark-icon');if(ei)ei.textContent=on?'☀️':'🌙';try{localStorage.setItem('gm-theme',on?'dark':'light');}catch(e){}}
+function initTheme(){try{if(localStorage.getItem('gm-theme')==='dark'){document.body.classList.add('dark');const ei=document.getElementById('dark-icon');if(ei)ei.textContent='☀️';}}catch(e){}}
+var _tT;
+function toast(title,body,type){const el=document.getElementById('toast');el.style.background=type==='warn'?'var(--gold)':type==='err'?'var(--red)':'#0D1B35';document.getElementById('toast-title').textContent=title;document.getElementById('toast-body').textContent=body||'';el.classList.add('show');clearTimeout(_tT);_tT=setTimeout(()=>el.classList.remove('show'),3500);}
+
+// ── Helpers ───────────────────────────────────────────────────────
+function todayStr(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
+function escH(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function formatRp(n){return'Rp '+(Math.round(Number(n)||0)).toLocaleString('id-ID');}
+function setEl(id,v){const e=document.getElementById(id);if(e)e.textContent=v;}
+function setInp(id,v){const e=document.getElementById(id);if(e)e.value=v;}
+function getInp(id){return document.getElementById(id)?.value||'';}
+function getSel(id){return document.getElementById(id)?.value||'';}
+function popSel(id,opts,selected,placeholder){const el=document.getElementById(id);if(!el)return;let html=placeholder?'<option value="">'+placeholder+'</option>':'';html+=(opts||[]).map(o=>'<option value="'+o+'"'+(o===selected?' selected':'')+'>'+o+'</option>').join('');el.innerHTML=html;}
+function openModal(id){document.getElementById(id)?.classList.add('open');}
+function closeModal(id){document.getElementById(id)?.classList.remove('open');}
+</script>
+</body>
+</html>
