@@ -42,7 +42,7 @@ body{font-family:var(--font);background:var(--surface);color:var(--text);font-si
 .sb-footer{padding:12px 16px;border-top:1px solid rgba(255,255,255,.08)}
 .sb-darkmode{display:flex;align-items:center;gap:8px;font-size:12px;color:rgba(255,255,255,.45);cursor:pointer}
 .sb-darkmode:hover{color:#fff}
-.main{margin-left:var(--sidebar);flex:1;display:flex;flex-direction:column;min-height:100vh}
+.main{margin-left:var(--sidebar);flex:1;display:flex;flex-direction:column;min-height:100vh;min-width:0}
 .topbar{background:var(--card);border-bottom:1px solid var(--border);padding:11px 22px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
 .topbar-title{font-family:"DM Serif Display",serif;font-size:15px;color:var(--navy)}
 body.dark .topbar-title{color:var(--text)}
@@ -56,7 +56,7 @@ body.dark .topbar-title{color:var(--text)}
 .sync-menu-item{font-size:12px;color:var(--muted);padding:4px 0}
 .sync-btn{width:100%;padding:7px 10px;border-radius:7px;border:1px solid var(--border);background:none;color:var(--text);font-size:12px;cursor:pointer;text-align:left;margin-top:4px;font-family:var(--font)}
 .sync-btn:hover{background:var(--surface)}
-.content{padding:18px 22px;flex:1}
+.content{padding:18px 22px;flex:1;min-width:0}
 .page{display:none}.page.active{display:block}
 .stat-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px;margin-bottom:18px}
 .stat-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 16px}
@@ -1779,7 +1779,7 @@ function getYearRange(y){return{dari:y+'-01-01',sampai:y+'-12-31'};}
 async function fetchLapRange(dari,sampai,divisi){try{const d=await apiGet({action:'getLaporanHarianRange',dari,sampai,divisi});return(d&&d.laporan)?d.laporan:[];}catch(e){return[];}}
 function statCard(label,val,sub,color){const c=color||'var(--teal)';return '<div class="stat-card" style="border-left-color:'+c+'"><div class="stat-val" style="color:'+c+'">'+val+'</div><div class="stat-lbl">'+label+'</div>'+(sub?'<div style="font-size:10px;color:var(--muted);margin-top:2px">'+sub+'</div>':'')+'</div>';}
 function statGrid(cards){return '<div class="stat-row" style="margin-bottom:14px">'+cards.join('')+'</div>';}
-function buildTable(headers,rows,emptyMsg){if(!rows.length)return '<div style="color:var(--muted);font-size:12.5px;padding:14px;text-align:center;background:var(--surface);border-radius:8px">'+(emptyMsg||'Tidak ada data.')+'</div>';var thead=headers.map(function(h){return '<th>'+h+'</th>';}).join('');var tbody=rows.map(function(r){return '<tr>'+r.map(function(c){return '<td>'+c+'</td>';}).join('')+'</tr>';}).join('');return '<table class="adm-tbl"><thead><tr>'+thead+'</tr></thead><tbody>'+tbody+'</tbody></table>';}
+function buildTable(headers,rows,emptyMsg){if(!rows.length)return '<div style="color:var(--muted);font-size:12.5px;padding:14px;text-align:center;background:var(--surface);border-radius:8px">'+(emptyMsg||'Tidak ada data.')+'</div>';var thead=headers.map(function(h){return '<th>'+h+'</th>';}).join('');var tbody=rows.map(function(r){return '<tr>'+r.map(function(c){return '<td>'+c+'</td>';}).join('')+'</tr>';}).join('');return '<div class="tbl-wrap"><table class="adm-tbl"><thead><tr>'+thead+'</tr></thead><tbody>'+tbody+'</tbody></table></div>';}
 function formatRpShort(n){var v=Math.abs(Number(n)||0);if(v>=1e9)return 'Rp '+(v/1e9).toFixed(1)+'M';if(v>=1e6)return 'Rp '+(v/1e6).toFixed(1)+'Jt';if(v>=1e3)return 'Rp '+(v/1e3).toFixed(0)+'rb';return 'Rp '+v.toLocaleString('id');}
 function downloadPDF(elId,filename){var el=document.getElementById(elId);if(!el){toast('⚠️','Konten belum dimuat.','warn');return;}var style='<style>body{font-family:Arial,sans-serif;font-size:11px;color:#0F172A;margin:0;padding:20px}h1{font-size:16px;font-weight:700;margin-bottom:4px}.meta{font-size:10px;color:#64748B;margin-bottom:16px}table{width:100%;border-collapse:collapse;margin-bottom:12px;font-size:10px}th{background:#0D1B35;color:#fff;padding:5px 8px;text-align:left}td{padding:5px 8px;border-bottom:1px solid #E2E8F0}tr:nth-child(even) td{background:#F8FAFC}.stat-row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}.stat-card{border:1px solid #E2E8F0;border-radius:6px;padding:10px 14px;min-width:110px}.stat-val{font-size:18px;font-weight:700;color:#0D9488}.stat-lbl{font-size:9px;color:#64748B;text-transform:uppercase;letter-spacing:.5px;margin-top:2px}.sec,.sec-body,.sec-head{display:block}.sec-head{font-weight:700;font-size:12px;border-bottom:2px solid #0D9488;padding-bottom:4px;margin-bottom:8px;color:#0D1B35}.footer{margin-top:24px;padding-top:10px;border-top:1px solid #E2E8F0;font-size:9px;color:#94A3B8;text-align:center}@media print{.btn,.no-print{display:none}}</style>';var win=window.open('','_blank','width=900,height=700');win.document.write('<!DOCTYPE html><html><head><meta charset="UTF-8"><title>'+filename+'</title>'+style+'</head><body><h1>'+filename.replace(/_/g,' ').replace('.pdf','')+'</h1><p class="meta">Dicetak: '+new Date().toLocaleString('id-ID')+' · Sistem Laporan RPL</p><hr style="margin-bottom:16px;border-color:#E2E8F0">'+el.innerHTML+'<div class="footer">Sistem Laporan RPL STISDU/STITBU</div><script>setTimeout(function(){window.print();},600)<\/script></body></html>');win.document.close();}
 
