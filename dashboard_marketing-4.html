@@ -1142,7 +1142,6 @@ table.adm-tbl,table.mkt-tbl,table.gm-tbl{width:100%;border-collapse:separate;bor
     <input class="f-inp" id="setup-url-inp" type="url" placeholder="https://script.google.com/macros/s/.../exec" style="margin-bottom:10px"/>
     <div id="setup-status" style="font-size:12px;color:var(--red);min-height:16px;margin-bottom:10px"></div>
     <button onclick="connectBackend()" style="width:100%;padding:11px;border-radius:9px;border:none;background:var(--purple);color:#fff;font-weight:700;font-size:14px;cursor:pointer;font-family:var(--font);margin-bottom:8px">Hubungkan</button>
-    <button onclick="demoMode()" style="width:100%;padding:9px;border-radius:9px;border:1.5px solid var(--border);background:none;color:var(--muted);font-weight:600;font-size:13px;cursor:pointer;font-family:var(--font)">Coba Mode Demo</button>
   </div>
 </div>
 
@@ -1153,7 +1152,7 @@ table.adm-tbl,table.mkt-tbl,table.gm-tbl{width:100%;border-collapse:separate;bor
 <script>
 var _toastT; // hoist ke atas — cegah TDZ
 // ── State ─────────────────────────────────────────────────────────
-let BACKEND='', DEMO=false, USER='';
+let BACKEND='', USER='';
 let PENGATURAN={
   statusLead:['New Lead','Dihubungi','Tertarik','Negosiasi','Closing','Gagal'],
   statusClosing:['Pendaftaran','Daftar Ulang','Validasi Data','Proses PDDikti','Aktif PDDikti','Lulus','Lunas','Cetak Berkas','Terkirim'],
@@ -1198,7 +1197,7 @@ document.addEventListener('DOMContentLoaded',()=>{
 // tampak kosong/nyangkut sampai pengguna klik "Refresh" manual. Sekarang otomatis:
 let _lastAutoRefresh = 0;
 function _autoRefreshIfStale(){
-  if(!BACKEND||DEMO) return;
+  if(!BACKEND) return;
   const now = Date.now();
   if(now - _lastAutoRefresh < 3000) return; // jangan spam kalau event beruntun
   _lastAutoRefresh = now;
@@ -1221,7 +1220,7 @@ function setDefaultDates(){
 
 async function initialLoad(){
   try{const data=await apiGet({action:'getMktInit'});if(data){TIM_PMB=(data.timPMB||[]).filter(t=>t.aktif!==false);KOORDINATOR=(data.koordinator||[]).filter(k=>k.aktif!==false);if(data.pengaturan)PENGATURAN={...PENGATURAN,...data.pengaturan};}}
-  catch(e){TIM_PMB=[{id:'PMB-001',nama:'Tito Ersha',jabatan:'Marketing'},{id:'PMB-002',nama:'Yuyun Dwi Firma',jabatan:'Marketing'},{id:'PMB-003',nama:'Bimantara',jabatan:'Marketing'},{id:'PMB-004',nama:'Wenda Maylani',jabatan:'Marketing'},{id:'PMB-005',nama:'Nurul Fitri K.',jabatan:'Marketing'},{id:'PMB-006',nama:'Nur Kholis',jabatan:'Marketing'},{id:'PMB-007',nama:'Anisa Dwi Arifani',jabatan:'Marketing'},{id:'PMB-008',nama:'Fajar Maulana',jabatan:'Marketing'}];KOORDINATOR=[{id:'KRD-001',nama:'Bagus Ariex',wilayah:'Jakarta'},{id:'KRD-002',nama:'Alfarizi',wilayah:'Bogor'},{id:'KRD-003',nama:'Irfan Andi',wilayah:'Depok'},{id:'KRD-004',nama:'Naya Cikeas',wilayah:'Bekasi'},{id:'KRD-005',nama:'Upik Wiyoto',wilayah:'Tangerang'},{id:'KRD-006',nama:'Ari Wantoro',wilayah:''},{id:'KRD-007',nama:'Erwin Maulana',wilayah:''},{id:'KRD-008',nama:'Joko Irianto',wilayah:''},{id:'KRD-009',nama:'Qomar',wilayah:''},{id:'KRD-010',nama:'Roni Laksono',wilayah:''},{id:'KRD-011',nama:'Silvana',wilayah:''},{id:'KRD-012',nama:'Sopyan',wilayah:''},{id:'KRD-013',nama:'Stefanus',wilayah:''},{id:'KRD-014',nama:'Taufik Hidayat',wilayah:''},{id:'KRD-015',nama:'Yazer Ibrahim',wilayah:''},{id:'KRD-016',nama:'Zidane',wilayah:''},{id:'KRD-017',nama:'Ersa',wilayah:''}];}
+  catch(e){TIM_PMB=[];KOORDINATOR=[];toast('<i class="bi bi-x-circle-fill"></i> Gagal memuat',e.message,'err');}
   populateUserSelect();populateAllSelects();await loadAllData();loadPengaturan();updatePgLists();
   setTimeout(()=>loadLapMktHarian(todayStr()), 500); // load form laporan harian
   const sel=document.getElementById('user-select');if(USER&&sel)sel.value=USER;
@@ -1277,7 +1276,7 @@ function navTo(pageId){const sbItem=document.querySelector('.sb-item[onclick*="'
 
 // ── API ───────────────────────────────────────────────────────────
 async function apiGet(params){
-  if(DEMO||!BACKEND) return null;
+  if(!BACKEND) throw new Error('Hubungkan aplikasi ke Google Sheets terlebih dahulu.');
   const res  = await fetch(BACKEND+'?'+new URLSearchParams(params), {
     redirect: 'follow', credentials: 'omit'
   });
@@ -1289,7 +1288,7 @@ async function apiGet(params){
   return json.data !== undefined ? json.data : json;
 }
 async function apiPost(action, payload){
-  if(DEMO||!BACKEND){ toast('Mode Demo','Data tidak tersimpan ke Sheets.','warn'); return {demo:true}; }
+  if(!BACKEND) throw new Error('Hubungkan aplikasi ke Google Sheets terlebih dahulu.');
   const btn=getRecentActionButton();if(btn)setButtonLoading(btn,true);
   try{
     const res  = await fetch(BACKEND, {method:'POST',redirect:'follow',credentials:'omit',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action,...payload})});
@@ -1310,37 +1309,21 @@ async function loadAllData(){
 }
 async function loadLeads(){
   try{
-    const d = await apiGet({action:'getMktLead'});
-    if(d && Array.isArray(d.leads))      ALL_LEADS = d.leads;
-    else if(Array.isArray(d))            ALL_LEADS = d;
-    else if(!BACKEND||DEMO)              ALL_LEADS = getDemoLeads();
-  }catch(e){
-    console.warn('loadLeads:',e.message);
-    if(!BACKEND||DEMO) ALL_LEADS = getDemoLeads();
-  }
-  renderLeads(); renderFollowUp(); updateBadges();
+    const d=await apiGet({action:'getMktLead'});
+    ALL_LEADS=d&&Array.isArray(d.leads)?d.leads:Array.isArray(d)?d:[];
+  }catch(e){ALL_LEADS=[];console.warn('loadLeads:',e.message);}
+  renderLeads();renderFollowUp();updateBadges();
 }
 async function loadClosing(){
   try{
-    const d = await apiGet({action:'getMktClosing'});
-    if(d && Array.isArray(d.closing))    ALL_CLOSING = d.closing;
-    else if(Array.isArray(d))            ALL_CLOSING = d;
-    else if(!BACKEND||DEMO)              ALL_CLOSING = getDemoClosing();
-  }catch(e){
-    console.warn('loadClosing:',e.message);
-    if(!BACKEND||DEMO) ALL_CLOSING = getDemoClosing();
-  }
-  renderClosing(); updateBadges();
+    const d=await apiGet({action:'getMktClosing'});
+    ALL_CLOSING=d&&Array.isArray(d.closing)?d.closing:Array.isArray(d)?d:[];
+  }catch(e){ALL_CLOSING=[];console.warn('loadClosing:',e.message);}
+  renderClosing();updateBadges();
 }
 async function loadIklan(){
-  try{
-    const d=await apiGet({action:'getMktIklan'});
-    if(d!==null) ALL_IKLAN=d.iklan||[];
-    else if(!BACKEND||DEMO) ALL_IKLAN=getDemoIklan()||[];
-  }catch(e){
-    if(!BACKEND||DEMO) ALL_IKLAN=getDemoIklan()||[];
-    console.warn('loadIklan error:',e.message);
-  }
+  try{const d=await apiGet({action:'getMktIklan'});ALL_IKLAN=d&&Array.isArray(d.iklan)?d.iklan:[];}
+  catch(e){ALL_IKLAN=[];console.warn('loadIklan error:',e.message);}
   renderIklan();
 }
 async function loadTugas(){
@@ -1349,10 +1332,6 @@ async function loadTugas(){
   try{const gd=await apiGet({action:'getGMTugas',divisi:'Marketing'});const gm=(gd?.tugas||[]).map(t=>({...t,_fromGM:true}));ALL_TUGAS=[...ALL_TUGAS,...gm];}catch(e){}
   renderTugas();updateBadges();
 }
-
-function getDemoLeads(){return[{id:'LD-001',nama_lengkap:'Andi Susanto',no_hp:'08111222333',program_minat:'RPL Khusus',prodi:'Teknik Informatika',kampus:'STISDU',sumber_lead:'Instagram',status:'Tertarik',pic:'Tito Ersha',catatan:'Tertarik RPL',tanggal_masuk:'2026-07-01',tanggal_update:'2026-07-05'},{id:'LD-002',nama_lengkap:'Siti Rahayu',no_hp:'08222333444',program_minat:'RPL Biasa',prodi:'Manajemen',kampus:'STITBU',sumber_lead:'Referral',status:'Negosiasi',pic:'Yuyun Dwi Firma',catatan:'Minta diskon',tanggal_masuk:'2026-07-02',tanggal_update:'2026-07-06'},{id:'LD-003',nama_lengkap:'Budi Hartono',no_hp:'08333444555',program_minat:'K. Karyawan',prodi:'Akuntansi',kampus:'STISDU',sumber_lead:'TikTok',status:'New Lead',pic:'Bimantara',catatan:'',tanggal_masuk:'2026-07-06',tanggal_update:'2026-07-06'}];}
-function getDemoIklan(){return[];}
-function getDemoClosing(){return[{id:'CL-001',nama_lengkap:'Rizky Pratama',no_hp:'08555666777',program:'RPL Khusus',perguruan_tinggi:'STISDU',pic:'Tito Ersha',koordinator:'Bagus Ariex',sumber_closing:'Koordinator',status:'Daftar Ulang',riwayat_status:[{status:'Pendaftaran',tanggal:'2026-07-01',catatan:'',oleh:'Tito Ersha'},{status:'Daftar Ulang',tanggal:'2026-07-05',catatan:'Sudah bayar',oleh:'Tito Ersha'}],tanggal_closing:'2026-07-01',tanggal_update:'2026-07-05'},{id:'CL-002',nama_lengkap:'Nina Kartika',no_hp:'08666777888',program:'RPL Biasa',perguruan_tinggi:'STITBU',pic:'Yuyun Dwi Firma',koordinator:'',sumber_closing:'Tim PMB',status:'Pendaftaran',riwayat_status:[{status:'Pendaftaran',tanggal:'2026-07-03',catatan:'',oleh:'Yuyun Dwi Firma'}],tanggal_closing:'2026-07-03',tanggal_update:'2026-07-03'}];}
 
 // ── RENDER: Dashboard ─────────────────────────────────────────────
 function renderDashboard(){
@@ -1703,7 +1682,7 @@ async function saveLead(){
     tanggal_masuk:getInp('l-tanggal'),// 10
     tanggal_update:todayStr(),dibuat_oleh:USER
   };
-  try{if(editingId.lead){p.id=editingId.lead;await apiPost('updateMktLead',p);const idx=ALL_LEADS.findIndex(x=>x.id===editingId.lead);if(idx>=0)ALL_LEADS[idx]={...ALL_LEADS[idx],...p};}else{const res=await apiPost('addMktLead',p);p.id=(DEMO?'LD-'+Date.now():res?.id)||'LD-'+Date.now();ALL_LEADS.unshift(p);}closeModal('modal-lead');renderLeads();renderDashboard();updateBadges();toast('<i class=bi-check-circle-fill aria-hidden=true></i> Lead Tersimpan','"'+nama+'" berhasil '+(editingId.lead?'diperbarui':'ditambahkan')+'.');}
+  try{if(editingId.lead){p.id=editingId.lead;await apiPost('updateMktLead',p);const idx=ALL_LEADS.findIndex(x=>x.id===editingId.lead);if(idx>=0)ALL_LEADS[idx]={...ALL_LEADS[idx],...p};}else{const res=await apiPost('addMktLead',p);p.id=res?.id;if(!p.id)throw new Error('ID lead tidak diterima dari server.');ALL_LEADS.unshift(p);}closeModal('modal-lead');renderLeads();renderDashboard();updateBadges();toast('<i class=bi-check-circle-fill aria-hidden=true></i> Lead Tersimpan','"'+nama+'" berhasil '+(editingId.lead?'diperbarui':'ditambahkan')+'.');}
   catch(e){toast('<i class=bi-x-circle-fill aria-hidden=true></i> Gagal',e.message,'err');}
 }
 async function delLead(id){const l=ALL_LEADS.find(x=>x.id===id);if(!(await confirmAction({title:'Hapus lead?',message:'Lead '+(l?.nama_lengkap||'ini')+' akan dihapus permanen.',confirmText:'Hapus',danger:true})))return;try{await apiPost('deleteMktLead',{id});ALL_LEADS=ALL_LEADS.filter(x=>x.id!==id);renderLeads();renderDashboard();updateBadges();toast('<i class=bi-trash3-fill aria-hidden=true></i> Lead Dihapus','');}catch(e){toast('<i class=bi-x-circle-fill aria-hidden=true></i> Gagal',e.message,'err');}}
@@ -1714,7 +1693,7 @@ function onFuStatusChange(val){document.getElementById('fu-closing-info').style.
 async function saveFollowUp(){
   const status=getSel('fu-status');const catatan=getInp('fu-catatan');const l=ALL_LEADS.find(x=>x.id===fuLeadId);if(!l)return;
   try{const p={id:fuLeadId,status,catatan,tanggal_update:todayStr(),pic:USER};await apiPost('updateMktLead',p);Object.assign(l,p);
-  if(status==='Closing'){const cp={nama_lengkap:l.nama_lengkap,no_hp:l.no_hp,program:l.program_minat,pic:USER,sumber_closing:'Tim PMB',status:'Pendaftaran',tanggal_closing:todayStr(),dibuat_oleh:USER,catatan};const res=await apiPost('addMktClosing',cp);cp.id=(DEMO?'CL-'+Date.now():res?.id)||'CL-'+Date.now();cp.riwayat_status=[{status:'Pendaftaran',tanggal:todayStr(),catatan,oleh:USER}];ALL_CLOSING.unshift(cp);toast('<i class=bi-trophy-fill aria-hidden=true></i> Closing!',l.nama_lengkap+' dipindahkan ke Data Closing.');}else{toast('<i class=bi-check-circle-fill aria-hidden=true></i> FU Updated','Status '+l.nama_lengkap+' → '+status);}
+  if(status==='Closing'){const cp={nama_lengkap:l.nama_lengkap,no_hp:l.no_hp,program:l.program_minat,pic:USER,sumber_closing:'Tim PMB',status:'Pendaftaran',tanggal_closing:todayStr(),dibuat_oleh:USER,catatan};const res=await apiPost('addMktClosing',cp);cp.id=res?.id;if(!cp.id)throw new Error('ID closing tidak diterima dari server.');cp.riwayat_status=[{status:'Pendaftaran',tanggal:todayStr(),catatan,oleh:USER}];ALL_CLOSING.unshift(cp);toast('<i class=bi-trophy-fill aria-hidden=true></i> Closing!',l.nama_lengkap+' dipindahkan ke Data Closing.');}else{toast('<i class=bi-check-circle-fill aria-hidden=true></i> FU Updated','Status '+l.nama_lengkap+' → '+status);}
   closeModal('modal-fu');renderLeads();renderFollowUp();renderClosing();renderDashboard();updateBadges();}
   catch(e){toast('<i class=bi-x-circle-fill aria-hidden=true></i> Gagal',e.message,'err');}
 }
@@ -1769,7 +1748,7 @@ async function saveClosing(){
   const nama=getInp('c-nama');if(!nama){toast('<i class=bi-exclamation-triangle-fill aria-hidden=true></i>','Nama wajib diisi.','warn');return;}
   const sumber=getSel('c-sumber');
   const p={nama_lengkap:nama,no_hp:getInp('c-hp'),no_ktp:getInp('c-ktp'),asal_sekolah:getInp('c-sekolah'),asal_daerah:getInp('c-daerah'),program:getSel('c-program'),perguruan_tinggi:getSel('c-pt'),pic:getSel('c-pic'),sumber_closing:sumber,koordinator:sumber==='Koordinator'?getSel('c-pic'):'',status:getSel('c-status'),catatan:getInp('c-catatan'),tanggal_closing:getInp('c-tanggal'),tanggal_update:todayStr(),dibuat_oleh:USER};
-  try{if(_editClosingId){p.id=_editClosingId;await apiPost('updateMktClosing',p);const idx=ALL_CLOSING.findIndex(x=>x.id===_editClosingId);if(idx>=0)ALL_CLOSING[idx]={...ALL_CLOSING[idx],...p};}else{const res=await apiPost('addMktClosing',p);p.id=(DEMO?'CL-'+Date.now():res?.id)||'CL-'+Date.now();p.riwayat_status=[{status:p.status,tanggal:todayStr(),catatan:p.catatan,oleh:USER}];ALL_CLOSING.unshift(p);}closeModal('modal-closing');renderClosing();renderDashboard();updateBadges();toast('<i class=bi-check-circle-fill aria-hidden=true></i> Closing Tersimpan','"'+nama+'" berhasil '+(_editClosingId?'diperbarui':'ditambahkan')+'.');}
+  try{if(_editClosingId){p.id=_editClosingId;await apiPost('updateMktClosing',p);const idx=ALL_CLOSING.findIndex(x=>x.id===_editClosingId);if(idx>=0)ALL_CLOSING[idx]={...ALL_CLOSING[idx],...p};}else{const res=await apiPost('addMktClosing',p);p.id=res?.id;if(!p.id)throw new Error('ID closing tidak diterima dari server.');p.riwayat_status=[{status:p.status,tanggal:todayStr(),catatan:p.catatan,oleh:USER}];ALL_CLOSING.unshift(p);}closeModal('modal-closing');renderClosing();renderDashboard();updateBadges();toast('<i class=bi-check-circle-fill aria-hidden=true></i> Closing Tersimpan','"'+nama+'" berhasil '+(_editClosingId?'diperbarui':'ditambahkan')+'.');}
   catch(e){toast('<i class=bi-x-circle-fill aria-hidden=true></i> Gagal',e.message,'err');}
 }
 async function delClosing(id){const c=ALL_CLOSING.find(x=>x.id===id);if(!(await confirmAction({title:'Hapus closing?',message:'Data closing '+(c?.nama_lengkap||'ini')+' akan dihapus permanen.',confirmText:'Hapus',danger:true})))return;try{await apiPost('deleteMktClosing',{id});ALL_CLOSING=ALL_CLOSING.filter(x=>x.id!==id);renderClosing();renderDashboard();toast('<i class=bi-trash3-fill aria-hidden=true></i> Dihapus','');}catch(e){toast('<i class=bi-x-circle-fill aria-hidden=true></i> Gagal',e.message,'err');}}
@@ -1798,7 +1777,7 @@ function openIklanModal(id){
 async function saveIklan(){
   const nama=getInp('ik-nama');if(!nama){toast('<i class=bi-exclamation-triangle-fill aria-hidden=true></i>','Nama kampanye wajib diisi.','warn');return;}
   const p={nama_kampanye:nama,platform:getSel('ik-platform'),status:getSel('ik-status'),tanggal_mulai:getInp('ik-mulai'),tanggal_selesai:getInp('ik-selesai'),budget:getInp('ik-budget'),belanja_aktual:getInp('ik-belanja'),impresi:getInp('ik-impresi'),klik:getInp('ik-klik'),lead_masuk:getInp('ik-lead'),closing_dari_iklan:getInp('ik-closing'),catatan:getInp('ik-catatan'),dibuat_oleh:USER};
-  try{if(editingId.iklan){p.id=editingId.iklan;await apiPost('updateMktIklan',p);const idx=ALL_IKLAN.findIndex(x=>x.id===editingId.iklan);if(idx>=0)ALL_IKLAN[idx]={...ALL_IKLAN[idx],...p};}else{const res=await apiPost('addMktIklan',p);p.id=(DEMO?'IK-'+Date.now():res?.id)||'IK-'+Date.now();ALL_IKLAN.unshift(p);}closeModal('modal-iklan');renderIklan();toast('<i class=bi-check-circle-fill aria-hidden=true></i> Kampanye Tersimpan','');}
+  try{if(editingId.iklan){p.id=editingId.iklan;await apiPost('updateMktIklan',p);const idx=ALL_IKLAN.findIndex(x=>x.id===editingId.iklan);if(idx>=0)ALL_IKLAN[idx]={...ALL_IKLAN[idx],...p};}else{const res=await apiPost('addMktIklan',p);p.id=res?.id;if(!p.id)throw new Error('ID iklan tidak diterima dari server.');ALL_IKLAN.unshift(p);}closeModal('modal-iklan');renderIklan();toast('<i class=bi-check-circle-fill aria-hidden=true></i> Kampanye Tersimpan','');}
   catch(e){toast('<i class=bi-x-circle-fill aria-hidden=true></i> Gagal',e.message,'err');}
 }
 async function delIklan(id){if(!(await confirmAction({title:'Hapus kampanye?',message:'Kampanye ini akan dihapus permanen.',confirmText:'Hapus',danger:true})))return;try{await apiPost('deleteMktIklan',{id});ALL_IKLAN=ALL_IKLAN.filter(x=>x.id!==id);renderIklan();toast('<i class=bi-trash3-fill aria-hidden=true></i> Dihapus','');}catch(e){toast('<i class=bi-x-circle-fill aria-hidden=true></i> Gagal',e.message,'err');}}
@@ -1813,7 +1792,7 @@ function openTugasModal(id){
 async function saveTugas(){
   const judul=getInp('tg-judul');if(!judul){toast('<i class=bi-exclamation-triangle-fill aria-hidden=true></i>','Judul wajib diisi.','warn');return;}
   const p={judul,deskripsi:getInp('tg-deskripsi'),status:getSel('tg-status'),prioritas:getSel('tg-prioritas'),pic:getSel('tg-pic'),deadline:getInp('tg-deadline'),catatan:getInp('tg-catatan'),dibuat_oleh:USER};
-  try{if(editingId.tugas){p.id=editingId.tugas;await apiPost('updateMktTugas',p);const idx=ALL_TUGAS.findIndex(x=>x.id===editingId.tugas);if(idx>=0)ALL_TUGAS[idx]={...ALL_TUGAS[idx],...p};}else{const res=await apiPost('addMktTugas',p);p.id=(DEMO?'TG-'+Date.now():res?.id)||'TG-'+Date.now();ALL_TUGAS.push(p);}closeModal('modal-tugas');renderTugas();toast('<i class=bi-check-circle-fill aria-hidden=true></i> Tugas Tersimpan','');}
+  try{if(editingId.tugas){p.id=editingId.tugas;await apiPost('updateMktTugas',p);const idx=ALL_TUGAS.findIndex(x=>x.id===editingId.tugas);if(idx>=0)ALL_TUGAS[idx]={...ALL_TUGAS[idx],...p};}else{const res=await apiPost('addMktTugas',p);p.id=res?.id;if(!p.id)throw new Error('ID tugas tidak diterima dari server.');ALL_TUGAS.push(p);}closeModal('modal-tugas');renderTugas();toast('<i class=bi-check-circle-fill aria-hidden=true></i> Tugas Tersimpan','');}
   catch(e){toast('<i class=bi-x-circle-fill aria-hidden=true></i> Gagal',e.message,'err');}
 }
 async function updTugasStatus(id,status){const t=ALL_TUGAS.find(x=>x.id===id);if(!t)return;try{await apiPost('updateMktTugasStatus',{id,status});t.status=status;renderTugas();renderDashboard();}catch(e){toast('<i class=bi-x-circle-fill aria-hidden=true></i> Gagal',e.message,'err');}}
@@ -1885,12 +1864,12 @@ async function simpanLapMkt(status,btn){
   };
   if(btn)setButtonLoading(btn,true);
   try {
-    if (!DEMO) await apiPost('saveLaporanHarian', payload);
+    await apiPost('saveLaporanHarian', payload);
     await loadLapMktHarian(tanggal);
     if(status==='submitted')await loadMktRingkasanAuto();
     const chip = document.getElementById('lap-input-chip');
     if(chip){ chip.innerHTML=status==='submitted'?'<i class=bi-check-lg aria-hidden=true></i> Terisi':'Draft'; chip.style.background=status==='submitted'?'var(--green2)':'var(--gold2)'; chip.style.color=status==='submitted'?'#14532D':'#92400E'; }
-    toast(status==='submitted'?'<i class=bi-check-circle-fill aria-hidden=true></i> Laporan Terkirim':'<i class=bi-floppy-fill aria-hidden=true></i> Draft Tersimpan', status==='submitted'?'Data marketing hari ini sudah masuk ke dashboard GM.':(DEMO?'Mode demo - data tidak tersimpan ke backend.':''));
+    toast(status==='submitted'?'<i class=bi-check-circle-fill aria-hidden=true></i> Laporan Terkirim':'<i class=bi-floppy-fill aria-hidden=true></i> Draft Tersimpan', status==='submitted'?'Data marketing hari ini sudah masuk ke dashboard GM.':'Laporan tersimpan sebagai draft.');
   } catch(e){ toast('<i class=bi-x-circle-fill aria-hidden=true></i> Gagal', e.message,'err'); }finally{if(btn)setButtonLoading(btn,false);}
 }
 
@@ -1944,10 +1923,10 @@ function updatePgLists(){
   if(koordEl)koordEl.innerHTML=KOORDINATOR.map(k=>'<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)"><div style="flex:1"><div style="font-weight:600">'+escH(k.nama)+'</div><div style="font-size:11.5px;color:var(--muted)">'+escH(k.wilayah||'')+(k.telepon?' · '+k.telepon:'')+'</div></div><button class="btn sm danger" onclick="delKoord(\''+k.id+'\')"><i class=bi-x-lg aria-hidden=true></i></button></div>').join('')||'<div style="color:var(--muted);font-size:12.5px">Belum ada koordinator.</div>';
 }
 function openTimModal(id){editingId.tim=id||null;const t=id?TIM_PMB.find(x=>x.id===id):null;setInp('tim-nama',t?.nama||'');setInp('tim-jabatan',t?.jabatan||'');openModal('modal-tim');}
-async function saveTim(){const nama=getInp('tim-nama');if(!nama){toast('<i class=bi-exclamation-triangle-fill aria-hidden=true></i>','Nama wajib diisi.','warn');return;}const p={nama,jabatan:getInp('tim-jabatan')};try{if(editingId.tim){p.id=editingId.tim;await apiPost('updateTimPMB',p);const t=TIM_PMB.find(x=>x.id===editingId.tim);if(t)Object.assign(t,p);}else{const res=await apiPost('addTimPMB',p);p.id=(DEMO?'PMB-'+Date.now():res?.id)||'PMB-'+Date.now();TIM_PMB.push(p);}closeModal('modal-tim');populateUserSelect();updatePgLists();populateAllSelects();toast('<i class=bi-check-circle-fill aria-hidden=true></i> Tim PMB Tersimpan','');}catch(e){toast('<i class=bi-x-circle-fill aria-hidden=true></i> Gagal',e.message,'err');}}
+async function saveTim(){const nama=getInp('tim-nama');if(!nama){toast('<i class=bi-exclamation-triangle-fill aria-hidden=true></i>','Nama wajib diisi.','warn');return;}const p={nama,jabatan:getInp('tim-jabatan')};try{if(editingId.tim){p.id=editingId.tim;await apiPost('updateTimPMB',p);const t=TIM_PMB.find(x=>x.id===editingId.tim);if(t)Object.assign(t,p);}else{const res=await apiPost('addTimPMB',p);p.id=res?.id;if(!p.id)throw new Error('ID tim tidak diterima dari server.');TIM_PMB.push(p);}closeModal('modal-tim');populateUserSelect();updatePgLists();populateAllSelects();toast('<i class=bi-check-circle-fill aria-hidden=true></i> Tim PMB Tersimpan','');}catch(e){toast('<i class=bi-x-circle-fill aria-hidden=true></i> Gagal',e.message,'err');}}
 async function delTim(id){if(!(await confirmAction({title:'Hapus anggota tim?',message:'Anggota tim ini akan dihapus dari daftar.',confirmText:'Hapus',danger:true})))return;try{await apiPost('deleteTimPMB',{id});TIM_PMB=TIM_PMB.filter(x=>x.id!==id);populateUserSelect();updatePgLists();populateAllSelects();}catch(e){toast('<i class=bi-x-circle-fill aria-hidden=true></i> Gagal',e.message,'err');}}
 function openKoordModal(id){editingId.koord=id||null;const k=id?KOORDINATOR.find(x=>x.id===id):null;setInp('koord-nama',k?.nama||'');setInp('koord-wilayah',k?.wilayah||'');setInp('koord-hp',k?.telepon||'');openModal('modal-koord');}
-async function saveKoord(){const nama=getInp('koord-nama');if(!nama){toast('<i class=bi-exclamation-triangle-fill aria-hidden=true></i>','Nama wajib diisi.','warn');return;}const p={nama,wilayah:getInp('koord-wilayah'),telepon:getInp('koord-hp')};try{if(editingId.koord){p.id=editingId.koord;await apiPost('updateKoordinator',p);const k=KOORDINATOR.find(x=>x.id===editingId.koord);if(k)Object.assign(k,p);}else{const res=await apiPost('addKoordinator',p);p.id=(DEMO?'KRD-'+Date.now():res?.id)||'KRD-'+Date.now();KOORDINATOR.push(p);}closeModal('modal-koord');updatePgLists();populateAllSelects();toast('<i class=bi-check-circle-fill aria-hidden=true></i> Koordinator Tersimpan','');}catch(e){toast('<i class=bi-x-circle-fill aria-hidden=true></i> Gagal',e.message,'err');}}
+async function saveKoord(){const nama=getInp('koord-nama');if(!nama){toast('<i class=bi-exclamation-triangle-fill aria-hidden=true></i>','Nama wajib diisi.','warn');return;}const p={nama,wilayah:getInp('koord-wilayah'),telepon:getInp('koord-hp')};try{if(editingId.koord){p.id=editingId.koord;await apiPost('updateKoordinator',p);const k=KOORDINATOR.find(x=>x.id===editingId.koord);if(k)Object.assign(k,p);}else{const res=await apiPost('addKoordinator',p);p.id=res?.id;if(!p.id)throw new Error('ID koordinator tidak diterima dari server.');KOORDINATOR.push(p);}closeModal('modal-koord');updatePgLists();populateAllSelects();toast('<i class=bi-check-circle-fill aria-hidden=true></i> Koordinator Tersimpan','');}catch(e){toast('<i class=bi-x-circle-fill aria-hidden=true></i> Gagal',e.message,'err');}}
 async function delKoord(id){if(!(await confirmAction({title:'Hapus koordinator?',message:'Koordinator ini akan dihapus dari daftar.',confirmText:'Hapus',danger:true})))return;try{await apiPost('deleteKoordinator',{id});KOORDINATOR=KOORDINATOR.filter(x=>x.id!==id);updatePgLists();populateAllSelects();}catch(e){toast('<i class=bi-x-circle-fill aria-hidden=true></i> Gagal',e.message,'err');}}
 
 // ── Populate selects ──────────────────────────────────────────────
@@ -2006,10 +1985,9 @@ async function connectBackend(){
       '<br><small>Cek: (1) URL sudah benar? (2) Web App di-deploy ulang? (3) Akses diset ke <b>Anyone</b>?</small>';
   }
 }
-function demoMode(){DEMO=true;document.getElementById('setup-overlay').classList.add('hidden');setSyncStatus('demo');initialLoad();toast('<i class=bi-tools aria-hidden=true></i> Mode Demo','Data tidak tersimpan ke Sheets.');}
 function openSetup(){document.getElementById('sync-menu').classList.remove('open');document.getElementById('setup-overlay').classList.remove('hidden');}
 function manualRefresh(){document.getElementById('sync-menu').classList.remove('open');loadAllData();toast('<i class=bi-arrow-repeat aria-hidden=true></i> Refresh','Data diperbarui.');}
-function setSyncStatus(s){const badge=document.getElementById('sync-badge');const dot=badge?.querySelector('.live-dot');const lbl=document.getElementById('sync-label');badge?.classList.toggle('live',s==='live');if(dot)dot.style.background=s==='live'?'var(--green)':s==='demo'?'var(--gold)':'var(--muted)';if(lbl)lbl.textContent=s==='live'?'Live':s==='demo'?'Demo':'Offline';}
+function setSyncStatus(s){const badge=document.getElementById('sync-badge');const dot=badge?.querySelector('.live-dot');const lbl=document.getElementById('sync-label');badge?.classList.toggle('live',s==='live');if(dot)dot.style.background=s==='live'?'var(--green)':'var(--muted)';if(lbl)lbl.textContent=s==='live'?'Live':'Offline';}
 
 
 // ── Loading tombol dan dialog reusable ───────────────────────────
