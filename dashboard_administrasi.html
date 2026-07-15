@@ -39,7 +39,7 @@ body{font-family:var(--font);background:var(--surface);color:var(--text);font-si
 .sb-darkmode:hover{color:#fff}
 
 /* MAIN */
-.main{margin-left:var(--sidebar);flex:1;display:flex;flex-direction:column;min-height:100vh}
+.main{margin-left:var(--sidebar);flex:1;display:flex;flex-direction:column;min-height:100vh;min-width:0}
 .topbar{background:var(--card);border-bottom:1px solid var(--border);padding:11px 22px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
 .topbar-title{font-family:'DM Serif Display',serif;font-size:15px;color:var(--navy)}
 body.dark .topbar-title{color:var(--text)}
@@ -52,7 +52,7 @@ body.dark .topbar-title{color:var(--text)}
 .sync-menu-item{font-size:12px;color:var(--muted);padding:4px 0}
 .sync-btn{width:100%;padding:7px 10px;border-radius:7px;border:1px solid var(--border);background:none;color:var(--text);font-size:12px;cursor:pointer;text-align:left;margin-top:4px;font-family:var(--font)}
 .sync-btn:hover{background:var(--surface)}
-.content{padding:18px 22px;flex:1}
+.content{padding:18px 22px;flex:1;min-width:0}
 .page{display:none}.page.active{display:block}
 
 /* STAT CARDS */
@@ -1201,7 +1201,7 @@ function getYearRange(y){return{dari:`${y}-01-01`,sampai:`${y}-12-31`};}
 async function fetchLapRange(dari,sampai,divisi){try{const d=await apiGet({action:'getLaporanHarianRange',dari,sampai,divisi});return(d&&d.laporan)?d.laporan:[];}catch(e){return[];}}
 function statCard(label,val,sub,color){const c=color||'var(--teal)';return `<div class="stat-card" style="border-left-color:${c}"><div class="stat-val" style="color:${c}">${val}</div><div class="stat-lbl">${label}</div>${sub?`<div style="font-size:10px;color:var(--muted);margin-top:2px">${sub}</div>`:''}</div>`;}
 function statGrid(cards){return `<div class="stat-row" style="margin-bottom:14px">${cards.join('')}</div>`;}
-function buildTable(headers,rows,emptyMsg){if(!rows.length)return `<div style="color:var(--muted);font-size:12.5px;padding:14px;text-align:center;background:var(--surface);border-radius:8px">${emptyMsg||'Tidak ada data.'}</div>`;const thead=headers.map(h=>`<th>${h}</th>`).join('');const tbody=rows.map(r=>`<tr>${r.map(c=>`<td>${c}</td>`).join('')}</tr>`).join('');return `<table class="adm-tbl"><thead><tr>${thead}</tr></thead><tbody>${tbody}</tbody></table>`;}
+function buildTable(headers,rows,emptyMsg){if(!rows.length)return `<div style="color:var(--muted);font-size:12.5px;padding:14px;text-align:center;background:var(--surface);border-radius:8px">${emptyMsg||'Tidak ada data.'}</div>`;const thead=headers.map(h=>`<th>${h}</th>`).join('');const tbody=rows.map(r=>`<tr>${r.map(c=>`<td>${c}</td>`).join('')}</tr>`).join('');return `<div class="tbl-wrap"><table class="adm-tbl"><thead><tr>${thead}</tr></thead><tbody>${tbody}</tbody></table></div>`;}
 
 // PDF Download
 function downloadPDF(elId, filename){
