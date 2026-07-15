@@ -60,6 +60,14 @@ body.dark .topbar-title{color:var(--text)}
 .page{display:none}.page.active{display:block}
 .stat-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;margin-bottom:18px}
 .stat-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 16px}
+.stat-card{border-left:4px solid var(--border);box-shadow:0 1px 3px rgba(0,0,0,.05)}
+.stat-card.accent-teal::before{background:var(--teal)}
+.stat-card.accent-gold{border-left-color:var(--gold)}
+.stat-card.accent-blue{border-left-color:var(--blue)}
+.stat-card.accent-purple{border-left-color:var(--purple)}
+.stat-card.accent-red{border-left-color:var(--red)}
+.stat-card.accent-green{border-left-color:var(--green)}
+.sec,.kanban-col{box-shadow:0 1px 3px rgba(0,0,0,.05)}
 .stat-lbl{font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-bottom:5px}
 .stat-val{font-family:"DM Serif Display",serif;font-size:22px;font-weight:700}
 .stat-val.purple{color:var(--purple)}.stat-val.green{color:var(--green)}.stat-val.gold{color:var(--gold)}.stat-val.red{color:var(--red)}.stat-val.blue{color:var(--blue)}
@@ -86,7 +94,9 @@ table.mkt-tbl{width:100%;border-collapse:collapse;font-size:12.5px}
 .mkt-tbl th{text-align:left;font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;padding:8px 10px;border-bottom:2px solid var(--border);background:var(--surface);white-space:nowrap}
 .mkt-tbl td{padding:9px 10px;border-bottom:1px solid var(--border);vertical-align:middle}
 .mkt-tbl tr:last-child td{border-bottom:none}
-.mkt-tbl tr:hover td{background:var(--surface)}
+.mkt-tbl tr:nth-child(even) td{background:var(--surface)}
+.mkt-tbl tr:hover td{background:var(--purple2)}
+body.dark .mkt-tbl tr:hover td{background:rgba(124,58,237,.15)}
 .mkt-tbl .actions{display:flex;gap:4px}
 .tbl-empty{text-align:center;padding:32px;color:var(--muted);font-size:13px}
 .pill{display:inline-block;font-size:11px;font-weight:700;padding:3px 9px;border-radius:20px;white-space:nowrap}
@@ -275,10 +285,10 @@ body.dark .hamburger-btn{color:var(--text)}
     <button class="btn primary" onclick="openLeadModal()">＋ Tambah Lead</button>
   </div>
   <div class="stat-row">
-    <div class="stat-card"><div class="stat-lbl">Total Lead</div><div class="stat-val purple" id="ds-lead">—</div><div class="stat-sub">Semua status</div></div>
-    <div class="stat-card"><div class="stat-lbl">Closing Bulan Ini</div><div class="stat-val gold" id="ds-closing">—</div><div class="stat-sub" id="ds-closing-sub"></div></div>
-    <div class="stat-card"><div class="stat-lbl">Hot / Negosiasi</div><div class="stat-val" id="ds-hot" style="color:var(--orange)">—</div><div class="stat-sub">Butuh FU segera</div></div>
-    <div class="stat-card"><div class="stat-lbl">Tugas Pending</div><div class="stat-val red" id="ds-tugas">—</div><div class="stat-sub" id="ds-tugas-sub"></div></div>
+    <div class="stat-card accent-purple"><div class="stat-lbl">Total Lead</div><div class="stat-val purple" id="ds-lead">—</div><div class="stat-sub">Semua status</div></div>
+    <div class="stat-card accent-gold"><div class="stat-lbl">Closing Bulan Ini</div><div class="stat-val gold" id="ds-closing">—</div><div class="stat-sub" id="ds-closing-sub"></div></div>
+    <div class="stat-card" style="border-left-color:var(--orange)"><div class="stat-lbl">Hot / Negosiasi</div><div class="stat-val" id="ds-hot" style="color:var(--orange)">—</div><div class="stat-sub">Butuh FU segera</div></div>
+    <div class="stat-card accent-red"><div class="stat-lbl">Tugas Pending</div><div class="stat-val red" id="ds-tugas">—</div><div class="stat-sub" id="ds-tugas-sub"></div></div>
   </div>
   <div class="sec" style="margin-bottom:14px">
     <div class="sec-head"><div class="sec-title">🏆 Progres Status Closing</div><span style="font-size:12px;color:var(--muted)" id="dash-total-cl"></span></div>
@@ -436,8 +446,9 @@ body.dark .hamburger-btn{color:var(--text)}
             <input type="number" class="filter-select" id="lap-lead-baru" placeholder="0" min="0" style="width:100%;padding:8px 10px;text-align:right" oninput="hitungRingkasanMkt()"/>
           </div>
           <div>
-            <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px">Follow Up Dilakukan</div>
+            <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px">Follow Up Dilakukan <span style="text-transform:none;font-weight:500;color:var(--blue)">(otomatis)</span></div>
             <input type="number" class="filter-select" id="lap-fu-count" placeholder="0" min="0" style="width:100%;padding:8px 10px;text-align:right" oninput="hitungRingkasanMkt()"/>
+            <div style="font-size:10.5px;color:var(--muted);margin-top:4px" id="lap-fu-hint">Dihitung otomatis dari lead yang di-follow up hari ini — kosongkan untuk pakai angka otomatis.</div>
           </div>
           <div>
             <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px">Closing Hari Ini</div>
@@ -1134,7 +1145,7 @@ function getLeadsFiltered(){
   const prodi= document.getElementById('lead-f-prodi')?.value||'';
   const kampus=document.getElementById('lead-f-kampus')?.value||'';
   return ALL_LEADS.filter(l=>
-    (!q     || [l.nama_lengkap,l.no_hp,l.program_minat,l.prodi,l.kampus].some(v=>(v||'').toLowerCase().includes(q))) &&
+    (!q     || [l.nama_lengkap,l.no_hp,l.program_minat,l.prodi,l.kampus].some(v=>String(v||'').toLowerCase().includes(q))) &&
     (!stat  || l.status===stat) &&
     (!smb   || l.sumber_lead===smb) &&
     (!prodi || l.prodi===prodi) &&
@@ -1343,7 +1354,7 @@ function renderClosing(_clList){
   const myPIC = USER && USER !== 'Semua Tim';
   return ALL_CLOSING.filter(c=>
     (!myPIC || c.pic === USER) &&
-    (!q    || [c.nama_lengkap,c.no_hp,c.no_ktp].some(v=>(v||'').toLowerCase().includes(q))) &&
+    (!q    || [c.nama_lengkap,c.no_hp,c.no_ktp].some(v=>String(v||'').toLowerCase().includes(q))) &&
     (!stat || c.status === stat) &&
     (!prog || c.program === prog)
   );
@@ -1562,7 +1573,9 @@ function renderLapStats(cl,ld){
 function hitungRingkasanMkt(){
   const gn = id => Number(document.getElementById(id)?.value)||0;
   setEl('lap-sum-lead',    gn('lap-lead-baru'));
-  setEl('lap-sum-fu',      gn('lap-fu-count'));
+  const fuInp=document.getElementById('lap-fu-count');
+  const fuVal = fuInp && fuInp.value!=='' ? (Number(fuInp.value)||0) : Number(fuInp?.placeholder)||0;
+  setEl('lap-sum-fu', fuVal);
   setEl('lap-sum-closing', gn('lap-closing-baru'));
 }
 
@@ -1576,7 +1589,17 @@ async function loadLapMktHarian(tgl){
     if(lap){
       const setV = (id,v) => { const e=document.getElementById(id); if(e) e.value=v||''; };
       setV('lap-lead-baru',    lap.leadBaru||0);
-      setV('lap-fu-count',     lap.fuCount||0);
+      // FU: kalau nilai fuCount sama dgn hasil hitung otomatis, kosongkan input (biar
+      // placeholder ghost yg tampil, menandakan ini murni otomatis) — kalau beda berarti
+      // memang ada override manual yg tersimpan, tampilkan apa adanya.
+      const fuInp = document.getElementById('lap-fu-count');
+      const fuAuto = lap.fuCountAuto||0;
+      if(fuInp){
+        fuInp.placeholder = String(fuAuto);
+        fuInp.value = (Number(lap.fuCount)===fuAuto) ? '' : (lap.fuCount||'');
+      }
+      const fuHint = document.getElementById('lap-fu-hint');
+      if(fuHint) fuHint.textContent = 'Otomatis hari ini: '+fuAuto+' follow up — kosongkan untuk pakai angka ini, atau isi utk override.';
       setV('lap-closing-baru', lap.closingBaru||0);
       setV('lap-catatan',      lap.catatan||'');
       hitungRingkasanMkt();
@@ -1749,7 +1772,7 @@ function periodeLabel(dari,sampai){return fmtTgl(dari)+(dari!==sampai?' – '+fm
 function getMonthRange(p){const arr=p.split('-').map(Number);const y=arr[0],m=arr[1];const last=new Date(y,m,0).getDate();return{dari:p+'-01',sampai:p+'-'+String(last).padStart(2,'0')};}
 function getYearRange(y){return{dari:y+'-01-01',sampai:y+'-12-31'};}
 async function fetchLapRange(dari,sampai,divisi){try{const d=await apiGet({action:'getLaporanHarianRange',dari,sampai,divisi});return(d&&d.laporan)?d.laporan:[];}catch(e){return[];}}
-function statCard(label,val,sub,color){return '<div class="stat-card"><div class="stat-val" style="color:'+(color||'var(--teal)')+'">'+val+'</div><div class="stat-lbl">'+label+'</div>'+(sub?'<div style="font-size:10px;color:var(--muted);margin-top:2px">'+sub+'</div>':'')+'</div>';}
+function statCard(label,val,sub,color){const c=color||'var(--teal)';return '<div class="stat-card" style="border-left-color:'+c+'"><div class="stat-val" style="color:'+c+'">'+val+'</div><div class="stat-lbl">'+label+'</div>'+(sub?'<div style="font-size:10px;color:var(--muted);margin-top:2px">'+sub+'</div>':'')+'</div>';}
 function statGrid(cards){return '<div class="stat-row" style="margin-bottom:14px">'+cards.join('')+'</div>';}
 function buildTable(headers,rows,emptyMsg){if(!rows.length)return '<div style="color:var(--muted);font-size:12.5px;padding:14px;text-align:center;background:var(--surface);border-radius:8px">'+(emptyMsg||'Tidak ada data.')+'</div>';var thead=headers.map(function(h){return '<th>'+h+'</th>';}).join('');var tbody=rows.map(function(r){return '<tr>'+r.map(function(c){return '<td>'+c+'</td>';}).join('')+'</tr>';}).join('');return '<table class="adm-tbl"><thead><tr>'+thead+'</tr></thead><tbody>'+tbody+'</tbody></table>';}
 function formatRpShort(n){var v=Math.abs(Number(n)||0);if(v>=1e9)return 'Rp '+(v/1e9).toFixed(1)+'M';if(v>=1e6)return 'Rp '+(v/1e6).toFixed(1)+'Jt';if(v>=1e3)return 'Rp '+(v/1e3).toFixed(0)+'rb';return 'Rp '+v.toLocaleString('id');}
@@ -1816,6 +1839,11 @@ async function loadMktRingkasanAuto(){
   // Fallback: kalau laporan kosong, hitung dari data lead/closing
   if(!totalLead) totalLead=leads.length;
   if(!totalClosing) totalClosing=closing.length;
+  if(!totalFU){
+    // Follow Up = lead yg tanggal_update-nya jatuh di rentang ini (aktivitas nyata,
+    // bukan cuma yg tercatat di form Input Laporan Harian)
+    totalFU = ALL_LEADS.filter(function(l){ var t=l.tanggal_update||''; return t>=dari && t<=sampai; }).length;
+  }
 
   // Konversi
   var konversi=totalLead>0?Math.round(totalClosing/totalLead*100):0;
