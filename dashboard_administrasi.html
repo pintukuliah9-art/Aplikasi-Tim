@@ -58,6 +58,14 @@ body.dark .topbar-title{color:var(--text)}
 /* STAT CARDS */
 .stat-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;margin-bottom:18px}
 .stat-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 16px}
+.stat-card{border-left:4px solid var(--border);box-shadow:0 1px 3px rgba(0,0,0,.05)}
+.stat-card.accent-teal{border-left-color:var(--teal)}
+.stat-card.accent-gold{border-left-color:var(--gold)}
+.stat-card.accent-blue{border-left-color:var(--blue)}
+.stat-card.accent-purple{border-left-color:var(--purple)}
+.stat-card.accent-red{border-left-color:var(--red)}
+.stat-card.accent-green{border-left-color:var(--green)}
+.sec,.kanban-col{box-shadow:0 1px 3px rgba(0,0,0,.05)}
 .stat-lbl{font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-bottom:5px}
 .stat-val{font-family:'DM Serif Display',serif;font-size:22px;font-weight:700}
 .stat-val.teal{color:var(--teal)}.stat-val.blue{color:var(--blue)}.stat-val.green{color:var(--green)}.stat-val.red{color:var(--red)}.stat-val.gold{color:var(--gold)}
@@ -90,7 +98,9 @@ table.adm-tbl{width:100%;border-collapse:collapse;font-size:12.5px}
 .adm-tbl th{text-align:left;font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;padding:8px 10px;border-bottom:2px solid var(--border);background:var(--surface);white-space:nowrap}
 .adm-tbl td{padding:9px 10px;border-bottom:1px solid var(--border);vertical-align:middle}
 .adm-tbl tr:last-child td{border-bottom:none}
-.adm-tbl tr:hover td{background:var(--surface)}
+.adm-tbl tr:nth-child(even) td{background:var(--surface)}
+.adm-tbl tr:hover td{background:var(--teal2)}
+body.dark .adm-tbl tr:hover td{background:rgba(13,148,136,.15)}
 .adm-tbl .actions{display:flex;gap:4px}
 .tbl-empty{text-align:center;padding:32px;color:var(--muted);font-size:13px}
 
@@ -966,7 +976,7 @@ function filterSurat(){
   const q=(document.getElementById('surat-search')?.value||'').toLowerCase();
   const jns=document.getElementById('surat-f-jenis')?.value||'';
   const tgl=document.getElementById('surat-f-tgl')?.value||'';
-  const list=ALL_SURAT.filter(s=>(!q||[s.nomor_surat,s.perihal,s.instansi,s.dari_ke].some(v=>(v||'').toLowerCase().includes(q)))&&(!jns||s.jenis===jns)&&(!tgl||s.tanggal===tgl));
+  const list=ALL_SURAT.filter(s=>(!q||[s.nomor_surat,s.perihal,s.instansi,s.dari_ke].some(v=>String(v||'').toLowerCase().includes(q)))&&(!jns||s.jenis===jns)&&(!tgl||s.tanggal===tgl));
   const tb=document.getElementById('surat-tbody');const cnt=document.getElementById('surat-count');
   if(cnt)cnt.textContent='('+list.length+')';
   if(!tb)return;
@@ -1184,7 +1194,7 @@ function periodeLabel(dari,sampai){return fmtTgl(dari)+(dari!==sampai?' – '+fm
 function getMonthRange(p){const[y,m]=p.split('-').map(Number);const last=new Date(y,m,0).getDate();return{dari:p+'-01',sampai:p+'-'+String(last).padStart(2,'0')};}
 function getYearRange(y){return{dari:`${y}-01-01`,sampai:`${y}-12-31`};}
 async function fetchLapRange(dari,sampai,divisi){try{const d=await apiGet({action:'getLaporanHarianRange',dari,sampai,divisi});return(d&&d.laporan)?d.laporan:[];}catch(e){return[];}}
-function statCard(label,val,sub,color){return `<div class="stat-card"><div class="stat-val" style="color:${color||'var(--teal)'}">${val}</div><div class="stat-lbl">${label}</div>${sub?`<div style="font-size:10px;color:var(--muted);margin-top:2px">${sub}</div>`:''}</div>`;}
+function statCard(label,val,sub,color){const c=color||'var(--teal)';return `<div class="stat-card" style="border-left-color:${c}"><div class="stat-val" style="color:${c}">${val}</div><div class="stat-lbl">${label}</div>${sub?`<div style="font-size:10px;color:var(--muted);margin-top:2px">${sub}</div>`:''}</div>`;}
 function statGrid(cards){return `<div class="stat-row" style="margin-bottom:14px">${cards.join('')}</div>`;}
 function buildTable(headers,rows,emptyMsg){if(!rows.length)return `<div style="color:var(--muted);font-size:12.5px;padding:14px;text-align:center;background:var(--surface);border-radius:8px">${emptyMsg||'Tidak ada data.'}</div>`;const thead=headers.map(h=>`<th>${h}</th>`).join('');const tbody=rows.map(r=>`<tr>${r.map(c=>`<td>${c}</td>`).join('')}</tr>`).join('');return `<table class="adm-tbl"><thead><tr>${thead}</tr></thead><tbody>${tbody}</tbody></table>`;}
 
