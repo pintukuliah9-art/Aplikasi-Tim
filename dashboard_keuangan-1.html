@@ -49,6 +49,16 @@ body.dark .topbar-title{color:var(--text)}
 .page{display:none}.page.active{display:block}
 .stat-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;margin-bottom:18px}
 .stat-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 16px}
+/* FIX: tabel ringkasan (class adm-tbl, dipakai buildTable()) sebelumnya tidak ada
+   CSS sama sekali di file ini — tampil polos tanpa border/header. Ditambahkan di sini. */
+.tbl-wrap{overflow-x:auto}
+table.adm-tbl{width:100%;border-collapse:collapse;font-size:12.5px}
+.adm-tbl th{text-align:left;font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;padding:8px 10px;border-bottom:2px solid var(--border);background:var(--surface);white-space:nowrap}
+.adm-tbl td{padding:9px 10px;border-bottom:1px solid var(--border);vertical-align:middle}
+.adm-tbl tr:last-child td{border-bottom:none}
+.adm-tbl tr:nth-child(even) td{background:var(--surface)}
+.adm-tbl tr:hover td{background:var(--gold2)}
+body.dark .adm-tbl tr:hover td{background:rgba(217,119,6,.12)}
 .stat-lbl{font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-bottom:5px}
 .stat-val{font-family:'DM Serif Display',serif;font-size:20px;font-weight:700}
 .stat-val.teal{color:var(--teal)}.stat-val.blue{color:var(--blue)}.stat-val.green{color:var(--green)}.stat-val.red{color:var(--red)}.stat-val.gold{color:var(--gold)}.stat-val.purple{color:var(--purple)}
@@ -73,7 +83,8 @@ body.dark .topbar-title{color:var(--text)}
 .f-sel{border:1.5px solid var(--border);border-radius:8px;padding:7px 10px;font-size:12.5px;font-family:var(--font);color:var(--text);background:var(--card);outline:none}
 /* Dana masuk grid */
 .dana-grid{display:grid;gap:14px}
-.program-block{background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden}
+.program-block{background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+.sec,.kanban-col{box-shadow:0 1px 3px rgba(0,0,0,.05)}
 .program-head{padding:10px 14px;background:var(--card);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
 .program-name{font-weight:700;font-size:13.5px}
 .program-total{font-family:'DM Serif Display',serif;font-size:15px;color:var(--teal)}
@@ -82,6 +93,19 @@ body.dark .topbar-title{color:var(--text)}
 .kas-label{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
 .kas-input{width:100%;border:1.5px solid var(--border);border-radius:6px;padding:7px 10px;font-size:13px;font-family:var(--font);color:var(--text);background:var(--card);text-align:right;outline:none}
 .kas-input:focus{border-color:var(--gold)}
+/* Zona label pemisah Dana Masuk / Kas Setor di tiap kartu program */
+.program-zone-lbl{font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;padding:10px 14px 0}
+.program-zone-lbl.setor{color:var(--red);padding-top:12px;border-top:1px dashed var(--border);margin-top:2px}
+.program-setor-subtotal{padding:8px 14px 14px;text-align:right;font-size:12px;color:var(--muted)}
+.program-setor-subtotal span{font-family:'DM Serif Display',serif;font-size:14px;font-weight:700;color:var(--red);margin-left:4px}
+/* Strip warna aksen kiri utk stat-card (identitas kategori) */
+.stat-card{border-left:4px solid var(--border);box-shadow:0 1px 3px rgba(0,0,0,.05)}
+.stat-card.accent-teal::before{background:var(--teal)}
+.stat-card.accent-gold::before{background:var(--gold)}
+.stat-card.accent-blue::before{background:var(--blue)}
+.stat-card.accent-purple::before{background:var(--purple)}
+.stat-card.accent-red::before{background:var(--red)}
+.stat-card.accent-green::before{background:var(--green)}
 /* Dana keluar */
 .dk-row{display:grid;grid-template-columns:1fr 1fr 2fr 140px 36px;gap:8px;align-items:center;margin-bottom:8px}
 .dk-input{border:1.5px solid var(--border);border-radius:6px;padding:7px 10px;font-size:12.5px;font-family:var(--font);color:var(--text);background:var(--card);width:100%;outline:none}
@@ -93,9 +117,12 @@ body.dark .topbar-title{color:var(--text)}
 .kas-box-val{font-family:'DM Serif Display',serif;font-size:18px;font-weight:700;color:var(--navy)}
 body.dark .kas-box-val{color:var(--text)}
 /* Kas internal */
+.ki-bar{display:flex;height:14px;border-radius:7px;overflow:hidden;margin-bottom:16px;background:var(--border)}
+.ki-bar-seg{height:100%;transition:width .3s}
 .ki-row{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border)}
 .ki-row:last-child{border-bottom:none}
 .ki-label{flex:1;font-weight:600;font-size:13px}
+.ki-dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px}
 .ki-pct{font-size:12px;color:var(--muted);width:40px;text-align:center}
 .ki-auto{font-family:'DM Serif Display',serif;font-size:14px;color:var(--muted);width:130px;text-align:right}
 .ki-override{border:1.5px solid var(--border);border-radius:6px;padding:5px 8px;font-size:12.5px;font-family:var(--font);text-align:right;width:140px;color:var(--text);background:var(--card)}
@@ -268,10 +295,11 @@ body.dark .hamburger-btn{color:var(--text)}
 
   <!-- Summary Hari Ini -->
   <div class="stat-row" id="keu-stats">
-    <div class="stat-card"><div class="stat-lbl">Total Dana Masuk</div><div class="stat-val teal" id="sum-total-masuk">Rp 0</div><div class="stat-sub">3 program</div></div>
-    <div class="stat-card"><div class="stat-lbl">RPL Khusus</div><div class="stat-val gold" id="sum-khusus">Rp 0</div><div class="stat-sub">STISDU + STITBU + Internal</div></div>
-    <div class="stat-card"><div class="stat-lbl">RPL Reguler</div><div class="stat-val blue" id="sum-reguler">Rp 0</div><div class="stat-sub">6bln / 1thn / 2thn</div></div>
-    <div class="stat-card"><div class="stat-lbl">Kelas Karyawan</div><div class="stat-val purple" id="sum-karyawan">Rp 0</div><div class="stat-sub">Semua kampus</div></div>
+    <div class="stat-card accent-teal"><div class="stat-lbl">Total Dana Masuk</div><div class="stat-val teal" id="sum-total-masuk">Rp 0</div><div class="stat-sub">3 program digabung → jadi Kas</div></div>
+    <div class="stat-card accent-gold"><div class="stat-lbl">RPL Khusus</div><div class="stat-val gold" id="sum-khusus">Rp 0</div><div class="stat-sub">STISDU + STITBU + Internal</div></div>
+    <div class="stat-card accent-blue"><div class="stat-lbl">RPL Reguler</div><div class="stat-val blue" id="sum-reguler">Rp 0</div><div class="stat-sub">6bln / 1thn / 2thn</div></div>
+    <div class="stat-card accent-purple"><div class="stat-lbl">Kelas Karyawan</div><div class="stat-val purple" id="sum-karyawan">Rp 0</div><div class="stat-sub">Semua kampus</div></div>
+    <div class="stat-card accent-red"><div class="stat-lbl">Total Kas Setor</div><div class="stat-val" style="color:var(--red)" id="sum-total-setor">Rp 0</div><div class="stat-sub">RPL Khusus + Reguler</div></div>
   </div>
 
   <div class="dana-grid">
@@ -279,8 +307,9 @@ body.dark .hamburger-btn{color:var(--text)}
     <div class="program-block">
       <div class="program-head">
         <div class="program-name">💎 RPL Khusus</div>
-        <div>Total: <span class="program-total" id="tot-khusus">Rp 0</span></div>
+        <div>Total Masuk: <span class="program-total" id="tot-khusus">Rp 0</span></div>
       </div>
+      <div class="program-zone-lbl">📥 Dana Masuk</div>
       <div class="kas-grid">
         <div class="kas-field">
           <div class="kas-label">🏢 Dana Internal (Rp)</div>
@@ -295,14 +324,31 @@ body.dark .hamburger-btn{color:var(--text)}
           <input class="kas-input" type="number" id="khusus-stitbu" placeholder="0" oninput="hitungTotal()"/>
         </div>
       </div>
+      <div class="program-zone-lbl setor">🏦 Kas Setor</div>
+      <div class="kas-grid">
+        <div class="kas-field">
+          <div class="kas-label">🏢 Internal (Rp)</div>
+          <input class="kas-input" type="number" id="khusus-setor-internal" placeholder="0" oninput="hitungTotal()"/>
+        </div>
+        <div class="kas-field">
+          <div class="kas-label">🏛️ STISDU (Rp)</div>
+          <input class="kas-input" type="number" id="khusus-setor-stisdu" placeholder="0" oninput="hitungTotal()"/>
+        </div>
+        <div class="kas-field">
+          <div class="kas-label">🏛️ STITBU (Rp)</div>
+          <input class="kas-input" type="number" id="khusus-setor-stitbu" placeholder="0" oninput="hitungTotal()"/>
+        </div>
+      </div>
+      <div class="program-setor-subtotal">Subtotal Kas Setor: <span id="tot-setor-khusus">Rp 0</span></div>
     </div>
 
     <!-- RPL Reguler -->
     <div class="program-block">
       <div class="program-head">
         <div class="program-name">📚 RPL Reguler (6bln / 1thn / 2thn)</div>
-        <div>Total: <span class="program-total" id="tot-reguler">Rp 0</span></div>
+        <div>Total Masuk: <span class="program-total" id="tot-reguler">Rp 0</span></div>
       </div>
+      <div class="program-zone-lbl">📥 Dana Masuk</div>
       <div class="kas-grid">
         <div class="kas-field">
           <div class="kas-label">🏢 Dana Internal (Rp)</div>
@@ -317,14 +363,31 @@ body.dark .hamburger-btn{color:var(--text)}
           <input class="kas-input" type="number" id="reguler-stitbu" placeholder="0" oninput="hitungTotal()"/>
         </div>
       </div>
+      <div class="program-zone-lbl setor">🏦 Kas Setor</div>
+      <div class="kas-grid">
+        <div class="kas-field">
+          <div class="kas-label">🏢 Internal (Rp)</div>
+          <input class="kas-input" type="number" id="reguler-setor-internal" placeholder="0" oninput="hitungTotal()"/>
+        </div>
+        <div class="kas-field">
+          <div class="kas-label">🏛️ STISDU (Rp)</div>
+          <input class="kas-input" type="number" id="reguler-setor-stisdu" placeholder="0" oninput="hitungTotal()"/>
+        </div>
+        <div class="kas-field">
+          <div class="kas-label">🏛️ STITBU (Rp)</div>
+          <input class="kas-input" type="number" id="reguler-setor-stitbu" placeholder="0" oninput="hitungTotal()"/>
+        </div>
+      </div>
+      <div class="program-setor-subtotal">Subtotal Kas Setor: <span id="tot-setor-reguler">Rp 0</span></div>
     </div>
 
     <!-- Kelas Karyawan -->
     <div class="program-block">
       <div class="program-head">
         <div class="program-name">👔 Kelas Karyawan</div>
-        <div>Total: <span class="program-total" id="tot-karyawan">Rp 0</span></div>
+        <div>Total Masuk: <span class="program-total" id="tot-karyawan">Rp 0</span></div>
       </div>
+      <div class="program-zone-lbl">📥 Dana Masuk</div>
       <div class="kas-grid">
         <div class="kas-field">
           <div class="kas-label">🏢 Dana Internal (Rp)</div>
@@ -371,31 +434,36 @@ body.dark .hamburger-btn{color:var(--text)}
 
 <!-- PAGE: LAPORAN KAS -->
 <div id="page-kas" class="page">
-  <div style="font-size:12.5px;color:var(--muted);margin-bottom:16px">Pembagian kas dari total dana masuk hari ini.</div>
+  <div style="font-size:12.5px;color:var(--muted);margin-bottom:16px">Kas &amp; pembagiannya dihitung otomatis dari total Dana Masuk hari ini — tidak perlu input manual lagi.</div>
 
-  <!-- Kas Mitra -->
+  <!-- Total Kas (otomatis) -->
   <div class="sec">
     <div class="sec-head">
-      <div class="sec-title">🏦 Kas Mitra <span style="font-size:12px;font-weight:400;color:var(--muted)">(PIC Isma)</span></div>
-      <div style="font-size:12px;color:var(--muted)">Total Masuk: <b style="color:var(--teal)" id="kas-total-masuk-lbl">Rp 0</b></div>
+      <div class="sec-title">🏦 Total Kas <span style="font-size:12px;font-weight:400;color:var(--muted)">(otomatis dari Dana Masuk)</span></div>
+    </div>
+    <div class="sec-body">
+      <div style="text-align:center;padding:6px 0 14px">
+        <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-bottom:6px">Total Dana Masuk Hari Ini = Total Kas</div>
+        <div style="font-family:'DM Serif Display',serif;font-size:30px;font-weight:700;color:var(--teal)" id="kas-total-masuk-lbl">Rp 0</div>
+      </div>
+      <div class="kas-mitra-grid">
+        <div class="kas-box"><div class="kas-box-label">💎 RPL Khusus</div><div class="kas-box-val" id="kas-ringkas-khusus">Rp 0</div></div>
+        <div class="kas-box"><div class="kas-box-label">📚 RPL Reguler</div><div class="kas-box-val" id="kas-ringkas-reguler">Rp 0</div></div>
+        <div class="kas-box"><div class="kas-box-label">👔 Kelas Karyawan</div><div class="kas-box-val" id="kas-ringkas-karyawan">Rp 0</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Ringkasan Kas Setor (dari input di menu Dana Masuk) -->
+  <div class="sec">
+    <div class="sec-head">
+      <div class="sec-title">📮 Ringkasan Kas Setor <span style="font-size:12px;font-weight:400;color:var(--muted)">(diisi di menu Dana Masuk)</span></div>
+      <div style="font-size:12px;color:var(--muted)">Total: <b style="color:var(--red)" id="kas-setor-ringkas-total">Rp 0</b></div>
     </div>
     <div class="sec-body">
       <div class="kas-mitra-grid">
-        <div class="kas-box">
-          <div class="kas-box-label">🔑 Kas Setor Pusat (Rp)</div>
-          <input class="kas-input" type="number" id="kas-setor" placeholder="0" style="margin-top:6px" oninput="hitungKasMitra()"/>
-        </div>
-        <div class="kas-box">
-          <div class="kas-box-label">🏛️ Kas STISDU (Rp)</div>
-          <input class="kas-input" type="number" id="kas-stisdu" placeholder="0" style="margin-top:6px" oninput="hitungKasMitra()"/>
-        </div>
-        <div class="kas-box">
-          <div class="kas-box-label">🏛️ Kas STITBU (Rp)</div>
-          <input class="kas-input" type="number" id="kas-stitbu" placeholder="0" style="margin-top:6px" oninput="hitungKasMitra()"/>
-        </div>
-      </div>
-      <div style="display:flex;justify-content:flex-end;margin-top:10px;font-size:13px">
-        Total Kas Mitra: <b style="margin-left:8px;font-family:'DM Serif Display',serif;font-size:16px;color:var(--teal)" id="kas-mitra-total">Rp 0</b>
+        <div class="kas-box"><div class="kas-box-label">💎 Setor RPL Khusus</div><div class="kas-box-val" id="kas-ringkas-setor-khusus">Rp 0</div></div>
+        <div class="kas-box"><div class="kas-box-label">📚 Setor RPL Reguler</div><div class="kas-box-val" id="kas-ringkas-setor-reguler">Rp 0</div></div>
       </div>
     </div>
   </div>
@@ -407,6 +475,7 @@ body.dark .hamburger-btn{color:var(--text)}
       <div style="font-size:12px;color:var(--muted)">Auto-hitung dari total dana masuk. Bisa override.</div>
     </div>
     <div class="sec-body">
+      <div class="ki-bar" id="ki-bar"></div>
       <div id="kas-internal-rows"></div>
       <div style="display:flex;justify-content:flex-end;margin-top:10px;padding-top:10px;border-top:1px solid var(--border);font-size:13px">
         Total Kas Internal: <b style="margin-left:8px;font-family:'DM Serif Display',serif;font-size:16px;color:var(--purple)" id="kas-internal-total">Rp 0</b>
@@ -800,41 +869,65 @@ function hitungTotal(){
   const reguler = gn('reguler-internal') + gn('reguler-stisdu') + gn('reguler-stitbu');
   const karyawan= gn('karyawan-internal')+ gn('karyawan-stisdu')+ gn('karyawan-stitbu');
   const total   = khusus + reguler + karyawan;
+  const setorKhusus  = gn('khusus-setor-internal')  + gn('khusus-setor-stisdu')  + gn('khusus-setor-stitbu');
+  const setorReguler = gn('reguler-setor-internal') + gn('reguler-setor-stisdu') + gn('reguler-setor-stitbu');
+  const totalSetor    = setorKhusus + setorReguler;
   setEl('tot-khusus',  formatRp(khusus));
   setEl('tot-reguler', formatRp(reguler));
   setEl('tot-karyawan',formatRp(karyawan));
+  setEl('tot-setor-khusus',  formatRp(setorKhusus));
+  setEl('tot-setor-reguler', formatRp(setorReguler));
   setEl('sum-total-masuk', formatRp(total));
   setEl('sum-khusus',   formatRp(khusus));
   setEl('sum-reguler',  formatRp(reguler));
   setEl('sum-karyawan', formatRp(karyawan));
+  setEl('sum-total-setor', formatRp(totalSetor));
   setEl('kas-total-masuk-lbl', formatRp(total));
-  // Auto-hitung kas internal
+  renderKasRingkasan(khusus,reguler,karyawan,setorKhusus,setorReguler);
+  // Total Kas = otomatis dari gabungan semua Dana Masuk (tidak perlu input manual lagi)
   renderKasInternal(total);
 }
 
-function updateKasDisplay(){
-  const total=gn('khusus-internal')+gn('khusus-stisdu')+gn('khusus-stitbu')+gn('reguler-internal')+gn('reguler-stisdu')+gn('reguler-stitbu')+gn('karyawan-internal')+gn('karyawan-stisdu')+gn('karyawan-stitbu');
-  setEl('kas-total-masuk-lbl',formatRp(total));hitungKasMitra();renderKasInternal(total);
+function totalDanaMasukSaatIni(){
+  return gn('khusus-internal')+gn('khusus-stisdu')+gn('khusus-stitbu')+gn('reguler-internal')+gn('reguler-stisdu')+gn('reguler-stitbu')+gn('karyawan-internal')+gn('karyawan-stisdu')+gn('karyawan-stitbu');
 }
-
-function hitungKasMitra(){
-  const total=gn('kas-setor')+gn('kas-stisdu')+gn('kas-stitbu');
-  setEl('kas-mitra-total',formatRp(total));
+// Isi panel ringkasan read-only di halaman "Laporan Kas" (page-kas)
+function renderKasRingkasan(khusus,reguler,karyawan,setorKhusus,setorReguler){
+  setEl('kas-ringkas-khusus',   formatRp(khusus));
+  setEl('kas-ringkas-reguler',  formatRp(reguler));
+  setEl('kas-ringkas-karyawan', formatRp(karyawan));
+  setEl('kas-ringkas-setor-khusus',  formatRp(setorKhusus));
+  setEl('kas-ringkas-setor-reguler', formatRp(setorReguler));
+  setEl('kas-setor-ringkas-total',   formatRp((setorKhusus||0)+(setorReguler||0)));
+}
+function updateKasDisplay(){
+  const khusus  = gn('khusus-internal')  + gn('khusus-stisdu')  + gn('khusus-stitbu');
+  const reguler = gn('reguler-internal') + gn('reguler-stisdu') + gn('reguler-stitbu');
+  const karyawan= gn('karyawan-internal')+ gn('karyawan-stisdu')+ gn('karyawan-stitbu');
+  const setorKhusus  = gn('khusus-setor-internal')  + gn('khusus-setor-stisdu')  + gn('khusus-setor-stitbu');
+  const setorReguler = gn('reguler-setor-internal') + gn('reguler-setor-stisdu') + gn('reguler-setor-stitbu');
+  const total = khusus+reguler+karyawan;
+  setEl('kas-total-masuk-lbl',formatRp(total));
+  renderKasRingkasan(khusus,reguler,karyawan,setorKhusus,setorReguler);
+  renderKasInternal(total);
 }
 
 function renderKasInternal(totalMasuk){
-  if(totalMasuk===undefined){totalMasuk=gn('khusus-internal')+gn('khusus-stisdu')+gn('khusus-stitbu')+gn('reguler-internal')+gn('reguler-stisdu')+gn('reguler-stitbu')+gn('karyawan-internal')+gn('karyawan-stisdu')+gn('karyawan-stitbu');}
+  if(totalMasuk===undefined){totalMasuk=totalDanaMasukSaatIni();}
   const ki=PENGATURAN.kasInternal||{gaji:30,gedung:10,operasional:50,lain:15};
   const defs=[
-    {key:'gaji',      label:'Kas Gaji',              pct:ki.gaji,        icon:'👥'},
-    {key:'gedung',    label:'Kas Gedung',             pct:ki.gedung,      icon:'🏠'},
-    {key:'operasional',label:'Kas Operasional Tim',  pct:ki.operasional, icon:'⚙️'},
-    {key:'lain',      label:'Kas Lain',               pct:ki.lain,        icon:'📦'},
+    {key:'gaji',      label:'Kas Gaji',              pct:ki.gaji,        icon:'👥', color:'var(--blue)'},
+    {key:'gedung',    label:'Kas Gedung',             pct:ki.gedung,      icon:'🏠', color:'var(--teal)'},
+    {key:'operasional',label:'Kas Operasional Tim',  pct:ki.operasional, icon:'⚙️', color:'var(--gold)'},
+    {key:'lain',      label:'Kas Lain',               pct:ki.lain,        icon:'📦', color:'var(--purple)'},
   ];
+  // Bar proporsi visual
+  const bar=document.getElementById('ki-bar');
+  if(bar) bar.innerHTML=defs.map(d=>'<div class="ki-bar-seg" style="width:'+(d.pct||0)+'%;background:'+d.color+'" title="'+d.label+' '+d.pct+'%"></div>').join('');
   const el=document.getElementById('kas-internal-rows');if(!el)return;
   el.innerHTML=defs.map(d=>{
     const auto=Math.round(totalMasuk*d.pct/100);
-    return '<div class="ki-row"><div class="ki-label">'+d.icon+' '+d.label+'</div><div class="ki-pct">'+d.pct+'%</div><div class="ki-auto" style="color:var(--muted)">Auto: '+formatRp(auto)+'</div><input class="ki-override" type="number" id="ki-'+d.key+'" placeholder="'+auto+'" title="Override nominal"/></div>';
+    return '<div class="ki-row"><div class="ki-label"><span class="ki-dot" style="background:'+d.color+'"></span>'+d.icon+' '+d.label+'</div><div class="ki-pct">'+d.pct+'%</div><div class="ki-auto" style="color:var(--muted)">Auto: '+formatRp(auto)+'</div><input class="ki-override" type="number" id="ki-'+d.key+'" placeholder="'+auto+'" title="Override nominal"/></div>';
   }).join('');
   // Total
   let total=0;defs.forEach(d=>{const ov=gn('ki-'+d.key);total+=ov||Math.round(totalMasuk*d.pct/100);});
@@ -882,13 +975,18 @@ async function loadKeuangan(){
       setV('reguler-stisdu',lap.reguler_stisdu||0);setV('reguler-stitbu',lap.reguler_stitbu||0);
       setV('karyawan-internal', lap.karyawan_internal||0);
       setV('karyawan-stisdu',lap.karyawan_stisdu||0);setV('karyawan-stitbu',lap.karyawan_stitbu||0);
-      setV('kas-setor', lap.kasSetor||0);setV('kas-stisdu',lap.kasStisdu||0);setV('kas-stitbu',lap.kasStitbu||0);
+      setV('khusus-setor-internal',  lap.khusus_setor_internal||0);
+      setV('khusus-setor-stisdu',    lap.khusus_setor_stisdu||0);
+      setV('khusus-setor-stitbu',    lap.khusus_setor_stitbu||0);
+      setV('reguler-setor-internal', lap.reguler_setor_internal||0);
+      setV('reguler-setor-stisdu',   lap.reguler_setor_stisdu||0);
+      setV('reguler-setor-stitbu',   lap.reguler_setor_stitbu||0);
       if(lap.danaKeluarDetail){try{DANA_KELUAR=JSON.parse(lap.danaKeluarDetail)||[];}catch(e){DANA_KELUAR=[];}}
       renderDanaKeluar();hitungTotal();
     } else {
       if(chip){chip.textContent='Belum diisi';chip.className='status-chip';}
       // Reset form
-      ['khusus-internal','khusus-stisdu','khusus-stitbu','reguler-internal','reguler-stisdu','reguler-stitbu','karyawan-internal','karyawan-stisdu','karyawan-stitbu','kas-setor','kas-stisdu','kas-stitbu'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});
+      ['khusus-internal','khusus-stisdu','khusus-stitbu','reguler-internal','reguler-stisdu','reguler-stitbu','karyawan-internal','karyawan-stisdu','karyawan-stitbu','khusus-setor-internal','khusus-setor-stisdu','khusus-setor-stitbu','reguler-setor-internal','reguler-setor-stisdu','reguler-setor-stitbu'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});
       DANA_KELUAR=[];renderDanaKeluar();hitungTotal();
     }
   }catch(e){if(chip){chip.textContent='Belum diisi';chip.className='status-chip';}}
@@ -904,7 +1002,8 @@ function collectPayload(status){
     khusus_internal:gn('khusus-internal'),khusus_stisdu:gn('khusus-stisdu'),khusus_stitbu:gn('khusus-stitbu'),
     reguler_internal:gn('reguler-internal'),reguler_stisdu:gn('reguler-stisdu'),reguler_stitbu:gn('reguler-stitbu'),
     karyawan_internal:gn('karyawan-internal'),karyawan_stisdu:gn('karyawan-stisdu'),karyawan_stitbu:gn('karyawan-stitbu'),
-    kasSetor:gn('kas-setor'),kasStisdu:gn('kas-stisdu'),kasStitbu:gn('kas-stitbu'),
+    khusus_setor_internal:gn('khusus-setor-internal'), khusus_setor_stisdu:gn('khusus-setor-stisdu'), khusus_setor_stitbu:gn('khusus-setor-stitbu'),
+    reguler_setor_internal:gn('reguler-setor-internal'), reguler_setor_stisdu:gn('reguler-setor-stisdu'), reguler_setor_stitbu:gn('reguler-setor-stitbu'),
     danaKeluarDetail:JSON.stringify(DANA_KELUAR),kasInternal
   };
 }
@@ -1062,7 +1161,8 @@ function getKeuDemoResponse(params){
       khusus_stisdu:1200000,khusus_stitbu:800000,khusus_internal:500000,
       reguler_stisdu:900000,reguler_stitbu:600000,reguler_internal:300000,
       karyawan_stisdu:500000,karyawan_stitbu:300000,karyawan_internal:200000,
-      kasSetor:0,kasStisdu:0,kasStitbu:0,
+      khusus_setor_stisdu:1000000,khusus_setor_stitbu:700000,khusus_setor_internal:400000,
+      reguler_setor_stisdu:800000,reguler_setor_stitbu:500000,reguler_setor_internal:250000,
       danaKeluarDetail:'[{"kategori":"Operasional Kantor","sub":"ATK","keterangan":"Beli kertas & tinta","nominal":250000}]'
     } : null };
     case 'getKeuRingkasan': return getDemoKeuRingkasan(params.dari, params.sampai);
@@ -1316,7 +1416,7 @@ function fmtTgl(s){if(!s)return '—';const p=String(s).split('-');const bln=[''
 function periodeLabel(dari,sampai){return fmtTgl(dari)+(dari!==sampai?' – '+fmtTgl(sampai):'');}
 function getMonthRange(p){const arr=p.split('-').map(Number);const y=arr[0],m=arr[1];const last=new Date(y,m,0).getDate();return{dari:p+'-01',sampai:p+'-'+String(last).padStart(2,'0')};}
 function getYearRange(y){return{dari:y+'-01-01',sampai:y+'-12-31'};}
-function statCard(label,val,sub,color){return '<div class="stat-card"><div class="stat-val" style="color:'+(color||'var(--teal)')+'">'+val+'</div><div class="stat-lbl">'+label+'</div>'+(sub?'<div style="font-size:10px;color:var(--muted);margin-top:2px">'+sub+'</div>':'')+'</div>';}
+function statCard(label,val,sub,color){const c=color||'var(--teal)';return '<div class="stat-card" style="border-left-color:'+c+'"><div class="stat-val" style="color:'+c+'">'+val+'</div><div class="stat-lbl">'+label+'</div>'+(sub?'<div style="font-size:10px;color:var(--muted);margin-top:2px">'+sub+'</div>':'')+'</div>';}
 function statGrid(cards){return '<div class="stat-row" style="margin-bottom:14px">'+cards.join('')+'</div>';}
 function buildTable(headers,rows,emptyMsg){if(!rows.length)return '<div style="color:var(--muted);font-size:12.5px;padding:14px;text-align:center;background:var(--surface);border-radius:8px">'+(emptyMsg||'Tidak ada data.')+'</div>';var thead=headers.map(function(h){return '<th>'+h+'</th>';}).join('');var tbody=rows.map(function(r){return '<tr>'+r.map(function(c){return '<td>'+c+'</td>';}).join('')+'</tr>';}).join('');return '<table class="adm-tbl"><thead><tr>'+thead+'</tr></thead><tbody>'+tbody+'</tbody></table>';}
 function formatRpShort(n){var v=Math.abs(Number(n)||0);if(v>=1e9)return 'Rp '+(v/1e9).toFixed(1)+'M';if(v>=1e6)return 'Rp '+(v/1e6).toFixed(1)+'Jt';if(v>=1e3)return 'Rp '+(v/1e3).toFixed(0)+'rb';return 'Rp '+v.toLocaleString('id');}
@@ -1398,6 +1498,19 @@ async function loadKeuRingkasan(){
     html+='</div></div>';
   }
 
+  // ── Kas Setor per Program (RPL Khusus & Reguler) ──────────────────
+  var setorEntries=Object.entries(r.perProgramSetor||{}).filter(function(e){return e[1].total>0;}).sort(function(a,b){return b[1].total-a[1].total;});
+  if(setorEntries.length){
+    html+='<div class="sec" style="margin-bottom:12px"><div class="sec-head"><div class="sec-title">🏦 Kas Setor per Program</div><div style="font-size:12px;color:var(--muted)">Total: <b style="color:var(--red)">'+formatRpShort(r.totalKasSetor||0)+'</b></div></div><div class="sec-body">';
+    html+=buildTable(['Program','STISDU','STITBU','Internal','Total'],
+      setorEntries.map(function(e){
+        return ['<b>'+escH(e[0])+'</b>',formatRpShort(e[1].stisdu),formatRpShort(e[1].stitbu),formatRpShort(e[1].internal),
+          '<b style="color:var(--red)">'+formatRpShort(e[1].total)+'</b>'];
+      })
+    );
+    html+='</div></div>';
+  }
+
   // ── Dana Masuk per Sumber Dana (ringkas) ───────────────────────────
   if(r.perSumber && (r.perSumber.STISDU||r.perSumber.STITBU||r.perSumber.Internal)){
     html+='<div class="sec" style="margin-bottom:12px"><div class="sec-head"><div class="sec-title">🏛️ Rekap per Sumber Dana</div></div><div class="sec-body">';
@@ -1424,7 +1537,7 @@ async function loadKeuRingkasan(){
   // ── Detail harian ──────────────────────────────────────────────
   if(r.perHari && r.perHari.length){
     html+='<div class="sec" style="margin-bottom:12px"><div class="sec-head"><div class="sec-title">📅 Detail per Hari</div></div><div class="sec-body">';
-    html+=buildTable(['Tanggal','Diisi Oleh','Status','Dana Masuk','Dana Keluar','Net'],
+    html+=buildTable(['Tanggal','Diisi Oleh','Status','Dana Masuk','Kas Setor','Dana Keluar','Net'],
       r.perHari.map(function(h){
         var ok=h.status==='submitted';
         return [
@@ -1432,6 +1545,7 @@ async function loadKeuRingkasan(){
           escH(h.diisi_oleh||'—'),
           '<span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;background:'+(ok?'var(--green2)':'var(--gold2)')+';color:'+(ok?'#14532D':'#92400E')+'">'+(ok?'✓ Submit':'Draft')+'</span>',
           '<span style="color:var(--green)">'+formatRpShort(h.masuk)+'</span>',
+          '<span style="color:var(--red)">'+formatRpShort(h.setor||0)+'</span>',
           '<span style="color:var(--red)">'+formatRpShort(h.keluar)+'</span>',
           '<b style="color:'+(h.net>=0?'var(--teal)':'var(--red)')+'">'+formatRpShort(h.net)+'</b>'
         ];
@@ -1449,6 +1563,7 @@ async function loadKeuRingkasan(){
 function getDemoKeuRingkasan(dari,sampai){
   return {
     dari, sampai, totalDanaMasuk:32800000, totalDanaKeluar:4750000, net:28050000,
+    totalKasSetor:21150000,
     hariSubmit:5, jumlahHariLaporan:6,
     perProgram:{
       'RPL Khusus':{stisdu:6500000,stitbu:4200000,internal:1800000,total:12500000},
@@ -1462,7 +1577,7 @@ function getDemoKeuRingkasan(dari,sampai){
       {kategori:'Transportasi',sub_kategori:'BBM',total:1500000}
     ],
     perHari:[
-      {tanggal:todayStr(),diisi_oleh:'Nadia Putri',status:'submitted',masuk:5800000,keluar:900000,net:4900000}
+      {tanggal:todayStr(),diisi_oleh:'Nadia Putri',status:'submitted',masuk:5800000,keluar:900000,setor:3900000,net:4900000}
     ]
   };
 }
