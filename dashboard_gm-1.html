@@ -834,13 +834,12 @@ table.adm-tbl,table.mkt-tbl,table.gm-tbl{width:100%;border-collapse:separate;bor
     <input class="f-inp" id="setup-url-inp" type="url" placeholder="https://script.google.com/macros/s/.../exec" style="margin-bottom:10px"/>
     <div id="setup-status" style="font-size:12px;color:var(--red);min-height:16px;margin-bottom:10px"></div>
     <button onclick="connectBackend()" style="width:100%;padding:11px;border-radius:9px;border:none;background:#F59E0B;color:#fff;font-weight:700;font-size:14px;cursor:pointer;font-family:var(--font);margin-bottom:8px">Hubungkan</button>
-    <button onclick="demoMode()" style="width:100%;padding:9px;border-radius:9px;border:1.5px solid var(--border);background:none;color:var(--muted);font-weight:600;font-size:13px;cursor:pointer;font-family:var(--font)">Coba Mode Demo</button>
   </div>
 </div>
 <div class="toast" id="toast"><div class="toast-title" id="toast-title"></div><div class="toast-body" id="toast-body"></div></div>
 <script>
 // ── State ─────────────────────────────────────────────────────────
-let BACKEND='', DEMO=false;
+let BACKEND='';
 let ALL_TUGAS=[], ALL_TARGET=[], ALL_KARYAWAN=[];
 let GM_DATA=null;
 let editingId={tugas:null, karyawan:null};
@@ -864,13 +863,13 @@ document.addEventListener('DOMContentLoaded',()=>{
     if(url){BACKEND=url;document.getElementById('setup-overlay').classList.add('hidden');setSyncStatus('live');}
   }catch(e){}
   initTheme();
-  if(BACKEND||DEMO) initialLoad();
+  if(BACKEND) initialLoad();
 });
 
 // ── Auto-refresh saat aplikasi dibuka kembali (dari background/bfcache/tab lain) ──
 let _lastAutoRefresh = 0;
 function _autoRefreshIfStale(){
-  if(!BACKEND&&!DEMO) return;
+  if(!BACKEND) return;
   const now = Date.now();
   if(now - _lastAutoRefresh < 3000) return;
   _lastAutoRefresh = now;
@@ -903,8 +902,7 @@ async function initialLoad(){
 
 // ── API ───────────────────────────────────────────────────────────
 async function apiGet(params){
-  if(DEMO) return getGMDemoResponse(params);
-  if(!BACKEND) return null;
+  if(!BACKEND) throw new Error('Hubungkan aplikasi ke Google Sheets terlebih dahulu.');
   const res  = await fetch(BACKEND+'?'+new URLSearchParams(params), {redirect:'follow',credentials:'omit'});
   const text = await res.text();
   let json;
@@ -912,65 +910,10 @@ async function apiGet(params){
   if(json.success === false) throw new Error(json.error||'Server error');
   return json.data !== undefined ? json.data : json;
 }async function apiPost(action, payload){
-  if(DEMO||!BACKEND) return {id:'DEMO-'+Date.now()};const btn=getRecentActionButton();if(btn)setButtonLoading(btn,true);
+  if(!BACKEND) throw new Error('Hubungkan aplikasi ke Google Sheets terlebih dahulu.');const btn=getRecentActionButton();if(btn)setButtonLoading(btn,true);
   try{const res=await fetch(BACKEND,{method:'POST',redirect:'follow',credentials:'omit',headers:{'Content-Type':'text/plain'},body:JSON.stringify({action,...payload})});const text=await res.text();let json;try{json=JSON.parse(text);}catch(e){throw new Error('Response tidak valid');}if(json.success===false)throw new Error(json.error||'Server error');return json.data!==undefined?json.data:json;}finally{if(btn)setButtonLoading(btn,false);}
 }
 
-// ── Data Demo (Mode Demo) ─────────────────────────────────────────
-function getGMDemoResponse(params){
-  const today=todayStr();
-  switch(params.action){
-    case 'getGMDashboard': return {
-      submitStatus:{Keuangan:true,Administrasi:true,Marketing:false},
-      lapHariIni:{
-        Keuangan:{tanggal:today,divisi:'Keuangan',status:'submitted',khusus_pk:2500000,khusus_stisdu:1200000,khusus_stitbu:800000,reguler_pk:1500000,reguler_stisdu:900000,reguler_stitbu:600000,karyawan_pk:1000000,karyawan_stisdu:500000,karyawan_stitbu:300000,khusus_setor:450000,reguler_setor:250000,karyawan_setor:150000,danaKeluarDetail:'[{"kategori":"Operasional Kantor","sub":"ATK","keterangan":"Beli kertas & tinta","nominal":250000}]'},
-        Administrasi:{tanggal:today,divisi:'Administrasi',status:'submitted',progresAdm:'[{"jenis":"Data Baru","program":"RPL Khusus","jumlah":8,"kampus":"STISDU","catatan":""}]'},
-        Marketing:{tanggal:today,divisi:'Marketing',status:'draft',leadBaru:5,fuCount:12,closingBaru:2,catatan:''}
-      },
-      masalahAktif:{total:2}
-    };
-    case 'getGMTugas': return { tugas:[
-      {id:'GT-001',judul:'Cek status berkas PDDikti STISDU',deskripsi:'Pastikan semua berkas bulan ini sudah terkirim.',divisi:'Administrasi',prioritas:'Tinggi',status:'Belum Mulai',deadline:today},
-      {id:'GT-002',judul:'Kirim laporan mingguan ke direktur',deskripsi:'Rekap data masuk minggu ini.',divisi:'Semua',prioritas:'Sedang',status:'Proses',deadline:''}
-    ]};
-    case 'getGMTarget': return { target:[
-      {id:'TAR-001',periode:params.periode,kategori:'Closing',divisi:'Marketing',target_nilai:30,satuan:'mahasiswa'},
-      {id:'TAR-002',periode:params.periode,kategori:'Lead Baru',divisi:'Marketing',target_nilai:100,satuan:'lead'},
-      {id:'TAR-003',periode:params.periode,kategori:'Berkas PDDikti',divisi:'Administrasi',target_nilai:200,satuan:'berkas'},
-      {id:'TAR-004',periode:params.periode,kategori:'Dana Masuk',divisi:'Keuangan',target_nilai:150000000,satuan:'Rp'}
-    ]};
-    case 'getRollupBulanan': return {
-      keuangan:{ totalDanaMasuk:78500000, totalDanaKeluar:12750000, rplKhusus:{total:32000000} },
-      administrasi:{ totalBerkas:96, suratMasuk:14, suratKeluar:9 },
-      marketing:{ totalClosing:18, totalClosingTimPMB:12, totalClosingKoordinator:6, totalLead:64,
-        perTimPMB:[{nama:'Tito Ersha',total:6},{nama:'Yuyun Dwi Firma',total:4},{nama:'Bimantara',total:3}] },
-      progress:{ totalHariKerja:26, Keuangan:{hariTerisi:12}, Administrasi:{hariTerisi:12}, Marketing:{hariTerisi:10} }
-    };
-    case 'getKaryawan': return { karyawan:[
-      {id:'KRY-001',nama:'Ismawati',divisi:'Administrasi',jabatan:'Staff Administrasi',aktif:true},
-      {id:'KRY-002',nama:'Nadia Putri',divisi:'Keuangan',jabatan:'Staff Keuangan',aktif:true}
-    ]};
-    case 'getLaporanHarianByTanggal': {
-      const map={
-        Keuangan:{tanggal:params.tanggal,divisi:'Keuangan',status:'submitted',rplKhusus_pk:2500000,rplKhusus_stisdu:1200000,rplKhusus_stitbu:800000,rplBiasa_pk:1500000,rplBiasa_stisdu:900000,rplBiasa_stitbu:600000,kKaryawan_pk:1000000,kKaryawan_stisdu:500000,kKaryawan_stitbu:300000,rplKhusus_setor:450000,rplBiasa_setor:250000,kKaryawan_setor:150000,danaKeluarDetail:'[{"kategori":"Operasional Kantor","sub":"ATK","keterangan":"Beli kertas & tinta","nominal":250000}]'},
-        Administrasi:{tanggal:params.tanggal,divisi:'Administrasi',status:'submitted',progresAdm:'[{"jenis":"Data Baru","program":"RPL Khusus","jumlah":8,"kampus":"STISDU","catatan":""},{"jenis":"Data On PDDikti","program":"RPL Reguler (6 Bln)","jumlah":5,"kampus":"STITBU","catatan":""}]'},
-        Marketing:{tanggal:params.tanggal,divisi:'Marketing',status:'draft',leadBaru:5,fuCount:12,closingBaru:2,catatan:'Follow up 3 lead lama masih berlangsung.'}
-      };
-      return { laporan: map[params.divisi] || null };
-    }
-    case 'getAdmMasalah': return { masalah:[
-      {id:'AM-001',judul:'KTP tidak terbaca',kampus:'STISDU',program:'RPL Khusus',jenis:'Revisi Dokumen',status:'Proses',prioritas:'Tinggi',pic:'Ismawati'},
-      {id:'AM-002',judul:'Foto tidak sesuai ketentuan',kampus:'STITBU',program:'RPL Reguler',jenis:'Revisi Dokumen',status:'Belum Ditangani',prioritas:'Sedang',pic:'Ismawati'}
-    ]};
-    case 'getMktLead': return { leads:[
-      {id:'LD-001',nama_lengkap:'Andi Susanto',program_minat:'RPL Khusus',sumber_lead:'Instagram',status:'Tertarik',pic:'Tito Ersha',tanggal_masuk:today,tanggal_update:today}
-    ]};
-    case 'getMktClosing': return { closing:[
-      {id:'CL-001',nama_lengkap:'Rizky Pratama',program:'RPL Khusus',perguruan_tinggi:'STISDU',pic:'Tito Ersha',status:'Daftar Ulang',tanggal_closing:today,tanggal_update:today}
-    ]};
-    default: return null;
-  }
-}
 // ── Beranda ───────────────────────────────────────────────────────
 async function loadBerandaData(){
   try{
@@ -1334,7 +1277,7 @@ async function saveTugas(){
   const p={judul,deskripsi:getInp('tg-deskripsi'),divisi:getSel('tg-divisi'),prioritas:getSel('tg-prioritas'),status:getSel('tg-status'),deadline:getInp('tg-deadline'),dibuat_oleh:'GM'};
   try{
     if(editingId.tugas){p.id=editingId.tugas;await apiPost('updateGMTugas',p);const idx=ALL_TUGAS.findIndex(x=>x.id===editingId.tugas);if(idx>=0)ALL_TUGAS[idx]={...ALL_TUGAS[idx],...p};}
-    else{const res=await apiPost('addGMTugas',p);p.id=(DEMO?'GT-'+Date.now():res?.id)||'GT-'+Date.now();ALL_TUGAS.push(p);}
+    else{const res=await apiPost('addGMTugas',p);p.id=res?.id;if(!p.id)throw new Error('ID tugas tidak diterima dari server.');ALL_TUGAS.push(p);}
     closeModal('modal-tugas');renderTugas();toast('<i class=bi-check-circle-fill aria-hidden=true></i> Tugas Tersimpan','');
   }catch(e){toast('<i class=bi-x-circle-fill aria-hidden=true></i> Gagal',e.message,'err');}
 }
@@ -1451,7 +1394,7 @@ async function saveKaryawan(){
   const p={nama,divisi:getSel('kryw-divisi'),jabatan:getInp('kryw-jabatan'),aktif:true};
   try{
     if(editingId.karyawan){p.id=editingId.karyawan;await apiPost('updateKaryawan',p);const idx=ALL_KARYAWAN.findIndex(x=>x.id===editingId.karyawan);if(idx>=0)ALL_KARYAWAN[idx]={...ALL_KARYAWAN[idx],...p};}
-    else{const res=await apiPost('addKaryawan',p);p.id=(DEMO?'KRY-'+Date.now():res?.id)||'KRY-'+Date.now();ALL_KARYAWAN.push(p);}
+    else{const res=await apiPost('addKaryawan',p);p.id=res?.id;if(!p.id)throw new Error('ID karyawan tidak diterima dari server.');ALL_KARYAWAN.push(p);}
     closeModal('modal-karyawan');renderKaryawan();toast('<i class=bi-check-circle-fill aria-hidden=true></i> Tersimpan','');
   }catch(e){toast('<i class=bi-x-circle-fill aria-hidden=true></i> Gagal',e.message,'err');}
 }
@@ -1490,10 +1433,10 @@ async function connectBackend(){
     stEl.innerHTML='<i class=bi-x-circle-fill aria-hidden=true></i> <b>Gagal:</b> '+err.message+
       '<br><small>Cek: (1) URL benar? (2) Web App sudah di-deploy ulang? (3) Akses diset ke <b>Anyone</b>?</small>';
   }
-}function demoMode(){DEMO=true;document.getElementById('setup-overlay').classList.add('hidden');setSyncStatus('demo');initialLoad();toast('<i class=bi-tools aria-hidden=true></i> Mode Demo','');}
+}
 function openSetup(){document.getElementById('sync-menu').classList.remove('open');document.getElementById('setup-overlay').classList.remove('hidden');}
 function manualRefresh(){document.getElementById('sync-menu').classList.remove('open');initialLoad();toast('<i class=bi-arrow-repeat aria-hidden=true></i> Refresh','Data diperbarui.');}
-function setSyncStatus(s){const b=document.getElementById('sync-badge');const d=b?.querySelector('.live-dot');const l=document.getElementById('sync-label');b?.classList.toggle('live',s==='live');if(d)d.style.background=s==='live'?'var(--green)':s==='demo'?'var(--gold)':'var(--muted)';if(l)l.textContent=s==='live'?'Live':s==='demo'?'Demo':'Offline';}
+function setSyncStatus(s){const b=document.getElementById('sync-badge');const d=b?.querySelector('.live-dot');const l=document.getElementById('sync-label');b?.classList.toggle('live',s==='live');if(d)d.style.background=s==='live'?'var(--green)':'var(--muted)';if(l)l.textContent=s==='live'?'Live':'Offline';}
 
 
 // ── Loading tombol dan dialog reusable ───────────────────────────
