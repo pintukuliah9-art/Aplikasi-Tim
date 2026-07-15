@@ -3,9 +3,14 @@
 <head>
 <meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>Dashboard Administrasi</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"/>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700&family=IBM+Plex+Mono:wght@500;600;700&display=swap');
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+[class^="bi-"],[class*=" bi-"]{display:inline-block;vertical-align:-.125em;line-height:1}
+.btn>[class^="bi-"],.sync-btn>[class^="bi-"],.sec-title>[class^="bi-"],.topbar-title>[class^="bi-"],.pg-sec-head [class^="bi-"],.kanban-col-head [class^="bi-"],.sb-darkmode [class^="bi-"],.toast-title>[class^="bi-"]{margin-right:6px}
+button>[class^="bi-"]:only-child,.sb-icon>[class^="bi-"]:only-child{margin-right:0}
+.sb-icon>[class^="bi-"]{font-size:1.05em}
 :root{
   --teal:#0D9488;--teal2:#CCFBF1;--blue:#1D4ED8;--blue2:#DBEAFE;
   --green:#16A34A;--green2:#DCFCE7;--gold:#D97706;--gold2:#FEF3C7;
@@ -80,6 +85,9 @@ body.dark .topbar-title{color:var(--text)}
 /* TOOLBAR */
 .toolbar{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;align-items:center}
 .search-box{flex:1;min-width:160px;border:1.5px solid var(--border);border-radius:8px;padding:8px 12px;font-size:13px;font-family:var(--font);color:var(--text);background:var(--card);outline:none}
+.search-field{position:relative;display:flex;align-items:center;flex:1;min-width:180px}
+.search-field>[class^="bi-"]{position:absolute;left:12px;color:var(--muted);pointer-events:none;z-index:1}
+.search-field>.search-box{width:100%;padding-left:34px}
 .search-box:focus{border-color:var(--teal)}
 .f-sel{border:1.5px solid var(--border);border-radius:8px;padding:7px 10px;font-size:12.5px;font-family:var(--font);color:var(--text);background:var(--card);outline:none}
 .f-sel:focus{border-color:var(--teal)}
@@ -229,6 +237,12 @@ body.dark .hamburger-btn{color:var(--text)}
 @media(max-width:480px){
   .stat-row{grid-template-columns:1fr}
 }
+
+/* ===== Alur simpan aman, loading bergerak, dan dialog custom ===== */
+.btn{position:relative}.btn:disabled,.btn.is-loading{opacity:.72;cursor:not-allowed;pointer-events:none}.spin{display:inline-block;animation:actionSpin .75s linear infinite}@keyframes actionSpin{to{transform:rotate(360deg)}}
+.loading-state{display:flex;align-items:center;justify-content:center;gap:9px;padding:28px;color:var(--muted);font-size:12.5px}.loading-dots{display:inline-flex;gap:4px}.loading-dots span{width:6px;height:6px;border-radius:50%;background:currentColor;animation:actionDot 1.1s ease-in-out infinite}.loading-dots span:nth-child(2){animation-delay:.14s}.loading-dots span:nth-child(3){animation-delay:.28s}@keyframes actionDot{0%,80%,100%{opacity:.35;transform:translateY(0)}40%{opacity:1;transform:translateY(-4px)}}
+.confirm-overlay{display:none;position:fixed;inset:0;background:rgba(15,23,42,.58);z-index:900;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(3px)}.confirm-overlay.open{display:flex}.confirm-box{width:min(430px,100%);background:var(--card);border:1px solid var(--border);border-radius:15px;box-shadow:var(--shadow-lg,0 18px 48px rgba(0,0,0,.22));overflow:hidden;animation:actionConfirm .18s ease}@keyframes actionConfirm{from{opacity:0;transform:translateY(8px) scale(.985)}to{opacity:1;transform:none}}.confirm-head{display:flex;gap:12px;padding:18px 18px 12px}.confirm-icon{width:40px;height:40px;border-radius:11px;background:var(--teal2,var(--blue2));color:var(--teal,var(--blue));display:grid;place-items:center;font-size:18px;flex:0 0 40px}.confirm-title{font-family:'DM Serif Display',serif;font-size:18px;margin-bottom:4px;color:var(--navy)}body.dark .confirm-title{color:var(--text)}.confirm-message{font-size:12.5px;color:var(--muted);line-height:1.6}.confirm-actions{display:flex;justify-content:flex-end;gap:8px;padding:14px 18px 18px}@media(max-width:480px){.confirm-actions{flex-direction:column-reverse}.confirm-actions .btn{width:100%;justify-content:center}}
+
 </style>
 
 <style id="premium-redesign-2026">
@@ -464,39 +478,39 @@ table.adm-tbl,table.mkt-tbl,table.gm-tbl{width:100%;border-collapse:separate;bor
   </div>
   <div class="sb-nav">
     <div class="sb-group-lbl">Input Harian</div>
-    <div class="sb-item active" onclick="nav(this,'page-laporan')"><span class="sb-icon">📋</span> Laporan Harian</div>
+    <div class="sb-item active" onclick="nav(this,'page-laporan')"><span class="sb-icon"><i class=bi-clipboard2-check-fill aria-hidden=true></i></span> Laporan Harian</div>
     <div class="sb-item" onclick="nav(this,'page-masalah')">
-      <span class="sb-icon">⚠️</span> Kanban Masalah
+      <span class="sb-icon"><i class=bi-exclamation-triangle-fill aria-hidden=true></i></span> Kanban Masalah
       <span class="sb-badge red" id="badge-masalah" style="display:none">0</span>
     </div>
     <div class="sb-item" onclick="nav(this,'page-surat')">
-      <span class="sb-icon">✉️</span> Arsip Surat
+      <span class="sb-icon"><i class=bi-envelope-fill aria-hidden=true></i></span> Arsip Surat
       <span class="sb-badge teal" id="badge-surat" style="display:none">0</span>
     </div>
-    <div class="sb-item" onclick="nav(this,'page-tugas')"><span class="sb-icon">📋</span> Tugas &amp; Masalah<span class="sb-badge red" id="badge-tugas" style="display:none">0</span></div>
+    <div class="sb-item" onclick="nav(this,'page-tugas')"><span class="sb-icon"><i class=bi-clipboard2-check-fill aria-hidden=true></i></span> Tugas &amp; Masalah<span class="sb-badge red" id="badge-tugas" style="display:none">0</span></div>
     <div class="sb-group-lbl">Ringkasan</div>
-    <div class="sb-item" onclick="nav(this,'page-ringkasan')"><span class="sb-icon">📊</span> Ringkasan Bulanan</div>
+    <div class="sb-item" onclick="nav(this,'page-ringkasan')"><span class="sb-icon"><i class=bi-bar-chart-fill aria-hidden=true></i></span> Ringkasan Bulanan</div>
     <div class="sb-group-lbl">Sistem</div>
-    <div class="sb-item" onclick="nav(this,'page-pengaturan')"><span class="sb-icon">⚙️</span> Pengaturan</div>
+    <div class="sb-item" onclick="nav(this,'page-pengaturan')"><span class="sb-icon"><i class=bi-gear-fill aria-hidden=true></i></span> Pengaturan</div>
   </div>
   <div class="sb-footer">
-    <div class="sb-darkmode" onclick="toggleDark()"><span id="dark-icon">🌙</span> Mode Gelap</div>
+    <div class="sb-darkmode" onclick="toggleDark()"><span id="dark-icon"><i class=bi-moon-stars-fill aria-hidden=true></i></span> Mode Gelap</div>
   </div>
 </nav>
 <div class="sidebar-backdrop" id="sidebar-backdrop" onclick="closeMobileSidebar()"></div>
 
 <div class="main">
   <div class="topbar">
-    <button class="hamburger-btn" onclick="toggleMobileSidebar()" aria-label="Buka menu">☰</button>
-    <div class="topbar-title" id="topbar-title">📋 Laporan Harian Administrasi</div>
+    <button class="hamburger-btn" onclick="toggleMobileSidebar()" aria-label="Buka menu"><i class=bi-list aria-hidden=true></i></button>
+    <div class="topbar-title" id="topbar-title"><i class=bi-clipboard2-check-fill aria-hidden=true></i> Laporan Harian Administrasi</div>
     <div style="display:flex;gap:10px;align-items:center">
       <div class="live-badge" id="sync-badge" onclick="document.getElementById('sync-menu').classList.toggle('open')">
         <span class="live-dot"></span><span id="sync-label">Offline</span>
         <div class="sync-menu" id="sync-menu">
           <div class="sync-menu-item">Backend: <b id="sync-url">Belum tersambung</b></div>
           <div class="sync-menu-item">Update: <b id="sync-time">—</b></div>
-          <button class="sync-btn" onclick="manualRefresh()">🔄 Refresh</button>
-          <button class="sync-btn" onclick="openSetup()">⚙️ Ganti URL</button>
+          <button class="sync-btn" onclick="manualRefresh()"><i class=bi-arrow-repeat aria-hidden=true></i> Refresh</button>
+          <button class="sync-btn" onclick="openSetup()"><i class=bi-gear-fill aria-hidden=true></i> Ganti URL</button>
         </div>
       </div>
     </div>
@@ -512,16 +526,16 @@ table.adm-tbl,table.mkt-tbl,table.gm-tbl{width:100%;border-collapse:separate;bor
     </div>
     <div style="display:flex;align-items:center;gap:10px">
       <span class="status-chip" id="lap-status-chip">Belum diisi</span>
-      <button class="btn sm" onclick="saveDraft()">💾 Draft</button>
-      <button class="btn primary sm" onclick="saveSubmit()">✅ Submit</button>
+      <button class="btn sm" onclick="saveDraft(this)"><i class=bi-floppy-fill aria-hidden=true></i> Simpan Draft</button>
+      <button class="btn primary sm" onclick="saveSubmit(this)"><i class=bi-check-circle-fill aria-hidden=true></i> Submit Laporan</button>
     </div>
   </div>
 
   <!-- Laporan Harian: baris dinamis -->
   <div class="sec">
     <div class="sec-head">
-      <div class="sec-title">📊 Input Laporan Harian</div>
-      <button class="btn sm primary" onclick="addLapRow()">＋ Tambah Baris</button>
+      <div class="sec-title"><i class=bi-bar-chart-fill aria-hidden=true></i> Input Laporan Harian</div>
+      <button class="btn sm primary" onclick="addLapRow()"><i class=bi-plus-lg aria-hidden=true></i> Tambah Baris</button>
     </div>
     <div class="sec-body">
       <!-- Header kolom -->
@@ -536,7 +550,7 @@ table.adm-tbl,table.mkt-tbl,table.gm-tbl{width:100%;border-collapse:separate;bor
       <div id="lap-rows-container"></div>
       <div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between">
         <span style="font-size:12px;color:var(--muted)" id="lap-rows-summary"></span>
-        <button class="btn sm" onclick="addLapRow()" style="color:var(--teal);border-color:var(--teal)">＋ Baris baru</button>
+        <button class="btn sm" onclick="addLapRow()" style="color:var(--teal);border-color:var(--teal)"><i class=bi-plus-lg aria-hidden=true></i> Baris baru</button>
       </div>
     </div>
   </div>
@@ -544,8 +558,8 @@ table.adm-tbl,table.mkt-tbl,table.gm-tbl{width:100%;border-collapse:separate;bor
   <!-- Surat hari ini -->
   <div class="sec">
     <div class="sec-head">
-      <div class="sec-title">✉️ Surat Hari Ini</div>
-      <button class="btn sm primary" onclick="openSuratModal()">＋ Catat Surat</button>
+      <div class="sec-title"><i class=bi-envelope-fill aria-hidden=true></i> Surat Hari Ini</div>
+      <button class="btn sm primary" onclick="openSuratModal()"><i class=bi-plus-lg aria-hidden=true></i> Catat Surat</button>
     </div>
     <div class="sec-body" id="surat-hari-ini">
       <div class="tbl-empty" style="padding:16px">Belum ada surat hari ini.</div>
@@ -560,19 +574,19 @@ table.adm-tbl,table.mkt-tbl,table.gm-tbl{width:100%;border-collapse:separate;bor
     <select class="f-sel" id="mslh-f-kampus" onchange="renderMasalah()"><option value="">Semua Kampus</option></select>
     <select class="f-sel" id="mslh-f-jenis" onchange="renderMasalah()"><option value="">Semua Jenis</option></select>
     <select class="f-sel" id="mslh-f-program" onchange="renderMasalah()"><option value="">Semua Program</option></select>
-    <button class="btn primary" onclick="openMasalahModal()">＋ Tambah Masalah</button>
+    <button class="btn primary" onclick="openMasalahModal()"><i class=bi-plus-lg aria-hidden=true></i> Tambah Masalah</button>
   </div>
   <div class="kanban" id="masalah-kanban">
     <div class="kanban-col">
-      <div class="kanban-col-head"><span>🔴 Belum Ditangani</span><span class="kanban-count" id="kn-cnt-belum">0</span></div>
+      <div class="kanban-col-head"><span><i class=bi-circle-fill aria-hidden=true></i> Belum Ditangani</span><span class="kanban-count" id="kn-cnt-belum">0</span></div>
       <div id="kn-belum"></div>
     </div>
     <div class="kanban-col">
-      <div class="kanban-col-head"><span>🔄 Proses</span><span class="kanban-count" id="kn-cnt-proses">0</span></div>
+      <div class="kanban-col-head"><span><i class=bi-arrow-repeat aria-hidden=true></i> Proses</span><span class="kanban-count" id="kn-cnt-proses">0</span></div>
       <div id="kn-proses"></div>
     </div>
     <div class="kanban-col">
-      <div class="kanban-col-head"><span>✅ Selesai</span><span class="kanban-count" id="kn-cnt-selesai">0</span></div>
+      <div class="kanban-col-head"><span><i class=bi-check-circle-fill aria-hidden=true></i> Selesai</span><span class="kanban-count" id="kn-cnt-selesai">0</span></div>
       <div id="kn-selesai"></div>
     </div>
   </div>
@@ -582,17 +596,17 @@ table.adm-tbl,table.mkt-tbl,table.gm-tbl{width:100%;border-collapse:separate;bor
 <!-- PAGE: ARSIP SURAT ─────────────────────────────────────── -->
 <div id="page-surat" class="page">
   <div class="toolbar">
-    <input class="search-box" id="surat-search" placeholder="🔍 Cari nomor, perihal, instansi..." oninput="filterSurat()"/>
+    <div class="search-field"><i class=bi-search aria-hidden=true></i><input class="search-box" id="surat-search" placeholder="Cari nomor, perihal, instansi..." oninput="filterSurat()"/></div>
     <select class="f-sel" id="surat-f-jenis" onchange="filterSurat()"><option value="">Semua Jenis</option><option>Masuk</option><option>Keluar</option></select>
     <input type="date" class="f-sel" id="surat-f-tgl" onchange="filterSurat()"/>
-    <button class="btn primary" onclick="openSuratModal()">＋ Catat Surat</button>
+    <span style="font-size:12px;color:var(--muted)" id="surat-count"></span>
+    <button class="btn primary" onclick="openSuratModal()"><i class=bi-plus-lg aria-hidden=true></i> Catat Surat</button>
   </div>
   <div class="sec">
-    <div class="sec-head"><div class="sec-title">✉️ Arsip Surat <span style="font-size:12px;font-weight:400;color:var(--muted)" id="surat-count"></span></div></div>
     <div class="tbl-wrap">
       <table class="adm-tbl">
         <thead><tr><th>Jenis</th><th>No. Surat</th><th>Tanggal</th><th>Perihal</th><th>Dari/Kepada</th><th>Instansi</th><th>Catatan</th><th>Aksi</th></tr></thead>
-        <tbody id="surat-tbody"><tr><td colspan="8" class="tbl-empty">⏳ Memuat...</td></tr></tbody>
+        <tbody id="surat-tbody"><tr><td colspan="8" class="tbl-empty"><i class="bi bi-arrow-repeat spin" aria-hidden="true"></i> Memuat...</td></tr></tbody>
       </table>
     </div>
   </div>
@@ -602,36 +616,33 @@ table.adm-tbl,table.mkt-tbl,table.gm-tbl{width:100%;border-collapse:separate;bor
 <!-- PAGE: TUGAS & MASALAH -->
 <div id="page-tugas" class="page">
   <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:10px">
-    <div>
-      <div style="font-weight:700;font-size:15px">📋 Tugas &amp; Masalah</div>
-      <div style="font-size:12.5px;color:var(--muted);margin-top:2px">Instruksi dari GM dan tugas internal</div>
-    </div>
-    <button class="btn primary" onclick="openMasalahModal()" style="background:var(--teal);border-color:var(--teal)">＋ Tambah Masalah</button>
+    <div style="font-size:12.5px;color:var(--muted)">Instruksi dari GM dan tugas internal</div>
+    <button class="btn primary" onclick="openMasalahModal()" style="background:var(--teal);border-color:var(--teal)"><i class=bi-plus-lg aria-hidden=true></i> Tambah Masalah</button>
   </div>
   <!-- Instruksi dari GM -->
   <div class="sec" style="margin-bottom:14px">
-    <div class="sec-head"><div class="sec-title">📌 Instruksi dari GM</div><span style="font-size:12px;color:var(--muted)" id="gm-tugas-count"></span></div>
+    <div class="sec-head"><div class="sec-title"><i class=bi-pin-angle-fill aria-hidden=true></i> Instruksi dari GM</div><span style="font-size:12px;color:var(--muted)" id="gm-tugas-count"></span></div>
     <div class="sec-body" id="tugas-list-adm">
       <div style="color:var(--muted);font-size:12.5px;text-align:center;padding:20px">Memuat instruksi dari GM...</div>
     </div>
   </div>
   <!-- Masalah/Tugas Internal -->
-  <div style="font-weight:700;font-size:13.5px;margin-bottom:10px">⚠️ Masalah &amp; Tugas Internal</div>
+  <div style="font-weight:700;font-size:13.5px;margin-bottom:10px"><i class=bi-exclamation-triangle-fill aria-hidden=true></i> Masalah &amp; Tugas Internal</div>
   <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap">
     <select class="f-sel" id="mslh-f-kampus2" onchange="renderMasalah()"><option value="">Semua Kampus</option></select>
     <select class="f-sel" id="mslh-f-jenis2" onchange="renderMasalah()"><option value="">Semua Jenis</option></select>
   </div>
   <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px">
     <div class="kanban-col">
-      <div class="kanban-col-head"><span>🔴 Belum Ditangani</span><span class="kanban-count" id="kn-cnt-belum2">0</span></div>
+      <div class="kanban-col-head"><span><i class=bi-circle-fill aria-hidden=true></i> Belum Ditangani</span><span class="kanban-count" id="kn-cnt-belum2">0</span></div>
       <div id="kn-belum2"></div>
     </div>
     <div class="kanban-col">
-      <div class="kanban-col-head"><span>🔄 Proses</span><span class="kanban-count" id="kn-cnt-proses2">0</span></div>
+      <div class="kanban-col-head"><span><i class=bi-arrow-repeat aria-hidden=true></i> Proses</span><span class="kanban-count" id="kn-cnt-proses2">0</span></div>
       <div id="kn-proses2"></div>
     </div>
     <div class="kanban-col">
-      <div class="kanban-col-head"><span>✅ Selesai</span><span class="kanban-count" id="kn-cnt-selesai2">0</span></div>
+      <div class="kanban-col-head"><span><i class=bi-check-circle-fill aria-hidden=true></i> Selesai</span><span class="kanban-count" id="kn-cnt-selesai2">0</span></div>
       <div id="kn-selesai2"></div>
     </div>
   </div>
@@ -641,22 +652,19 @@ table.adm-tbl,table.mkt-tbl,table.gm-tbl{width:100%;border-collapse:separate;bor
 <div id="page-ringkasan" class="page">
   <!-- Header + PDF button -->
   <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:10px">
-    <div>
-      <div style="font-weight:700;font-size:15px">📊 Ringkasan Laporan</div>
-      <div style="font-size:12px;color:var(--muted);margin-top:2px">Otomatis dari laporan harian yang sudah disubmit</div>
-    </div>
+    <div style="font-size:12px;color:var(--muted)">Otomatis dari laporan harian yang sudah disubmit</div>
     <button class="btn" onclick="downloadPDF('adm-rs-content','Ringkasan_Administrasi_'+todayStr()+'.pdf')"
       style="background:var(--red);border-color:var(--red);color:#fff;display:flex;align-items:center;gap:6px">
-      📄 Download PDF
+      <i class=bi-file-earmark-pdf-fill aria-hidden=true></i> Download PDF
     </button>
   </div>
 
   <!-- Tab Harian / Mingguan / Bulanan / Tahunan -->
   <div style="display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap">
-    <button class="btn rs-tab" id="adm-tab-h"   onclick="admTab('h')"   style="background:var(--teal);color:#fff;border-color:var(--teal)">📅 Harian</button>
-    <button class="btn rs-tab" id="adm-tab-mgg" onclick="admTab('mgg')" style="">📆 Mingguan</button>
-    <button class="btn rs-tab" id="adm-tab-bln" onclick="admTab('bln')" style="">🗓️ Bulanan</button>
-    <button class="btn rs-tab" id="adm-tab-thn" onclick="admTab('thn')" style="">📈 Tahunan</button>
+    <button class="btn rs-tab" id="adm-tab-h"   onclick="admTab('h')"   style="background:var(--teal);color:#fff;border-color:var(--teal)"><i class=bi-calendar-day-fill aria-hidden=true></i> Harian</button>
+    <button class="btn rs-tab" id="adm-tab-mgg" onclick="admTab('mgg')" style=""><i class=bi-calendar-week-fill aria-hidden=true></i> Mingguan</button>
+    <button class="btn rs-tab" id="adm-tab-bln" onclick="admTab('bln')" style=""><i class=bi-calendar-month-fill aria-hidden=true></i> Bulanan</button>
+    <button class="btn rs-tab" id="adm-tab-thn" onclick="admTab('thn')" style=""><i class=bi-graph-up-arrow aria-hidden=true></i> Tahunan</button>
   </div>
 
   <!-- Filter tanggal/periode -->
@@ -681,45 +689,43 @@ table.adm-tbl,table.mkt-tbl,table.gm-tbl{width:100%;border-collapse:separate;bor
 
 <!-- PAGE: PENGATURAN ─────────────────────────────────────── -->
 <div id="page-pengaturan" class="page">
-  <div style="font-family:'DM Serif Display',serif;font-size:18px;margin-bottom:16px">⚙️ Pengaturan Administrasi</div>
-
   <div class="pg-section">
-    <div class="pg-sec-head"><span>🏛️ Daftar Kampus</span></div>
+    <div class="pg-sec-head"><span><i class=bi-bank2 aria-hidden=true></i> Daftar Kampus</span></div>
     <div class="pg-sec-body">
       <div style="font-size:12px;color:var(--muted);margin-bottom:8px">Kampus yang muncul di dropdown laporan, kanban, dan laporan.</div>
       <div class="tag-wrap" id="pg-tags-kampusList"></div>
-      <div class="tag-input-row"><input class="tag-input" id="pg-inp-kampusList" placeholder="cth: UNKRIS, STIA Mensis..."/><button class="btn sm primary" onclick="addTag('kampusList')">＋</button></div>
+      <div class="tag-input-row"><input class="tag-input" id="pg-inp-kampusList" placeholder="cth: UNKRIS, STIA Mensis..."/><button class="btn sm primary" onclick="addTag('kampusList')"><i class=bi-plus-lg aria-hidden=true></i></button></div>
     </div>
   </div>
 
   <div class="pg-section">
-    <div class="pg-sec-head"><span>📋 Jenis Laporan Harian</span></div>
+    <div class="pg-sec-head"><span><i class=bi-clipboard2-check-fill aria-hidden=true></i> Jenis Laporan Harian</span></div>
     <div class="pg-sec-body">
       <div style="font-size:12px;color:var(--muted);margin-bottom:8px">Pilihan jenis data yang muncul di dropdown kolom "Jenis Data" pada laporan harian.</div>
       <div class="tag-wrap" id="pg-tags-jenisLaporan"></div>
-      <div class="tag-input-row"><input class="tag-input" id="pg-inp-jenisLaporan" placeholder="cth: Data Validasi, SKL..."/><button class="btn sm primary" onclick="addTag('jenisLaporan')">＋</button></div>
+      <div class="tag-input-row"><input class="tag-input" id="pg-inp-jenisLaporan" placeholder="cth: Data Validasi, SKL..."/><button class="btn sm primary" onclick="addTag('jenisLaporan')"><i class=bi-plus-lg aria-hidden=true></i></button></div>
     </div>
   </div>
 
   <div class="pg-section">
-    <div class="pg-sec-head"><span>📚 Daftar Program</span></div>
+    <div class="pg-sec-head"><span><i class=bi-journals aria-hidden=true></i> Daftar Program</span></div>
     <div class="pg-sec-body">
       <div class="tag-wrap" id="pg-tags-programList"></div>
-      <div class="tag-input-row"><input class="tag-input" id="pg-inp-programList" placeholder="cth: RPL 2 Tahun..."/><button class="btn sm primary" onclick="addTag('programList')">＋</button></div>
+      <div class="tag-input-row"><input class="tag-input" id="pg-inp-programList" placeholder="cth: RPL 2 Tahun..."/><button class="btn sm primary" onclick="addTag('programList')"><i class=bi-plus-lg aria-hidden=true></i></button></div>
     </div>
   </div>
 
   <div class="pg-section">
-    <div class="pg-sec-head"><span>⚠️ Jenis Masalah</span></div>
+    <div class="pg-sec-head"><span><i class=bi-exclamation-triangle-fill aria-hidden=true></i> Jenis Masalah</span></div>
     <div class="pg-sec-body">
       <div class="tag-wrap" id="pg-tags-jenisMasalah"></div>
-      <div class="tag-input-row"><input class="tag-input" id="pg-inp-jenisMasalah" placeholder="cth: Foto Tidak Sesuai..."/><button class="btn sm primary" onclick="addTag('jenisMasalah')">＋</button></div>
+      <div class="tag-input-row"><input class="tag-input" id="pg-inp-jenisMasalah" placeholder="cth: Foto Tidak Sesuai..."/><button class="btn sm primary" onclick="addTag('jenisMasalah')"><i class=bi-plus-lg aria-hidden=true></i></button></div>
     </div>
   </div>
 
   <div style="display:flex;justify-content:flex-end;gap:10px;margin-top:6px">
-    <button class="btn" onclick="loadPengaturan()">↩ Reset</button>
-    <button class="btn primary" onclick="savePengaturan()">💾 Simpan</button>
+    <button class="btn" onclick="loadPengaturan()"><i class=bi-arrow-counterclockwise aria-hidden=true></i> Reset</button>
+    <button class="btn primary" onclick="savePengaturan()"><i class=bi-floppy-fill aria-hidden=true></i> Simpan</button>
   </div>
 </div><!-- /page-pengaturan -->
 
@@ -732,8 +738,8 @@ table.adm-tbl,table.mkt-tbl,table.gm-tbl{width:100%;border-collapse:separate;bor
 <div class="modal-overlay" id="modal-gm-reply">
   <div class="modal-box">
     <div class="modal-head">
-      <div class="modal-title">📌 Balas Tugas dari GM</div>
-      <button class="modal-close" onclick="closeModal('modal-gm-reply')">✕</button>
+      <div class="modal-title"><i class=bi-pin-angle-fill aria-hidden=true></i> Balas Tugas dari GM</div>
+      <button class="modal-close" onclick="closeModal('modal-gm-reply')"><i class=bi-x-lg aria-hidden=true></i></button>
     </div>
     <div class="modal-body">
       <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:12px;margin-bottom:14px">
@@ -744,9 +750,9 @@ table.adm-tbl,table.mkt-tbl,table.gm-tbl{width:100%;border-collapse:separate;bor
       <div class="f-row">
         <div class="f-lbl">Update Status Pengerjaan</div>
         <select class="f-sel2" id="gm-reply-status">
-          <option value="Belum Mulai">⭕ Belum Mulai</option>
-          <option value="Proses">🔄 Sedang Dikerjakan</option>
-          <option value="Selesai">✅ Sudah Selesai</option>
+          <option value="Belum Mulai">Belum Mulai</option>
+          <option value="Proses">Sedang Dikerjakan</option>
+          <option value="Selesai">Sudah Selesai</option>
         </select>
       </div>
       <div class="f-row">
@@ -758,7 +764,7 @@ table.adm-tbl,table.mkt-tbl,table.gm-tbl{width:100%;border-collapse:separate;bor
     </div>
     <div class="modal-foot">
       <button class="btn" onclick="closeModal('modal-gm-reply')">Batal</button>
-      <button class="btn primary" onclick="kirimBalasanGM()" style="background:#0D9488;border-color:#0D9488">📤 Kirim Balasan</button>
+      <button class="btn primary" onclick="kirimBalasanGM()" style="background:#0D9488;border-color:#0D9488"><i class=bi-box-arrow-up aria-hidden=true></i> Kirim Balasan</button>
     </div>
   </div>
 </div>
@@ -766,7 +772,7 @@ table.adm-tbl,table.mkt-tbl,table.gm-tbl{width:100%;border-collapse:separate;bor
 <!-- MODAL: MASALAH -->
 <div class="modal-overlay" id="modal-masalah">
   <div class="modal-box">
-    <div class="modal-head"><div class="modal-title" id="modal-masalah-title">Tambah Masalah</div><button class="modal-close" onclick="closeModal('modal-masalah')">✕</button></div>
+    <div class="modal-head"><div class="modal-title" id="modal-masalah-title">Tambah Masalah</div><button class="modal-close" onclick="closeModal('modal-masalah')"><i class=bi-x-lg aria-hidden=true></i></button></div>
     <div class="modal-body">
       <div class="f-row"><div class="f-lbl">Judul Masalah *</div><input class="f-inp" id="ms-judul" placeholder="cth: KTP mahasiswa tidak terbaca"/></div>
       <div class="f-row-2">
@@ -787,14 +793,14 @@ table.adm-tbl,table.mkt-tbl,table.gm-tbl{width:100%;border-collapse:separate;bor
       </div>
       <div class="f-row"><div class="f-lbl">Deskripsi / Catatan</div><textarea class="f-ta" id="ms-deskripsi" placeholder="Detail masalah, langkah yang sudah diambil..."></textarea></div>
     </div>
-    <div class="modal-foot"><button class="btn" onclick="closeModal('modal-masalah')">Batal</button><button class="btn primary" onclick="saveMasalah()">💾 Simpan</button></div>
+    <div class="modal-foot"><button class="btn" onclick="closeModal('modal-masalah')">Batal</button><button class="btn primary" onclick="saveMasalah()"><i class=bi-floppy-fill aria-hidden=true></i> Simpan</button></div>
   </div>
 </div>
 
 <!-- MODAL: SURAT -->
 <div class="modal-overlay" id="modal-surat">
   <div class="modal-box">
-    <div class="modal-head"><div class="modal-title" id="modal-surat-title">Catat Surat</div><button class="modal-close" onclick="closeModal('modal-surat')">✕</button></div>
+    <div class="modal-head"><div class="modal-title" id="modal-surat-title">Catat Surat</div><button class="modal-close" onclick="closeModal('modal-surat')"><i class=bi-x-lg aria-hidden=true></i></button></div>
     <div class="modal-body">
       <div class="f-row-2">
         <div><div class="f-lbl">Jenis Surat</div>
@@ -810,11 +816,13 @@ table.adm-tbl,table.mkt-tbl,table.gm-tbl{width:100%;border-collapse:separate;bor
       <div class="f-row"><div class="f-lbl">Dari / Kepada</div><input class="f-inp" id="sr-darke" placeholder="Nama pengirim (Masuk) atau penerima (Keluar)"/></div>
       <div class="f-row"><div class="f-lbl">Catatan</div><textarea class="f-ta" id="sr-catatan" placeholder="Keterangan tambahan..."></textarea></div>
     </div>
-    <div class="modal-foot"><button class="btn" onclick="closeModal('modal-surat')">Batal</button><button class="btn primary" onclick="saveSurat()">💾 Simpan</button></div>
+    <div class="modal-foot"><button class="btn" onclick="closeModal('modal-surat')">Batal</button><button class="btn primary" onclick="saveSurat()"><i class=bi-floppy-fill aria-hidden=true></i> Simpan</button></div>
   </div>
 </div>
 
 <!-- SETUP -->
+<div class="confirm-overlay" id="confirm-overlay" role="dialog" aria-modal="true" aria-labelledby="confirm-title"><div class="confirm-box"><div class="confirm-head"><div class="confirm-icon"><i class="bi bi-exclamation-triangle-fill"></i></div><div><div class="confirm-title" id="confirm-title">Konfirmasi</div><div class="confirm-message" id="confirm-message"></div></div></div><div class="confirm-actions"><button class="btn" id="confirm-cancel">Batal</button><button class="btn primary" id="confirm-ok">Lanjutkan</button></div></div></div>
+
 <div class="setup-overlay" id="setup-overlay">
   <div class="setup-box">
     <div class="setup-title">Dashboard Administrasi</div>
@@ -941,8 +949,8 @@ function nav(el,pageId){
   if(el)el.classList.add('active');
   const pg=document.getElementById(pageId);if(pg)pg.classList.add('active');
   window.scrollTo({top:0,behavior:'smooth'});
-  const titles={'page-laporan':'📋 Laporan Harian','page-masalah':'⚠️ Kanban Masalah Data','page-surat':'✉️ Arsip Surat','page-tugas':'📋 Tugas & Masalah','page-ringkasan':'📊 Ringkasan','page-pengaturan':'⚙️ Pengaturan'};
-  const ttl=document.getElementById('topbar-title');if(ttl)ttl.textContent=titles[pageId]||'Administrasi';
+  const titles={'page-laporan':'<i class=bi-clipboard2-check-fill aria-hidden=true></i> Laporan Harian','page-masalah':'<i class=bi-exclamation-triangle-fill aria-hidden=true></i> Kanban Masalah Data','page-surat':'<i class=bi-envelope-fill aria-hidden=true></i> Arsip Surat','page-tugas':'<i class=bi-clipboard2-check-fill aria-hidden=true></i> Tugas & Masalah','page-ringkasan':'<i class=bi-bar-chart-fill aria-hidden=true></i> Ringkasan','page-pengaturan':'<i class=bi-gear-fill aria-hidden=true></i> Pengaturan'};
+  const ttl=document.getElementById('topbar-title');if(ttl)ttl.innerHTML=titles[pageId]||'Administrasi';
   if(pageId==='page-laporan'){ loadLaporan(); }
   if(pageId==='page-masalah'){ renderMasalah(); }
   if(pageId==='page-surat'){   loadSuratArsip(); filterSurat(); }
@@ -962,17 +970,8 @@ async function apiGet(params){
   if(json.success === false) throw new Error(json.error||'Server error');
   return json.data !== undefined ? json.data : json;
 }async function apiPost(action, payload){
-  if(DEMO||!BACKEND) return null;
-  const res  = await fetch(BACKEND, {
-    method:'POST', redirect:'follow', credentials:'omit',
-    headers:{'Content-Type':'text/plain'},
-    body: JSON.stringify({action, ...payload})
-  });
-  const text = await res.text();
-  let json;
-  try{ json = JSON.parse(text); }catch(e){ throw new Error('Response tidak valid'); }
-  if(json.success === false) throw new Error(json.error||'Server error');
-  return json.data !== undefined ? json.data : json;
+  if(DEMO||!BACKEND) return null;const btn=getRecentActionButton();if(btn)setButtonLoading(btn,true);
+  try{const res=await fetch(BACKEND,{method:'POST',redirect:'follow',credentials:'omit',headers:{'Content-Type':'text/plain'},body:JSON.stringify({action,...payload})});const text=await res.text();let json;try{json=JSON.parse(text);}catch(e){throw new Error('Response tidak valid');}if(json.success===false)throw new Error(json.error||'Server error');return json.data!==undefined?json.data:json;}finally{if(btn)setButtonLoading(btn,false);}
 }
 // ── Demo data ─────────────────────────────────────────────────────
 function getDemoMasalah(){return[{id:'AM-001',judul:'KTP tidak terbaca',kampus:'STISDU',program:'RPL Khusus',jenis:'Revisi Dokumen',status:'Proses',prioritas:'Tinggi',catatan:'Sudah dikomunikasikan ke mahasiswa',pic:'Ismawati',dibuat_pada:'2026-07-01'},{id:'AM-002',judul:'Foto tidak sesuai ketentuan',kampus:'STITBU',program:'RPL Reguler',jenis:'Revisi Dokumen',status:'Belum Ditangani',prioritas:'Sedang',catatan:'',pic:'Ismawati',dibuat_pada:'2026-07-03'},{id:'AM-003',judul:'Ijazah tidak ada',kampus:'STISDU',program:'Kelas Karyawan',jenis:'Data Hilang',status:'Selesai',prioritas:'Urgent',catatan:'Sudah dilengkapi',pic:'Ismawati',dibuat_pada:'2026-07-02'}];}
@@ -1012,7 +1011,7 @@ function renderLapRows(){
   const kmpList   = PENGATURAN.kampusList   || ['STISDU','STITBU'];
 
   if(!LAP_ROWS.length){
-    el.innerHTML = '<div style="color:var(--muted);font-size:12.5px;padding:14px 0;text-align:center">Belum ada data. Klik "＋ Tambah Baris" untuk mulai mengisi laporan.</div>';
+    el.innerHTML = '<div style="color:var(--muted);font-size:12.5px;padding:14px 0;text-align:center">Belum ada data. Klik "<i class=bi-plus-lg aria-hidden=true></i> Tambah Baris" untuk mulai mengisi laporan.</div>';
     updateLapSummary();
     return;
   }
@@ -1043,7 +1042,7 @@ function renderLapRows(){
       <input class="lap-inp" type="text" placeholder="Catatan (opsional)"
         value="${escH(row.catatan||'')}"
         oninput="setLapField(${i},'catatan',this.value)"/>
-      <button class="lap-del" onclick="delLapRow(${i})">✕</button>
+      <button class="lap-del" onclick="delLapRow(${i})"><i class=bi-x-lg aria-hidden=true></i></button>
     </div>`;
   }).join('');
 
@@ -1083,7 +1082,7 @@ async function loadLaporan(){
     const data=await apiGet({action:'getLaporanHarianByTanggal',tanggal,divisi:'Administrasi'});
     if(data&&data.laporan){
       const lap=data.laporan;
-      if(chip){chip.textContent=lap.status==='submitted'?'✓ Terisi':'Draft';chip.className='status-chip '+(lap.status==='submitted'?'terisi':'draft');}
+      if(chip){chip.innerHTML=lap.status==='submitted'?'<i class=bi-check-lg aria-hidden=true></i> Terisi':'Draft';chip.className='status-chip '+(lap.status==='submitted'?'terisi':'draft');}
       // Load baris laporan dari field progresAdm (JSON array)
       if(lap.progresAdm){
         try{
@@ -1110,33 +1109,35 @@ function renderSuratHariIni(tanggal){
     '</tbody></table>';
 }
 
-async function saveDraft(){ await simpanLaporan('draft'); }
-async function saveSubmit(){ await simpanLaporan('submitted'); }
+async function saveDraft(btn){return simpanLaporan('draft',btn);}
+async function saveSubmit(btn){const ok=await confirmAction({title:'Submit laporan Administrasi?',message:'Data akan disimpan sebagai laporan resmi dan baru setelah itu dipakai dalam Ringkasan serta dashboard GM.',confirmText:'Ya, submit'});if(!ok)return;return simpanLaporan('submitted',btn);}
 
-async function simpanLaporan(status){
+async function simpanLaporan(status,btn){
   const tanggal=document.getElementById('lap-tanggal')?.value;
-  if(!tanggal){toast('⚠️','Pilih tanggal terlebih dahulu.','warn');return;}
+  if(!tanggal){toast('<i class=bi-exclamation-triangle-fill aria-hidden=true></i>','Pilih tanggal terlebih dahulu.','warn');return;}
   // Validasi: minimal harus ada 1 baris
-  if(LAP_ROWS.length===0&&status==='submitted'){toast('⚠️','Tambahkan minimal 1 data laporan sebelum submit.','warn');return;}
+  if(LAP_ROWS.length===0&&status==='submitted'){toast('<i class=bi-exclamation-triangle-fill aria-hidden=true></i>','Tambahkan minimal 1 data laporan sebelum submit.','warn');return;}
   // Simpan baris (hapus _id internal)
   const rows=LAP_ROWS.map(({_id,...r})=>r);
   const payload={
     tanggal, divisi:'Administrasi', diisi_oleh:USER, status,
     progresAdm:JSON.stringify(rows)
   };
+  if(btn)setButtonLoading(btn,true);
   try{
     await apiPost('saveLaporanHarian',payload);
+    await loadLaporan();
     const chip=document.getElementById('lap-status-chip');
-    if(chip){chip.textContent=status==='submitted'?'✓ Terisi':'Draft';chip.className='status-chip '+(status==='submitted'?'terisi':'draft');}
-    toast(status==='submitted'?'✅ Laporan Tersimpan':'💾 Draft Tersimpan',
+    if(chip){chip.innerHTML=status==='submitted'?'<i class=bi-check-lg aria-hidden=true></i> Terisi':'Draft';chip.className='status-chip '+(status==='submitted'?'terisi':'draft');}
+    toast(status==='submitted'?'<i class=bi-check-circle-fill aria-hidden=true></i> Laporan Tersimpan':'<i class=bi-floppy-fill aria-hidden=true></i> Draft Tersimpan',
       status==='submitted'?'Laporan harian administrasi berhasil dikirim.':'Draft berhasil disimpan.');
-  }catch(e){toast('❌ Gagal',e.message,'err');}
+  }catch(e){toast('<i class=bi-x-circle-fill aria-hidden=true></i> Gagal',e.message,'err');}finally{if(btn)setButtonLoading(btn,false);}
 }
 
 // ── KANBAN MASALAH ────────────────────────────────────────────────
 function renderMasalah(){
   const PC={'Urgent':'urgent','Tinggi':'tinggi'};
-  const rCard=m=>{const cc=PC[m.prioritas]||'';return '<div class="kanban-card '+cc+'" onclick="openMasalahModal(\''+m.id+'\')"><div class="kanban-card-title">'+escH(m.judul)+'</div><div style="font-size:11px;color:var(--muted);margin-top:2px">'+escH(m.kampus||'')+(m.program?' · '+escH(m.program):'')+'</div><div class="kanban-card-meta"><span class="pill pill-'+((m.prioritas||'Sedang').toLowerCase())+'">'+escH(m.prioritas||'Sedang')+'</span><span style="font-size:11px;color:var(--muted)">'+escH(m.jenis||'')+'</span></div><div class="kanban-card-actions" onclick="event.stopPropagation()">'+(m.status!=='Belum Ditangani'?'<button class="btn sm" onclick="updMasalahStatus(\''+m.id+'\',\'Belum Ditangani\')">🔴</button>':'')+(m.status!=='Proses'?'<button class="btn sm" onclick="updMasalahStatus(\''+m.id+'\',\'Proses\')">🔄</button>':'')+(m.status!=='Selesai'?'<button class="btn sm success" onclick="updMasalahStatus(\''+m.id+'\',\'Selesai\')">✅</button>':'')+'<button class="btn sm danger" onclick="delMasalah(\''+m.id+'\')">✕</button></div></div>';};
+  const rCard=m=>{const cc=PC[m.prioritas]||'';return '<div class="kanban-card '+cc+'" onclick="openMasalahModal(\''+m.id+'\')"><div class="kanban-card-title">'+escH(m.judul)+'</div><div style="font-size:11px;color:var(--muted);margin-top:2px">'+escH(m.kampus||'')+(m.program?' · '+escH(m.program):'')+'</div><div class="kanban-card-meta"><span class="pill pill-'+((m.prioritas||'Sedang').toLowerCase())+'">'+escH(m.prioritas||'Sedang')+'</span><span style="font-size:11px;color:var(--muted)">'+escH(m.jenis||'')+'</span></div><div class="kanban-card-actions" onclick="event.stopPropagation()">'+(m.status!=='Belum Ditangani'?'<button class="btn sm" onclick="updMasalahStatus(\''+m.id+'\',\'Belum Ditangani\')"><i class=bi-circle-fill aria-hidden=true></i></button>':'')+(m.status!=='Proses'?'<button class="btn sm" onclick="updMasalahStatus(\''+m.id+'\',\'Proses\')"><i class=bi-arrow-repeat aria-hidden=true></i></button>':'')+(m.status!=='Selesai'?'<button class="btn sm success" onclick="updMasalahStatus(\''+m.id+'\',\'Selesai\')"><i class=bi-check-circle-fill aria-hidden=true></i></button>':'')+'<button class="btn sm danger" onclick="delMasalah(\''+m.id+'\')"><i class=bi-x-lg aria-hidden=true></i></button></div></div>';};
 
   // Render satu instance kanban (dipakai utk halaman "Kanban Masalah" dan
   // halaman "Tugas & Masalah" yang masing-masing punya filter & elemen sendiri)
@@ -1181,16 +1182,16 @@ function openMasalahModal(id){
   openModal('modal-masalah');
 }
 async function saveMasalah(){
-  const judul=getInp('ms-judul');if(!judul){toast('⚠️','Judul wajib diisi.','warn');return;}
+  const judul=getInp('ms-judul');if(!judul){toast('<i class=bi-exclamation-triangle-fill aria-hidden=true></i>','Judul wajib diisi.','warn');return;}
   const p={judul,kampus:getSel('ms-kampus'),program:getSel('ms-program'),jenis:getSel('ms-jenis'),prioritas:getSel('ms-prioritas'),status:getSel('ms-status'),pic:getSel('ms-pic'),catatan:getInp('ms-deskripsi'),dibuat_oleh:USER};
   try{
     if(editingId.masalah){p.id=editingId.masalah;await apiPost('updateAdmMasalah',p);const idx=ALL_MASALAH.findIndex(x=>x.id===editingId.masalah);if(idx>=0)ALL_MASALAH[idx]={...ALL_MASALAH[idx],...p};}
     else{const res=await apiPost('addAdmMasalah',p);p.id=(DEMO?'AM-'+Date.now():res?.id)||'AM-'+Date.now();ALL_MASALAH.push(p);}
-    closeModal('modal-masalah');renderMasalah();toast('✅ Masalah Tersimpan','');
-  }catch(e){toast('❌ Gagal',e.message,'err');}
+    closeModal('modal-masalah');renderMasalah();toast('<i class=bi-check-circle-fill aria-hidden=true></i> Masalah Tersimpan','');
+  }catch(e){toast('<i class=bi-x-circle-fill aria-hidden=true></i> Gagal',e.message,'err');}
 }
-async function updMasalahStatus(id,status){const m=ALL_MASALAH.find(x=>x.id===id);if(!m)return;try{await apiPost('updateAdmMasalahStatus',{id,status});m.status=status;renderMasalah();}catch(e){toast('❌ Gagal',e.message,'err');}}
-async function delMasalah(id){if(!confirm('Hapus masalah ini?'))return;try{await apiPost('deleteAdmMasalah',{id});ALL_MASALAH=ALL_MASALAH.filter(x=>x.id!==id);renderMasalah();toast('🗑️ Dihapus','');}catch(e){toast('❌ Gagal',e.message,'err');}}
+async function updMasalahStatus(id,status){const m=ALL_MASALAH.find(x=>x.id===id);if(!m)return;try{await apiPost('updateAdmMasalahStatus',{id,status});m.status=status;renderMasalah();}catch(e){toast('<i class=bi-x-circle-fill aria-hidden=true></i> Gagal',e.message,'err');}}
+async function delMasalah(id){if(!(await confirmAction({title:'Hapus masalah?',message:'Masalah ini akan dihapus permanen dari database.',confirmText:'Hapus',danger:true})))return;try{await apiPost('deleteAdmMasalah',{id});ALL_MASALAH=ALL_MASALAH.filter(x=>x.id!==id);renderMasalah();toast('<i class=bi-trash3-fill aria-hidden=true></i> Dihapus','');}catch(e){toast('<i class=bi-x-circle-fill aria-hidden=true></i> Gagal',e.message,'err');}}
 
 // ── SURAT ─────────────────────────────────────────────────────────
 async function loadSuratArsip(){
@@ -1205,7 +1206,7 @@ function filterSurat(){
   const tb=document.getElementById('surat-tbody');const cnt=document.getElementById('surat-count');
   if(cnt)cnt.textContent='('+list.length+')';
   if(!tb)return;
-  tb.innerHTML=list.length?list.map(s=>'<tr><td><span class="pill '+(s.jenis==='Masuk'?'pill-masuk':'pill-keluar')+'">'+s.jenis+'</span></td><td style="font-family:monospace;font-size:12px">'+escH(s.nomor_surat||'—')+'</td><td style="font-size:12px;color:var(--muted)">'+escH(s.tanggal||'—')+'</td><td>'+escH(s.perihal||'—')+'</td><td>'+escH(s.dari_ke||'—')+'</td><td>'+escH(s.instansi||'—')+'</td><td style="font-size:12px;color:var(--muted)">'+escH(s.catatan||'—')+'</td><td><div class="actions"><button class="btn sm" onclick="openSuratModal(\''+s.id+'\')">✏️</button><button class="btn sm danger" onclick="delSurat(\''+s.id+'\')">✕</button></div></td></tr>').join(''):'<tr><td colspan="8" class="tbl-empty">Belum ada data surat.</td></tr>';
+  tb.innerHTML=list.length?list.map(s=>'<tr><td><span class="pill '+(s.jenis==='Masuk'?'pill-masuk':'pill-keluar')+'">'+s.jenis+'</span></td><td style="font-family:monospace;font-size:12px">'+escH(s.nomor_surat||'—')+'</td><td style="font-size:12px;color:var(--muted)">'+escH(s.tanggal||'—')+'</td><td>'+escH(s.perihal||'—')+'</td><td>'+escH(s.dari_ke||'—')+'</td><td>'+escH(s.instansi||'—')+'</td><td style="font-size:12px;color:var(--muted)">'+escH(s.catatan||'—')+'</td><td><div class="actions"><button class="btn sm" onclick="openSuratModal(\''+s.id+'\')"><i class=bi-pencil-square aria-hidden=true></i></button><button class="btn sm danger" onclick="delSurat(\''+s.id+'\')"><i class=bi-x-lg aria-hidden=true></i></button></div></td></tr>').join(''):'<tr><td colspan="8" class="tbl-empty">Belum ada data surat.</td></tr>';
   updateBadges();
 }
 function openSuratModal(id){
@@ -1221,10 +1222,10 @@ async function saveSurat(){
   try{
     if(editingId.surat){p.id=editingId.surat;await apiPost('updateAdmSurat',p);const idx=ALL_SURAT.findIndex(x=>x.id===editingId.surat);if(idx>=0)ALL_SURAT[idx]={...ALL_SURAT[idx],...p};}
     else{const res=await apiPost('addAdmSurat',p);p.id=(DEMO?'SR-'+Date.now():res?.id)||'SR-'+Date.now();ALL_SURAT.unshift(p);}
-    closeModal('modal-surat');filterSurat();renderSuratHariIni(document.getElementById('lap-tanggal')?.value||todayStr());toast('✅ Surat Tersimpan','');
-  }catch(e){toast('❌ Gagal',e.message,'err');}
+    closeModal('modal-surat');filterSurat();renderSuratHariIni(document.getElementById('lap-tanggal')?.value||todayStr());toast('<i class=bi-check-circle-fill aria-hidden=true></i> Surat Tersimpan','');
+  }catch(e){toast('<i class=bi-x-circle-fill aria-hidden=true></i> Gagal',e.message,'err');}
 }
-async function delSurat(id){if(!confirm('Hapus surat ini?'))return;try{await apiPost('deleteAdmSurat',{id});ALL_SURAT=ALL_SURAT.filter(x=>x.id!==id);filterSurat();toast('🗑️ Dihapus','');}catch(e){toast('❌ Gagal',e.message,'err');}}
+async function delSurat(id){if(!(await confirmAction({title:'Hapus surat?',message:'Data surat ini akan dihapus permanen.',confirmText:'Hapus',danger:true})))return;try{await apiPost('deleteAdmSurat',{id});ALL_SURAT=ALL_SURAT.filter(x=>x.id!==id);filterSurat();toast('<i class=bi-trash3-fill aria-hidden=true></i> Dihapus','');}catch(e){toast('<i class=bi-x-circle-fill aria-hidden=true></i> Gagal',e.message,'err');}}
 
 // ── PENGATURAN ────────────────────────────────────────────────────
 function loadPengaturan(){
@@ -1233,7 +1234,7 @@ function loadPengaturan(){
     const items=PENGATURAN[key]||[];
     wrap.innerHTML=items.map((v,i)=>
       '<span class="tag">'+escH(v)+
-      '<button class="tag-del" onclick="removeTag(\''+key+'\','+i+')">✕</button></span>'
+      '<button class="tag-del" onclick="removeTag(\''+key+'\','+i+')"><i class=bi-x-lg aria-hidden=true></i></button></span>'
     ).join('');
   });
   // Re-render lap rows agar dropdown pakai list terbaru dari backend
@@ -1272,9 +1273,9 @@ async function connectBackend(){
   const url  = document.getElementById('setup-url-inp').value.trim();
   const stEl = document.getElementById('setup-status');
   if(!url.includes('script.google.com')){
-    stEl.textContent='⚠️ URL tidak valid. Harus berisi script.google.com'; return;
+    stEl.innerHTML='<i class=bi-exclamation-triangle-fill aria-hidden=true></i> URL tidak valid. Harus berisi script.google.com'; return;
   }
-  stEl.textContent='⏳ Menghubungkan...';
+  stEl.innerHTML='<i class="bi bi-arrow-repeat spin" aria-hidden="true"></i> Menghubungkan...';
   try{
     const res  = await fetch(url+'?action=getAdmInit', {redirect:'follow',credentials:'omit'});
     const text = await res.text();
@@ -1293,23 +1294,48 @@ async function connectBackend(){
     if(document.getElementById('sync-url')) document.getElementById('sync-url').textContent='Google Sheets';
     setSyncStatus('live');
     initialLoad();
-    toast('✅ Terhubung!','Dashboard siap digunakan.');
+    toast('<i class=bi-check-circle-fill aria-hidden=true></i> Terhubung!','Dashboard siap digunakan.');
   }catch(err){
-    stEl.innerHTML='❌ <b>Gagal:</b> '+err.message+
+    stEl.innerHTML='<i class=bi-x-circle-fill aria-hidden=true></i> <b>Gagal:</b> '+err.message+
       '<br><small>Cek: (1) URL benar? (2) Web App sudah di-deploy ulang? (3) Akses diset ke <b>Anyone</b>?</small>';
   }
-}function demoMode(){DEMO=true;document.getElementById('setup-overlay').classList.add('hidden');setSyncStatus('demo');initialLoad();toast('🧪 Mode Demo','');}
+}function demoMode(){DEMO=true;document.getElementById('setup-overlay').classList.add('hidden');setSyncStatus('demo');initialLoad();toast('<i class=bi-tools aria-hidden=true></i> Mode Demo','');}
 function openSetup(){document.getElementById('sync-menu').classList.remove('open');document.getElementById('setup-overlay').classList.remove('hidden');}
-function manualRefresh(){document.getElementById('sync-menu').classList.remove('open');initialLoad();toast('🔄 Refresh','');}
+function manualRefresh(){document.getElementById('sync-menu').classList.remove('open');initialLoad();toast('<i class=bi-arrow-repeat aria-hidden=true></i> Refresh','');}
 function setSyncStatus(s){const b=document.getElementById('sync-badge');const d=b?.querySelector('.live-dot');const l=document.getElementById('sync-label');b?.classList.toggle('live',s==='live');if(d)d.style.background=s==='live'?'var(--green)':s==='demo'?'var(--gold)':'var(--muted)';if(l)l.textContent=s==='live'?'Live':s==='demo'?'Demo':'Offline';}
 
+
+// ── Loading tombol dan dialog reusable ───────────────────────────
+let _recentActionButton=null,_recentActionAt=0;document.addEventListener('click',function(e){const b=e.target.closest('button');if(!b)return;const a=b.getAttribute('onclick')||'';if(/save|submit|simpan|kirim|update/i.test(a)){_recentActionButton=b;_recentActionAt=Date.now();}},true);
+function getRecentActionButton(){return Date.now()-_recentActionAt<800?_recentActionButton:null;}
+function setButtonLoading(btn,on,label){
+  if(!btn)return;
+  let count=Number(btn.dataset.loadingCount||0);
+  if(on){
+    count+=1;btn.dataset.loadingCount=String(count);
+    if(count>1)return;
+    btn.dataset.wasDisabled=btn.disabled?'1':'0';
+    if(!btn.dataset.originalHtml)btn.dataset.originalHtml=btn.innerHTML;
+    btn.disabled=true;btn.classList.add('is-loading');
+    if(!btn.querySelector('.btn-loader'))btn.innerHTML='<i class="bi bi-arrow-repeat spin" aria-hidden="true"></i> '+(label||'Memproses...');
+    return;
+  }
+  count=Math.max(0,count-1);btn.dataset.loadingCount=String(count);
+  if(count>0)return;
+  delete btn.dataset.loadingCount;btn.classList.remove('is-loading');
+  if(btn.dataset.wasDisabled!=='1')btn.disabled=false;delete btn.dataset.wasDisabled;
+  if(btn.dataset.originalHtml){btn.innerHTML=btn.dataset.originalHtml;delete btn.dataset.originalHtml;}
+}
+function animatedLoader(message){return '<div class="loading-state"><i class="bi bi-arrow-repeat spin"></i><span>'+escH(message||'Memuat data...')+'</span><span class="loading-dots"><span></span><span></span><span></span></span></div>';}
+let _confirmResolve=null;function confirmAction(opts){opts=opts||{};return new Promise(resolve=>{_confirmResolve=resolve;setEl('confirm-title',opts.title||'Konfirmasi');setEl('confirm-message',opts.message||'Lanjutkan proses ini?');const ok=document.getElementById('confirm-ok');if(ok){ok.textContent=opts.confirmText||'Lanjutkan';ok.className='btn '+(opts.danger?'danger':'primary');}document.getElementById('confirm-overlay')?.classList.add('open');});}function closeConfirm(v){document.getElementById('confirm-overlay')?.classList.remove('open');const r=_confirmResolve;_confirmResolve=null;if(r)r(!!v);}document.getElementById('confirm-cancel')?.addEventListener('click',()=>closeConfirm(false));document.getElementById('confirm-ok')?.addEventListener('click',()=>closeConfirm(true));document.getElementById('confirm-overlay')?.addEventListener('click',e=>{if(e.target.id==='confirm-overlay')closeConfirm(false);});document.addEventListener('keydown',e=>{if(e.key==='Escape'&&document.getElementById('confirm-overlay')?.classList.contains('open'))closeConfirm(false);});
+
 // ── Dark mode ─────────────────────────────────────────────────────
-function toggleDark(){const on=document.body.classList.toggle('dark');const ei=document.getElementById('dark-icon');if(ei)ei.textContent=on?'☀️':'🌙';try{localStorage.setItem('adm-theme',on?'dark':'light');}catch(e){}}
-function initTheme(){try{if(localStorage.getItem('adm-theme')==='dark'){document.body.classList.add('dark');const ei=document.getElementById('dark-icon');if(ei)ei.textContent='☀️';}}catch(e){}}
+function toggleDark(){const on=document.body.classList.toggle('dark');const ei=document.getElementById('dark-icon');if(ei)ei.innerHTML=on?'<i class=bi-sun-fill aria-hidden=true></i>':'<i class=bi-moon-stars-fill aria-hidden=true></i>';try{localStorage.setItem('adm-theme',on?'dark':'light');}catch(e){}}
+function initTheme(){try{if(localStorage.getItem('adm-theme')==='dark'){document.body.classList.add('dark');const ei=document.getElementById('dark-icon');if(ei)ei.innerHTML='<i class=bi-sun-fill aria-hidden=true></i>';}}catch(e){}}
 
 // ── Toast ─────────────────────────────────────────────────────────
 var _tT;
-function toast(title,body,type){const el=document.getElementById('toast');el.style.background=type==='warn'?'var(--gold)':type==='err'?'var(--red)':'#0D2137';document.getElementById('toast-title').textContent=title;document.getElementById('toast-body').textContent=body||'';el.classList.add('show');clearTimeout(_tT);_tT=setTimeout(()=>el.classList.remove('show'),3500);}
+function toast(title,body,type){const el=document.getElementById('toast');el.style.background=type==='warn'?'var(--gold)':type==='err'?'var(--red)':'#0D2137';document.getElementById('toast-title').innerHTML=title;document.getElementById('toast-body').textContent=body||'';el.classList.add('show');clearTimeout(_tT);_tT=setTimeout(()=>el.classList.remove('show'),3500);}
 
 // ── Helpers ───────────────────────────────────────────────────────
 // ── Tugas dari GM ────────────────────────────────────────────────
@@ -1335,7 +1361,7 @@ function renderTugasGM() {
   const aktif = ALL_TUGAS_GM.filter(t => t.status !== 'Selesai');
   const cntEl = document.getElementById('gm-tugas-count');
   if (cntEl) cntEl.textContent = ALL_TUGAS_GM.length > 0 ? '(' + ALL_TUGAS_GM.length + ' tugas)' : '';
-  if (!aktif.length) { el.innerHTML='<div style="color:var(--muted);font-size:12.5px;padding:20px;text-align:center">Tidak ada instruksi GM saat ini 🎉</div>'; return; }
+  if (!aktif.length) { el.innerHTML='<div style="color:var(--muted);font-size:12.5px;padding:20px;text-align:center">Tidak ada instruksi GM saat ini <i class=bi-stars aria-hidden=true></i></div>'; return; }
   el.innerHTML = aktif.map(t => {
     const clr = {'Urgent':'var(--red)','Tinggi':'var(--orange)','Sedang':'var(--blue)','Rendah':'var(--muted)'}[t.prioritas]||'var(--muted)';
     const statusClr = {'Selesai':'var(--green)','Proses':'var(--gold)','Belum Mulai':'var(--red)'}[t.status]||'var(--muted)';
@@ -1343,7 +1369,7 @@ function renderTugasGM() {
     const adaBalasan = catatanGM.includes('→GM]');
     return '<div class="sec" style="margin-bottom:10px">'+
       '<div class="sec-head">'+
-        '<div class="sec-title" style="color:'+clr+'">📌 '+escH(t.judul)+'</div>'+
+        '<div class="sec-title" style="color:'+clr+'"><i class=bi-pin-angle-fill aria-hidden=true></i> '+escH(t.judul)+'</div>'+
         '<div style="display:flex;align-items:center;gap:8px">'+
           '<span style="font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;background:var(--surface);color:'+statusClr+';border:1px solid var(--border)">'+escH(t.status||'Belum Mulai')+'</span>'+
           '<span class="pill pill-'+((t.prioritas||'Sedang').toLowerCase())+'">'+escH(t.prioritas||'Sedang')+'</span>'+
@@ -1351,10 +1377,10 @@ function renderTugasGM() {
       '</div>'+
       '<div class="sec-body">'+
         (t.deskripsi?'<div style="font-size:12.5px;color:var(--muted);margin-bottom:8px">'+escH(t.deskripsi)+'</div>':'')+
-        (t.deadline?'<div style="font-size:12px;color:var(--muted);margin-bottom:8px">⏰ Deadline: '+t.deadline+'</div>':'')+
-        (adaBalasan?'<div style="background:var(--teal2);border-radius:7px;padding:8px 10px;font-size:12px;color:#134E4A;margin-bottom:8px">📤 '+escH(catatanGM.replace(/\[.*?→GM\]\s*/,''))+'</div>':'')+
+        (t.deadline?'<div style="font-size:12px;color:var(--muted);margin-bottom:8px"><i class=bi-clock-fill aria-hidden=true></i> Deadline: '+t.deadline+'</div>':'')+
+        (adaBalasan?'<div style="background:var(--teal2);border-radius:7px;padding:8px 10px;font-size:12px;color:#134E4A;margin-bottom:8px"><i class=bi-box-arrow-up aria-hidden=true></i> '+escH(catatanGM.replace(/\[.*?→GM\]\s*/,''))+'</div>':'')+
         '<button class="btn sm primary" onclick="openGMReply(\''+t.id+'\',\''+escH(t.judul)+'\',\''+escH(t.deskripsi||'')+'\',\''+escH(t.status||'Belum Mulai')+'\')" style="background:var(--teal);border-color:var(--teal)">'+
-          (adaBalasan?'✏️ Update Balasan':'📤 Balas Tugas GM')+
+          (adaBalasan?'<i class=bi-pencil-square aria-hidden=true></i> Update Balasan':'<i class=bi-box-arrow-up aria-hidden=true></i> Balas Tugas GM')+
         '</button>'+
       '</div>'+
     '</div>';
@@ -1367,8 +1393,8 @@ async function savePengaturan(){
     loadPengaturan();
     populateAllSelects();
     renderLapRows();
-    toast('✅ Pengaturan Tersimpan', 'Perubahan berlaku untuk semua input.');
-  } catch(e) { toast('❌ Gagal', e.message, 'err'); }
+    toast('<i class=bi-check-circle-fill aria-hidden=true></i> Pengaturan Tersimpan', 'Perubahan berlaku untuk semua input.');
+  } catch(e) { toast('<i class=bi-x-circle-fill aria-hidden=true></i> Gagal', e.message, 'err'); }
 }
 
 
@@ -1390,7 +1416,7 @@ function openGMReply(id, judul, deskripsi, statusSaat) {
 
 async function kirimBalasanGM() {
   const catatan = document.getElementById('gm-reply-catatan')?.value?.trim();
-  if (!catatan) { toast('⚠️', 'Tulis catatan/laporan sebelum kirim.', 'warn'); return; }
+  if (!catatan) { toast('<i class=bi-exclamation-triangle-fill aria-hidden=true></i>', 'Tulis catatan/laporan sebelum kirim.', 'warn'); return; }
   const status  = document.getElementById('gm-reply-status')?.value || 'Proses';
   if (!_gmReplyId) return;
   try {
@@ -1400,11 +1426,11 @@ async function kirimBalasanGM() {
       catatan: '[Administrasi→GM] ' + catatan
     });
     closeModal('modal-gm-reply');
-    toast('✅ Balasan Terkirim', 'Update tugas sudah masuk ke dashboard GM.');
+    toast('<i class=bi-check-circle-fill aria-hidden=true></i> Balasan Terkirim', 'Update tugas sudah masuk ke dashboard GM.');
     // Refresh tampilan tugas
     if (typeof loadTugas === 'function') loadTugas();
     else if (typeof renderTugasGM === 'function') renderTugasGM();
-  } catch(e) { toast('❌ Gagal', e.message, 'err'); }
+  } catch(e) { toast('<i class=bi-x-circle-fill aria-hidden=true></i> Gagal', e.message, 'err'); }
 }
 
 function formatRp(n){return 'Rp '+(Math.round(Number(n)||0)).toLocaleString('id-ID');}
@@ -1418,7 +1444,7 @@ function fmtTgl(s){if(!s)return '—';const p=String(s).split('-');const bln=[''
 function periodeLabel(dari,sampai){return fmtTgl(dari)+(dari!==sampai?' – '+fmtTgl(sampai):'');}
 function getMonthRange(p){const[y,m]=p.split('-').map(Number);const last=new Date(y,m,0).getDate();return{dari:p+'-01',sampai:p+'-'+String(last).padStart(2,'0')};}
 function getYearRange(y){return{dari:`${y}-01-01`,sampai:`${y}-12-31`};}
-async function fetchLapRange(dari,sampai,divisi){try{const d=await apiGet({action:'getLaporanHarianRange',dari,sampai,divisi});return(d&&d.laporan)?d.laporan:[];}catch(e){return[];}}
+async function fetchLapRange(dari,sampai,divisi,submittedOnly){try{const d=await apiGet({action:'getLaporanHarianRange',dari,sampai,divisi,submittedOnly:submittedOnly?'1':''});return(d&&d.laporan)?d.laporan:[];}catch(e){return[];}}
 function statCard(label,val,sub,color){const c=color||'var(--teal)';return `<div class="stat-card" style="border-left-color:${c}"><div class="stat-val" style="color:${c}">${val}</div><div class="stat-lbl">${label}</div>${sub?`<div style="font-size:10px;color:var(--muted);margin-top:2px">${sub}</div>`:''}</div>`;}
 function statGrid(cards){return `<div class="stat-row" style="margin-bottom:14px">${cards.join('')}</div>`;}
 function buildTable(headers,rows,emptyMsg){if(!rows.length)return `<div style="color:var(--muted);font-size:12.5px;padding:14px;text-align:center;background:var(--surface);border-radius:8px">${emptyMsg||'Tidak ada data.'}</div>`;const thead=headers.map(h=>`<th>${h}</th>`).join('');const tbody=rows.map(r=>`<tr>${r.map(c=>`<td>${c}</td>`).join('')}</tr>`).join('');return `<div class="tbl-wrap"><table class="adm-tbl"><thead><tr>${thead}</tr></thead><tbody>${tbody}</tbody></table></div>`;}
@@ -1426,7 +1452,7 @@ function buildTable(headers,rows,emptyMsg){if(!rows.length)return `<div style="c
 // PDF Download
 function downloadPDF(elId, filename){
   const el=document.getElementById(elId);
-  if(!el){toast('⚠️','Konten belum dimuat.','warn');return;}
+  if(!el){toast('<i class=bi-exclamation-triangle-fill aria-hidden=true></i>','Konten belum dimuat.','warn');return;}
   const style=`<style>
     body{font-family:Arial,sans-serif;font-size:11px;color:#0F172A;margin:0;padding:20px}
     h1{font-size:16px;font-weight:700;margin-bottom:4px}
@@ -1446,7 +1472,7 @@ function downloadPDF(elId, filename){
     @media print{.btn,.lap-del,.no-print{display:none}}
   </style>`;
   const win=window.open('','_blank','width=900,height=700');
-  win.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>${filename}</title>${style}</head><body>
+  win.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>${filename}</title><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">${style}</head><body>
     <h1 style="margin-bottom:2px">${filename.replace(/_/g,' ').replace('.pdf','')}</h1>
     <p class="meta">Dicetak: ${new Date().toLocaleString('id-ID')} · Sistem Laporan RPL STISDU/STITBU</p>
     <hr style="margin-bottom:16px;border-color:#E2E8F0">
@@ -1491,14 +1517,14 @@ function admTab(tab) {
 async function loadAdmRingkasan() {
   const el = document.getElementById('adm-rs-content');
   if(!el) return;
-  el.innerHTML = '<div style="color:var(--muted);padding:20px;text-align:center">⏳ Memuat...</div>';
+  el.innerHTML = '<div style="color:var(--muted);padding:20px;text-align:center"><i class="bi bi-arrow-repeat spin" aria-hidden="true"></i> Memuat...</div>';
 
   let dari, sampai, label;
   const today = todayStr();
 
   if(ADM_TAB === 'h') {
     const tgl = document.getElementById('adm-rs-tgl')?.value || today;
-    dari = sampai = tgl; label = '📅 Harian — ' + fmtTgl(tgl);
+    dari = sampai = tgl; label = '<i class=bi-calendar-day-fill aria-hidden=true></i> Harian — ' + fmtTgl(tgl);
   } else if(ADM_TAB === 'mgg') {
     const wv = document.getElementById('adm-rs-week')?.value;
     if(wv) {
@@ -1511,20 +1537,20 @@ async function loadAdmRingkasan() {
     } else {
       const wr = getWeekRange(today); dari = wr.dari; sampai = wr.sampai;
     }
-    label = '📆 Mingguan — ' + periodeLabel(dari, sampai);
+    label = '<i class=bi-calendar-week-fill aria-hidden=true></i> Mingguan — ' + periodeLabel(dari, sampai);
   } else if(ADM_TAB === 'bln') {
     const mv = document.getElementById('adm-rs-month')?.value || today.slice(0,7);
     const mr = getMonthRange(mv); dari = mr.dari; sampai = mr.sampai;
     const bln=['','Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
     const [y,m] = mv.split('-');
-    label = '🗓️ Bulanan — ' + bln[parseInt(m)] + ' ' + y;
+    label = '<i class=bi-calendar-month-fill aria-hidden=true></i> Bulanan — ' + bln[parseInt(m)] + ' ' + y;
   } else {
     const yr = document.getElementById('adm-rs-year')?.value || new Date().getFullYear();
     const yr2 = getYearRange(yr); dari = yr2.dari; sampai = yr2.sampai;
-    label = '📈 Tahunan — ' + yr;
+    label = '<i class=bi-graph-up-arrow aria-hidden=true></i> Tahunan — ' + yr;
   }
 
-  const laps = await fetchLapRange(dari, sampai, 'Administrasi');
+  const laps = await fetchLapRange(dari, sampai, 'Administrasi', true);
   const suratBulan = ALL_SURAT.filter(s => {
     const t = s.tanggal||''; return t >= dari && t <= sampai;
   });
@@ -1567,7 +1593,7 @@ async function loadAdmRingkasan() {
 
   // Tabel per Jenis
   if(Object.keys(accJenis).length) {
-    html += `<div class="sec" style="margin-bottom:12px"><div class="sec-head"><div class="sec-title">📊 Rekap per Jenis Data</div></div><div class="sec-body">`;
+    html += `<div class="sec" style="margin-bottom:12px"><div class="sec-head"><div class="sec-title"><i class=bi-bar-chart-fill aria-hidden=true></i> Rekap per Jenis Data</div></div><div class="sec-body">`;
     html += buildTable(
       ['Jenis Data','Jumlah Berkas','Persentase','Progress'],
       Object.entries(accJenis).sort((a,b)=>b[1]-a[1]).map(([j,n])=>{
@@ -1585,7 +1611,7 @@ async function loadAdmRingkasan() {
 
   // Tabel per Program
   if(Object.keys(accProg).length) {
-    html += `<div class="sec" style="margin-bottom:12px"><div class="sec-head"><div class="sec-title">🎓 Rekap per Program</div></div><div class="sec-body">`;
+    html += `<div class="sec" style="margin-bottom:12px"><div class="sec-head"><div class="sec-title"><i class=bi-mortarboard-fill aria-hidden=true></i> Rekap per Program</div></div><div class="sec-body">`;
     html += buildTable(
       ['Program','Jumlah','%'],
       Object.entries(accProg).sort((a,b)=>b[1]-a[1]).map(([p,n])=>[
@@ -1600,7 +1626,7 @@ async function loadAdmRingkasan() {
   // Tabel detail harian
   if(laps.length) {
     const jenisKols = Object.keys(accJenis);
-    html += `<div class="sec" style="margin-bottom:12px"><div class="sec-head"><div class="sec-title">📅 Detail per Hari</div></div><div class="sec-body" style="overflow-x:auto">`;
+    html += `<div class="sec" style="margin-bottom:12px"><div class="sec-head"><div class="sec-title"><i class=bi-calendar-day-fill aria-hidden=true></i> Detail per Hari</div></div><div class="sec-body" style="overflow-x:auto">`;
     html += buildTable(
       ['Tanggal','Diisi Oleh','Status',...jenisKols,'Total'],
       laps.map(lap => {
@@ -1611,7 +1637,7 @@ async function loadAdmRingkasan() {
         return [
           `<b>${escH(lap.tanggal||'—')}</b>`,
           escH(lap.diisi_oleh||'—'),
-          `<span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;background:${ok?'var(--green2)':'var(--gold2)'};color:${ok?'#14532D':'#92400E'}">${ok?'✓ Submit':'Draft'}</span>`,
+          `<span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;background:${ok?'var(--green2)':'var(--gold2)'};color:${ok?'#14532D':'#92400E'}">${ok?'<i class=bi-check-lg aria-hidden=true></i> Submit':'Draft'}</span>`,
           ...jenisKols.map(j => byJ[j]||'—'),
           `<b style="color:var(--teal)">${tot}</b>`
         ];
