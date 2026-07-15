@@ -32,7 +32,7 @@ body{font-family:var(--font);background:var(--surface);color:var(--text);font-si
 .sb-footer{padding:12px 16px;border-top:1px solid rgba(255,255,255,.08)}
 .sb-darkmode{display:flex;align-items:center;gap:8px;font-size:12px;color:rgba(255,255,255,.4);cursor:pointer}
 .sb-darkmode:hover{color:#fff}
-.main{margin-left:var(--sidebar);flex:1;display:flex;flex-direction:column;min-height:100vh}
+.main{margin-left:var(--sidebar);flex:1;display:flex;flex-direction:column;min-height:100vh;min-width:0}
 .topbar{background:var(--card);border-bottom:1px solid var(--border);padding:11px 22px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
 .topbar-title{font-family:'DM Serif Display',serif;font-size:15px;color:var(--navy)}
 body.dark .topbar-title{color:var(--text)}
@@ -45,7 +45,7 @@ body.dark .topbar-title{color:var(--text)}
 .sync-menu-item{font-size:12px;color:var(--muted);padding:4px 0}
 .sync-btn{width:100%;padding:7px 10px;border-radius:7px;border:1px solid var(--border);background:none;color:var(--text);font-size:12px;cursor:pointer;text-align:left;margin-top:4px;font-family:var(--font)}
 .sync-btn:hover{background:var(--surface)}
-.content{padding:18px 22px;flex:1}
+.content{padding:18px 22px;flex:1;min-width:0}
 .page{display:none}.page.active{display:block}
 .stat-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px;margin-bottom:18px}
 .stat-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 16px}
@@ -112,6 +112,7 @@ body.dark .kas-field.setor-field{background:rgba(220,38,38,.12)}
 .stat-card.accent-green::before{background:var(--green)}
 /* Dana keluar */
 .dk-row{display:grid;grid-template-columns:1fr 1fr 2fr 140px 36px;gap:8px;align-items:center;margin-bottom:8px}
+.dk-header{display:grid;grid-template-columns:1fr 1fr 2fr 140px 36px;gap:8px;margin-bottom:6px}
 .dk-input{border:1.5px solid var(--border);border-radius:6px;padding:7px 10px;font-size:12.5px;font-family:var(--font);color:var(--text);background:var(--card);width:100%;outline:none}
 .dk-input:focus{border-color:var(--gold)}
 /* Kas mitra */
@@ -140,6 +141,7 @@ body.dark .kas-box-val{color:var(--text)}
 .piutang-total{font-weight:700;color:var(--red)}
 /* Piutang rows */
 .piu-row{display:grid;grid-template-columns:1fr 1fr 160px 160px 32px;gap:8px;align-items:center;margin-bottom:7px}
+.piu-header{display:grid;grid-template-columns:1fr 1fr 160px 160px 32px;gap:8px;margin-bottom:6px;align-items:center}
 .piu-sel{border:1.5px solid var(--border);border-radius:7px;padding:7px 8px;font-size:12.5px;font-family:var(--font);color:var(--text);background:var(--card);width:100%;outline:none}
 .piu-sel:focus{border-color:var(--gold)}
 .piu-inp-nom{border:1.5px solid var(--border);border-radius:7px;padding:7px 10px;font-size:12.5px;font-family:var(--font);color:var(--text);background:var(--card);width:100%;text-align:right;outline:none}
@@ -216,7 +218,18 @@ body.dark .modal-title{color:var(--text)}
 .setup-title{font-family:'DM Serif Display',serif;font-size:21px;color:var(--navy);margin-bottom:5px}
 body.dark .setup-title{color:var(--text)}
 .setup-sub{font-size:13px;color:var(--muted);margin-bottom:18px;line-height:1.6}
-@media(max-width:700px){.kas-grid{grid-template-columns:1fr}.kas-mitra-grid{grid-template-columns:1fr}.dk-row{grid-template-columns:1fr 1fr;grid-template-rows:auto auto auto}}
+@media(max-width:700px){
+  .kas-grid{grid-template-columns:1fr}
+  .kas-mitra-grid{grid-template-columns:1fr}
+  .dk-row,.dk-header{grid-template-columns:1fr 1fr;grid-template-rows:auto auto auto}
+  .piu-row,.piu-header{grid-template-columns:1fr 1fr;grid-template-rows:auto auto auto}
+  .ki-row{flex-wrap:wrap;row-gap:6px}
+  .ki-label{flex:1 1 100%}
+  .ki-pct{width:auto}
+  .ki-auto{width:auto;flex:1;text-align:left}
+  .ki-override{width:auto;flex:1}
+  .kanban-keu{grid-template-columns:1fr}
+}
 @media(max-width:860px) and (min-width:701px){.kas-grid-4{grid-template-columns:1fr 1fr}}
 
 /* ── RESPONSIVE: sidebar jadi menu geser (drawer) di layar HP/tablet ── */
@@ -401,7 +414,7 @@ body.dark .hamburger-btn{color:var(--text)}
       <button class="btn sm primary" onclick="addDanaKeluar()">＋ Tambah Baris</button>
     </div>
     <div class="sec-body">
-      <div style="display:grid;grid-template-columns:1fr 1fr 2fr 140px 36px;gap:8px;margin-bottom:6px">
+      <div class="dk-header">
         <div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase">Kategori</div>
         <div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase">Sub Kategori</div>
         <div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase">Keterangan</div>
@@ -488,7 +501,7 @@ body.dark .hamburger-btn{color:var(--text)}
     </div>
     <div class="sec-body">
       <!-- Header -->
-      <div style="display:grid;grid-template-columns:1fr 1fr 160px 160px 32px;gap:8px;margin-bottom:6px;align-items:center">
+      <div class="piu-header">
         <div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase">Program</div>
         <div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase">Kampus</div>
         <div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase">Periode Piutang</div>
@@ -1394,7 +1407,7 @@ function getMonthRange(p){const arr=p.split('-').map(Number);const y=arr[0],m=ar
 function getYearRange(y){return{dari:y+'-01-01',sampai:y+'-12-31'};}
 function statCard(label,val,sub,color){const c=color||'var(--teal)';return '<div class="stat-card" style="border-left-color:'+c+'"><div class="stat-val" style="color:'+c+'">'+val+'</div><div class="stat-lbl">'+label+'</div>'+(sub?'<div style="font-size:10px;color:var(--muted);margin-top:2px">'+sub+'</div>':'')+'</div>';}
 function statGrid(cards){return '<div class="stat-row" style="margin-bottom:14px">'+cards.join('')+'</div>';}
-function buildTable(headers,rows,emptyMsg){if(!rows.length)return '<div style="color:var(--muted);font-size:12.5px;padding:14px;text-align:center;background:var(--surface);border-radius:8px">'+(emptyMsg||'Tidak ada data.')+'</div>';var thead=headers.map(function(h){return '<th>'+h+'</th>';}).join('');var tbody=rows.map(function(r){return '<tr>'+r.map(function(c){return '<td>'+c+'</td>';}).join('')+'</tr>';}).join('');return '<table class="adm-tbl"><thead><tr>'+thead+'</tr></thead><tbody>'+tbody+'</tbody></table>';}
+function buildTable(headers,rows,emptyMsg){if(!rows.length)return '<div style="color:var(--muted);font-size:12.5px;padding:14px;text-align:center;background:var(--surface);border-radius:8px">'+(emptyMsg||'Tidak ada data.')+'</div>';var thead=headers.map(function(h){return '<th>'+h+'</th>';}).join('');var tbody=rows.map(function(r){return '<tr>'+r.map(function(c){return '<td>'+c+'</td>';}).join('')+'</tr>';}).join('');return '<div class="tbl-wrap"><table class="adm-tbl"><thead><tr>'+thead+'</tr></thead><tbody>'+tbody+'</tbody></table></div>';}
 function formatRpShort(n){var v=Math.abs(Number(n)||0);if(v>=1e9)return 'Rp '+(v/1e9).toFixed(1)+'M';if(v>=1e6)return 'Rp '+(v/1e6).toFixed(1)+'Jt';if(v>=1e3)return 'Rp '+(v/1e3).toFixed(0)+'rb';return 'Rp '+v.toLocaleString('id');}
 function downloadPDF(elId,filename){var el=document.getElementById(elId);if(!el){toast('⚠️','Konten belum dimuat.','warn');return;}var style='<style>body{font-family:Arial,sans-serif;font-size:11px;color:#0F172A;margin:0;padding:20px}h1{font-size:16px;font-weight:700;margin-bottom:4px}.meta{font-size:10px;color:#64748B;margin-bottom:16px}table{width:100%;border-collapse:collapse;margin-bottom:12px;font-size:10px}th{background:#0D1B35;color:#fff;padding:5px 8px;text-align:left}td{padding:5px 8px;border-bottom:1px solid #E2E8F0}tr:nth-child(even) td{background:#F8FAFC}.stat-row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}.stat-card{border:1px solid #E2E8F0;border-radius:6px;padding:10px 14px;min-width:110px}.stat-val{font-size:18px;font-weight:700;color:#0D9488}.stat-lbl{font-size:9px;color:#64748B;text-transform:uppercase;letter-spacing:.5px;margin-top:2px}.sec,.sec-body,.sec-head{display:block}.sec-head{font-weight:700;font-size:12px;border-bottom:2px solid #0D9488;padding-bottom:4px;margin-bottom:8px;color:#0D1B35}.footer{margin-top:24px;padding-top:10px;border-top:1px solid #E2E8F0;font-size:9px;color:#94A3B8;text-align:center}@media print{.btn,.no-print{display:none}}</style>';var win=window.open('','_blank','width=900,height=700');win.document.write('<!DOCTYPE html><html><head><meta charset="UTF-8"><title>'+filename+'</title>'+style+'</head><body><h1>'+filename.replace(/_/g,' ').replace('.pdf','')+'</h1><p class="meta">Dicetak: '+new Date().toLocaleString('id-ID')+' · Sistem Laporan RPL</p><hr style="margin-bottom:16px;border-color:#E2E8F0">'+el.innerHTML+'<div class="footer">Sistem Laporan RPL STISDU/STITBU</div><script>setTimeout(function(){window.print();},600)<\/script></body></html>');win.document.close();}
 
@@ -1509,6 +1522,36 @@ async function loadKeuRingkasan(){
     html+='</div></div>';
   }
 
+  // ── Kas Internal (alokasi periode ini) ────────────────────────────
+  var ki=r.kasInternalTotal||{gaji:0,gedung:0,operasional:0,lain:0,total:0};
+  html+='<div class="sec" style="margin-bottom:12px"><div class="sec-head"><div class="sec-title">💼 Kas Internal — Alokasi Periode Ini</div><div style="font-size:12px;color:var(--muted)">Total: <b style="color:var(--purple)">'+formatRpShort(ki.total)+'</b></div></div><div class="sec-body">';
+  html+=statGrid([
+    statCard('👥 Kas Gaji',formatRpShort(ki.gaji),'','var(--blue)'),
+    statCard('🏠 Kas Gedung',formatRpShort(ki.gedung),'','var(--teal)'),
+    statCard('⚙️ Kas Operasional',formatRpShort(ki.operasional),'','var(--gold)'),
+    statCard('📦 Kas Lain',formatRpShort(ki.lain),'','var(--purple)'),
+  ]);
+  html+='</div></div>';
+
+  // ── Ringkasan Piutang (per kategori periode: Bulan Ini/2026/2025/Tahun Sebelumnya) ──
+  var piuEntries=Object.entries(r.perProgramPiutang||{}).sort(function(a,b){return b[1].total-a[1].total;});
+  var tpk=r.totalPerKategoriPiutang||{bln_berjalan:0,thn_2026:0,thn_2025:0,thn_sebelumnya:0};
+  html+='<div class="sec" style="margin-bottom:12px"><div class="sec-head"><div class="sec-title">📋 Ringkasan Piutang</div><div style="font-size:12px;color:var(--muted)">Total: <b style="color:var(--red)">'+formatRpShort(r.totalPiutang||0)+'</b></div></div><div class="sec-body">';
+  if(piuEntries.length){
+    html+=buildTable(['Program','Bulan Ini','2026','2025','Thn Sebelumnya','Total'],
+      piuEntries.map(function(e){
+        return ['<b>'+escH(e[0])+'</b>',formatRpShort(e[1].bln_berjalan),formatRpShort(e[1].thn_2026),formatRpShort(e[1].thn_2025),formatRpShort(e[1].thn_sebelumnya),
+          '<b style="color:var(--red)">'+formatRpShort(e[1].total)+'</b>'];
+      }).concat([[
+        '<b>TOTAL</b>','<b>'+formatRpShort(tpk.bln_berjalan)+'</b>','<b>'+formatRpShort(tpk.thn_2026)+'</b>','<b>'+formatRpShort(tpk.thn_2025)+'</b>','<b>'+formatRpShort(tpk.thn_sebelumnya)+'</b>',
+        '<b style="color:var(--red)">'+formatRpShort(r.totalPiutang||0)+'</b>'
+      ]])
+    );
+  } else {
+    html+='<div style="color:var(--muted);font-size:13px;text-align:center;padding:20px">Belum ada data piutang.</div>';
+  }
+  html+='</div></div>';
+
   // ── Detail harian ──────────────────────────────────────────────
   if(r.perHari && r.perHari.length){
     html+='<div class="sec" style="margin-bottom:12px"><div class="sec-head"><div class="sec-title">📅 Detail per Hari</div></div><div class="sec-body">';
@@ -1557,7 +1600,14 @@ function getDemoKeuRingkasan(dari,sampai){
     ],
     perHari:[
       {tanggal:todayStr(),diisi_oleh:'Nadia Putri',status:'submitted',masuk:5800000,keluar:900000,setor:3900000,net:4900000}
-    ]
+    ],
+    kasInternalTotal:{gaji:9840000,gedung:3280000,operasional:16400000,lain:4920000,total:34440000},
+    perProgramPiutang:{
+      'RPL Khusus':{bln_berjalan:4500000,thn_2026:0,thn_2025:0,thn_sebelumnya:0,total:4500000},
+      'RPL Reguler':{bln_berjalan:0,thn_2026:1800000,thn_2025:1200000,thn_sebelumnya:0,total:3000000}
+    },
+    totalPerKategoriPiutang:{bln_berjalan:4500000,thn_2026:1800000,thn_2025:1200000,thn_sebelumnya:0},
+    totalPiutang:7500000
   };
 }
 
