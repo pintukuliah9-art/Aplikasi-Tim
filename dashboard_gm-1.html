@@ -488,6 +488,28 @@ table.adm-tbl,table.mkt-tbl,table.gm-tbl{width:100%;border-collapse:separate;bor
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
 </style>
 
+
+<style id="gm-finance-dashboard-upgrade">
+/* Dashboard Keuangan GM — laporan pimpinan yang lengkap dan responsif */
+.finance-control-panel{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:16px;padding:15px 16px;border:1px solid var(--border);border-radius:var(--r);background:linear-gradient(135deg,var(--card),var(--brand-soft-2));box-shadow:var(--shadow-sm)}
+.finance-control-copy{min-width:0}.finance-control-kicker{display:inline-flex;align-items:center;gap:7px;margin-bottom:4px;color:var(--green);font-size:10px;font-weight:800;letter-spacing:.7px;text-transform:uppercase}.finance-control-text{max-width:650px;color:var(--muted);font-size:12px;line-height:1.55}.finance-tabs{flex:0 0 auto;margin:0}.finance-tabs .lap-tab{cursor:pointer;background:transparent;font:inherit}
+.finance-filter-card{display:flex;align-items:end;justify-content:space-between;gap:14px;margin-bottom:16px;padding:14px 16px;border:1px solid var(--border);border-radius:var(--r);background:var(--card);box-shadow:var(--shadow-xs)}
+.finance-filter-field{display:flex;flex-direction:column;gap:6px;min-width:210px}.finance-filter-field label{color:var(--muted);font-size:10px;font-weight:800;letter-spacing:.65px;text-transform:uppercase}.finance-filter-field .f-sel-inline{width:100%}.finance-filter-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.finance-report-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:14px;padding:16px 18px;border:1px solid var(--border);border-radius:var(--r);background:var(--card);box-shadow:var(--shadow-sm)}.finance-report-title{font-family:var(--display);font-size:19px;font-weight:600;color:var(--navy)}.finance-report-sub{margin-top:5px;color:var(--muted);font-size:11.5px}.finance-report-status{display:inline-flex;align-items:center;gap:7px;padding:6px 10px;border:1px solid color-mix(in srgb,var(--green) 28%,var(--border));border-radius:999px;background:var(--green2);color:var(--green);font-size:10.5px;font-weight:800;white-space:nowrap}
+.finance-kpi-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:14px}.finance-kpi{position:relative;min-width:0;min-height:116px;padding:15px 16px 14px;border:1px solid var(--border);border-radius:var(--r);background:var(--card);box-shadow:var(--shadow-xs);overflow:hidden}.finance-kpi::before{content:'';position:absolute;inset:0 auto 0 0;width:4px;background:var(--brand)}.finance-kpi::after{content:'';position:absolute;right:-26px;top:-30px;width:78px;height:78px;border-radius:50%;background:var(--brand-soft);opacity:.75}.finance-kpi.green::before{background:var(--green)}.finance-kpi.red::before{background:var(--red)}.finance-kpi.blue::before{background:var(--blue)}.finance-kpi.purple::before{background:var(--purple)}.finance-kpi.gold::before{background:var(--gold)}.finance-kpi.teal::before{background:var(--teal)}.finance-kpi-label{position:relative;z-index:1;color:var(--muted);font-size:9.5px;font-weight:800;letter-spacing:.72px;text-transform:uppercase}.finance-kpi-value{position:relative;z-index:1;margin-top:9px;color:var(--navy);font-family:var(--fig);font-size:18px;font-weight:700;letter-spacing:-.45px;line-height:1.2;overflow-wrap:anywhere}.finance-kpi.green .finance-kpi-value{color:var(--green)}.finance-kpi.red .finance-kpi-value{color:var(--red)}.finance-kpi.blue .finance-kpi-value{color:var(--blue)}.finance-kpi.purple .finance-kpi-value{color:var(--purple)}.finance-kpi.gold .finance-kpi-value{color:var(--gold)}.finance-kpi.teal .finance-kpi-value{color:var(--teal)}.finance-kpi-sub{position:relative;z-index:1;margin-top:7px;color:var(--muted);font-size:10.5px;line-height:1.45}
+.finance-grid-2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px;margin-bottom:14px}.finance-panel{min-width:0;border:1px solid var(--border);border-radius:var(--r);background:var(--card);box-shadow:var(--shadow-sm);overflow:hidden}.finance-panel.full{grid-column:1/-1}.finance-panel-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:13px 15px;border-bottom:1px solid var(--border);background:color-mix(in srgb,var(--surface) 55%,var(--card))}.finance-panel-title{display:flex;align-items:center;gap:8px;color:var(--navy);font-size:12.5px;font-weight:800}.finance-panel-title::before{content:'';width:3px;height:17px;border-radius:999px;background:var(--brand)}.finance-panel-note{color:var(--muted);font-size:10.5px;text-align:right}.finance-panel-body{padding:15px}
+.finance-bars{display:flex;flex-direction:column;gap:13px}.finance-bar-row{display:grid;grid-template-columns:minmax(92px,1fr) minmax(120px,2fr) auto;align-items:center;gap:10px}.finance-bar-name{min-width:0;color:var(--text);font-size:11.5px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.finance-bar-track{height:9px;border-radius:999px;background:var(--surface);overflow:hidden}.finance-bar-fill{height:100%;min-width:2px;border-radius:999px;background:var(--brand);transition:width .3s ease}.finance-bar-fill.green{background:var(--green)}.finance-bar-fill.blue{background:var(--blue)}.finance-bar-fill.purple{background:var(--purple)}.finance-bar-fill.gold{background:var(--gold)}.finance-bar-fill.teal{background:var(--teal)}.finance-bar-amount{text-align:right;color:var(--navy);font-family:var(--fig);font-size:10.5px;font-weight:700;white-space:nowrap}.finance-bar-percent{display:block;margin-top:2px;color:var(--muted);font-family:Inter,sans-serif;font-size:9.5px;font-weight:600}
+.finance-table-shell{width:100%;overflow:hidden;border:1px solid var(--border);border-radius:var(--r-sm)}.finance-table{width:100%;border-collapse:separate;border-spacing:0;table-layout:fixed;font-size:11.5px}.finance-table th{padding:9px 10px;border-bottom:1px solid var(--border-strong);background:var(--surface);color:var(--muted);font-size:9px;font-weight:800;letter-spacing:.62px;text-align:left;text-transform:uppercase}.finance-table td{padding:10px;border-bottom:1px solid var(--border);background:var(--card);color:var(--text);vertical-align:middle;overflow-wrap:anywhere}.finance-table tr:last-child td{border-bottom:0}.finance-table tbody tr:nth-child(even) td{background:color-mix(in srgb,var(--surface) 45%,var(--card))}.finance-table tbody tr:hover td{background:var(--brand-soft-2)}.finance-table .num{text-align:right;font-family:var(--fig);font-weight:700;font-variant-numeric:tabular-nums}.finance-table .positive{color:var(--green)}.finance-table .negative{color:var(--red)}.finance-table .muted{color:var(--muted);font-weight:500}.finance-total-row td{font-weight:800;background:var(--surface)!important}
+.finance-progress-summary{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:12px;margin-bottom:14px;padding:12px 15px;border:1px solid var(--border);border-radius:var(--r);background:var(--card);box-shadow:var(--shadow-xs)}.finance-progress-icon{width:38px;height:38px;display:grid;place-items:center;border-radius:10px;background:var(--brand-soft);color:var(--brand);font-size:16px}.finance-progress-copy b{display:block;color:var(--navy);font-size:12px}.finance-progress-copy span{color:var(--muted);font-size:10.5px}.finance-progress-track{height:8px;margin-top:7px;border-radius:999px;background:var(--surface);overflow:hidden}.finance-progress-fill{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--brand),var(--gold))}.finance-progress-number{color:var(--brand);font-family:var(--fig);font-size:15px;font-weight:800;white-space:nowrap}
+.finance-trend{display:flex;align-items:flex-end;gap:6px;min-height:190px;padding:12px 5px 2px;border-bottom:1px solid var(--border)}.finance-trend-item{display:flex;flex:1 1 0;min-width:18px;height:165px;flex-direction:column;align-items:center;justify-content:flex-end;gap:6px}.finance-trend-bars{display:flex;align-items:flex-end;justify-content:center;gap:3px;width:100%;height:130px}.finance-trend-bar{width:min(12px,38%);min-height:2px;border-radius:4px 4px 1px 1px;background:var(--green);transition:height .25s ease}.finance-trend-bar.out{background:var(--red)}.finance-trend-label{color:var(--muted);font-size:8.5px;white-space:nowrap}.finance-legend{display:flex;align-items:center;justify-content:flex-end;gap:13px;margin-bottom:8px;color:var(--muted);font-size:10px}.finance-legend span{display:inline-flex;align-items:center;gap:5px}.finance-legend i{width:8px;height:8px;border-radius:2px;background:var(--green)}.finance-legend .out i{background:var(--red)}
+.finance-empty{display:flex;min-height:210px;flex-direction:column;align-items:center;justify-content:center;gap:7px;padding:28px;border:1px dashed var(--border-strong);border-radius:var(--r);background:color-mix(in srgb,var(--card) 72%,transparent);color:var(--muted);text-align:center}.finance-empty>i{font-size:28px;color:var(--brand)}.finance-empty b{color:var(--navy);font-size:13px}.finance-empty span{max-width:440px;font-size:11.5px;line-height:1.6}.finance-empty.compact{min-height:130px}
+.finance-chip{display:inline-flex;align-items:center;gap:5px;padding:3px 8px;border:1px solid var(--border);border-radius:999px;background:var(--surface);color:var(--muted);font-size:9.5px;font-weight:700}.finance-chip.success{border-color:color-mix(in srgb,var(--green) 28%,var(--border));background:var(--green2);color:var(--green)}
+@media(max-width:1180px){.finance-kpi-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:900px){.finance-control-panel{align-items:flex-start;flex-direction:column}.finance-grid-2{grid-template-columns:1fr}.finance-panel.full{grid-column:auto}.finance-filter-card{align-items:stretch;flex-direction:column}.finance-filter-field{width:100%;min-width:0}.finance-filter-actions{justify-content:flex-start}}
+@media(max-width:680px){.finance-kpi-grid{grid-template-columns:1fr}.finance-kpi{min-height:104px}.finance-filter-actions{display:grid;grid-template-columns:1fr}.finance-filter-actions .btn{width:100%;justify-content:center}.finance-tabs{display:grid;width:100%;grid-template-columns:1fr 1fr}.finance-tabs .lap-tab{display:flex;align-items:center;justify-content:center}.finance-report-head{align-items:flex-start;flex-direction:column}.finance-bar-row{grid-template-columns:88px minmax(80px,1fr);gap:8px}.finance-bar-amount{grid-column:1/-1;text-align:left;padding-left:96px}.finance-progress-summary{grid-template-columns:auto 1fr}.finance-progress-number{grid-column:1/-1;text-align:right}.finance-table-shell{border:0;overflow:visible}.finance-table,.finance-table tbody,.finance-table tr,.finance-table td{display:block;width:100%}.finance-table thead{display:none}.finance-table tr{margin-bottom:10px;padding:11px 12px;border:1px solid var(--border);border-radius:var(--r-sm);background:var(--card);box-shadow:var(--shadow-xs)}.finance-table td{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;padding:7px 0;border-bottom:1px solid var(--border)!important;background:transparent!important;text-align:right!important}.finance-table td:last-child{border-bottom:0!important}.finance-table td::before{content:attr(data-label);max-width:48%;color:var(--muted);font-size:9px;font-weight:800;letter-spacing:.55px;text-align:left;text-transform:uppercase}.finance-total-row{border-color:color-mix(in srgb,var(--brand) 35%,var(--border))!important}.finance-trend{gap:3px;overflow:hidden}.finance-trend-item{min-width:0}.finance-trend-label{font-size:6.5px}.finance-panel-head{align-items:flex-start;flex-direction:column}.finance-panel-note{text-align:left}}
+@media print{.sidebar,.topbar,.finance-control-panel,.finance-filter-card,.toast{display:none!important}.main{margin-left:0!important}.content{padding:0!important}.page{display:none!important}#page-keuangan{display:block!important}.finance-panel,.finance-kpi,.finance-report-head,.finance-progress-summary{box-shadow:none;break-inside:avoid}.finance-grid-2{display:block}.finance-panel{margin-bottom:12px}}
+</style>
+
 </head>
 <body class="app-gm">
 <div class="shell">
@@ -599,26 +621,43 @@ table.adm-tbl,table.mkt-tbl,table.gm-tbl{width:100%;border-collapse:separate;bor
 
 <!-- PAGE: KEUANGAN -->
 <div id="page-keuangan" class="page">
-  <div class="lap-tabs">
-    <div class="lap-tab active" onclick="switchTab(this,'keu-harian')"><i class=bi-calendar-day-fill aria-hidden=true></i> Harian</div>
-    <div class="lap-tab" onclick="switchTab(this,'keu-bulanan')"><i class=bi-calendar-month-fill aria-hidden=true></i> Bulanan</div>
+  <div class="finance-control-panel">
+    <div class="finance-control-copy">
+      <div class="finance-control-kicker"><i class="bi bi-shield-check" aria-hidden="true"></i> Data resmi</div>
+      <div class="finance-control-text">Dashboard hanya menghitung laporan Keuangan yang sudah disubmit dan tersimpan di database.</div>
+    </div>
+    <div class="lap-tabs finance-tabs">
+      <button type="button" class="lap-tab active" onclick="switchTab(this,'keu-harian')"><i class="bi bi-calendar-day-fill" aria-hidden="true"></i> Harian</button>
+      <button type="button" class="lap-tab" onclick="switchTab(this,'keu-bulanan')"><i class="bi bi-calendar-month-fill" aria-hidden="true"></i> Bulanan</button>
+    </div>
   </div>
 
   <div class="lap-tab-content active" id="keu-harian">
-    <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;align-items:center">
-      <label style="font-size:12.5px;color:var(--muted)">Tanggal:</label>
-      <input type="date" class="f-sel-inline" id="keu-h-tgl"/>
-      <button class="btn primary sm" onclick="loadKeuHarian()">Tampilkan</button>
+    <div class="finance-filter-card">
+      <div class="finance-filter-field">
+        <label for="keu-h-tgl">Tanggal laporan</label>
+        <input type="date" class="f-sel-inline" id="keu-h-tgl"/>
+      </div>
+      <div class="finance-filter-actions">
+        <button type="button" class="btn primary" onclick="loadKeuHarian(this)"><i class="bi bi-arrow-clockwise" aria-hidden="true"></i> Tampilkan laporan</button>
+        <button type="button" class="btn" onclick="window.print()"><i class="bi bi-printer-fill" aria-hidden="true"></i> Cetak</button>
+      </div>
     </div>
-    <div id="keu-h-content"><div class="tbl-empty">Pilih tanggal dan klik Tampilkan.</div></div>
+    <div id="keu-h-content"><div class="finance-empty"><i class="bi bi-calendar-check" aria-hidden="true"></i><b>Pilih tanggal laporan</b><span>Dashboard akan menampilkan data resmi setelah tombol Tampilkan laporan ditekan.</span></div></div>
   </div>
 
   <div class="lap-tab-content" id="keu-bulanan">
-    <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap">
-      <select class="f-sel-inline" id="keu-b-periode"></select>
-      <button class="btn primary sm" onclick="loadKeuBulanan()">Tampilkan</button>
+    <div class="finance-filter-card">
+      <div class="finance-filter-field">
+        <label for="keu-b-periode">Periode laporan</label>
+        <select class="f-sel-inline" id="keu-b-periode"></select>
+      </div>
+      <div class="finance-filter-actions">
+        <button type="button" class="btn primary" onclick="loadKeuBulanan(this)"><i class="bi bi-arrow-clockwise" aria-hidden="true"></i> Tampilkan laporan</button>
+        <button type="button" class="btn" onclick="window.print()"><i class="bi bi-printer-fill" aria-hidden="true"></i> Cetak</button>
+      </div>
     </div>
-    <div id="keu-b-content"><div class="tbl-empty">Pilih periode dan klik Tampilkan.</div></div>
+    <div id="keu-b-content"><div class="finance-empty"><i class="bi bi-calendar-range" aria-hidden="true"></i><b>Pilih periode laporan</b><span>Ringkasan, tren, piutang, dan rincian kategori akan ditampilkan dari data submitted.</span></div></div>
   </div>
 </div><!-- /page-keuangan -->
 
@@ -1083,7 +1122,7 @@ function nav(el,pageId){
   const titles={'page-beranda':'<i class=bi-house-door-fill aria-hidden=true></i> Beranda','page-keuangan':'<i class=bi-cash-stack aria-hidden=true></i> Laporan Keuangan','page-administrasi':'<i class=bi-folder2-open aria-hidden=true></i> Laporan Administrasi','page-marketing':'<i class=bi-bar-chart-fill aria-hidden=true></i> Laporan Marketing','page-tugas':'<i class=bi-clipboard2-check-fill aria-hidden=true></i> Tugas ke Tim','page-target':'<i class=bi-bullseye aria-hidden=true></i> Target & Realisasi','page-ringkasan':'<i class=bi-graph-up-arrow aria-hidden=true></i> Ringkasan Bulanan','page-karyawan':'<i class=bi-people-fill aria-hidden=true></i> Data Karyawan'};
   const ttl=document.getElementById('topbar-title');if(ttl)ttl.innerHTML=titles[pageId]||'GM';
   if(pageId==='page-beranda')      loadBerandaData();
-  if(pageId==='page-keuangan')     { /* user pilih tab harian/bulanan */ }
+  if(pageId==='page-keuangan')     { loadKeuHarian(); }
   if(pageId==='page-administrasi') { /* user pilih tab */ }
   if(pageId==='page-marketing')    { /* user pilih tab */ }
   if(pageId==='page-tugas')        { loadTugas(); }
@@ -1096,42 +1135,100 @@ function switchTab(el,id){document.querySelectorAll('.lap-tab').forEach(t=>t.cla
 // ── Laporan per divisi ────────────────────────────────────────────
 const rp=n=>'Rp '+(Math.round(Number(n)||0)).toLocaleString('id-ID');
 
-async function loadKeuHarian(){
-  const tgl=document.getElementById('keu-h-tgl')?.value;const el=document.getElementById('keu-h-content');if(!el||!tgl)return;
-  el.innerHTML=animatedLoader('Memuat laporan Keuangan...');
-  try{
-    const d=await apiGet({action:'getLaporanHarianByTanggal',tanggal:tgl,divisi:'Keuangan'});
-    const lap=d?.laporan;
-    if(!lap||lap.status!=='submitted'){el.innerHTML='<div style="color:var(--muted);padding:16px">Belum ada laporan Keuangan yang disubmit untuk '+escH(tgl)+'.</div>';return;}
-    const mk=n=>Number(lap[n])||0;
-    const internal=mk('rplKhusus_pk')+mk('rplBiasa_pk')+mk('kKaryawan_pk');
-    const stisdu=mk('rplKhusus_stisdu')+mk('rplBiasa_stisdu')+mk('kKaryawan_stisdu');
-    const stitbu=mk('rplKhusus_stitbu')+mk('rplBiasa_stitbu')+mk('kKaryawan_stitbu');
-    const setor=mk('rplKhusus_setor')+mk('rplBiasa_setor')+mk('kKaryawan_setor');
-    const total=internal+stisdu+stitbu+setor;
-    let dk=[];try{dk=JSON.parse(lap.danaKeluarDetail||'[]');}catch(e){}
-    const totalKeluar=dk.reduce((a,d)=>a+(Number(d.nominal)||0),0);
-    let html='<div style="font-family:DM Serif Display,serif;font-size:16px;margin-bottom:14px">Laporan Keuangan Resmi — '+escH(tgl)+'</div>';
-    html+='<div class="stat-row" style="margin-bottom:16px"><div class="stat-card"><div class="stat-lbl">Total Dana Masuk</div><div class="stat-val green" style="font-size:18px">'+rp(total)+'</div></div><div class="stat-card"><div class="stat-lbl">Total Dana Keluar</div><div class="stat-val red" style="font-size:18px">'+rp(totalKeluar)+'</div></div><div class="stat-card"><div class="stat-lbl">Saldo</div><div class="stat-val '+(total-totalKeluar>=0?'green':'red')+'" style="font-size:18px">'+rp(total-totalKeluar)+'</div></div></div>';
-    html+='<div class="sec"><div class="sec-head"><div class="sec-title">Dana Masuk per Kategori — Semua Program Digabung</div></div><div class="sec-body"><table class="gm-tbl"><thead><tr><th>Kategori</th><th style="text-align:right">Total</th></tr></thead><tbody>';
-    [['Dana Internal',internal],['STISDU',stisdu],['STITBU',stitbu],['Kas Setor',setor]].forEach(r=>{html+='<tr><td><b>'+r[0]+'</b></td><td style="text-align:right;font-weight:700">'+rp(r[1])+'</td></tr>';});
-    html+='<tr style="font-weight:700;background:var(--surface)"><td>TOTAL DANA MASUK</td><td style="text-align:right;color:var(--green);font-size:14px">'+rp(total)+'</td></tr></tbody></table></div></div>';
-    if(dk.length){html+='<div class="sec" style="margin-top:12px"><div class="sec-head"><div class="sec-title">Dana Keluar</div></div><div class="sec-body"><table class="gm-tbl"><thead><tr><th>Kategori</th><th>Sub</th><th>Keterangan</th><th>Nominal</th></tr></thead><tbody>'+dk.map(d=>'<tr><td>'+escH(d.kategori||'—')+'</td><td>'+escH(d.sub||'—')+'</td><td>'+escH(d.keterangan||'—')+'</td><td style="text-align:right;font-weight:600;color:var(--red)">'+rp(d.nominal)+'</td></tr>').join('')+'</tbody></table></div></div>';}
-    el.innerHTML=html;
-  }catch(e){el.innerHTML='<div style="color:var(--muted);padding:16px">Gagal: '+escH(e.message)+'</div>';}
+function financePct(value,total){value=Number(value)||0;total=Number(total)||0;return total>0?Math.round((value/total)*100):0;}
+function financeKpi(label,value,tone,sub){return '<div class="finance-kpi '+(tone||'')+'"><div class="finance-kpi-label">'+escH(label)+'</div><div class="finance-kpi-value">'+rp(value)+'</div><div class="finance-kpi-sub">'+escH(sub||'')+'</div></div>';}
+function financeEmpty(title,message,compact){return '<div class="finance-empty'+(compact?' compact':'')+'"><i class="bi bi-inbox" aria-hidden="true"></i><b>'+escH(title)+'</b><span>'+escH(message)+'</span></div>';}
+function financeBars(items,total){
+  const tones=['gold','blue','purple','teal','green'];
+  if(!items||!items.length)return financeEmpty('Belum ada rincian','Rincian kategori belum tersedia untuk periode ini.',true);
+  return '<div class="finance-bars">'+items.map((it,i)=>{const val=Number(it.value)||0,pct=financePct(val,total);return '<div class="finance-bar-row"><div class="finance-bar-name" title="'+escH(it.name)+'">'+escH(it.name)+'</div><div class="finance-bar-track"><div class="finance-bar-fill '+(it.tone||tones[i%tones.length])+'" style="width:'+Math.max(pct,val>0?2:0)+'%"></div></div><div class="finance-bar-amount">'+rp(val)+'<span class="finance-bar-percent">'+pct+'%</span></div></div>';}).join('')+'</div>';
 }
-
-async function loadKeuBulanan(){
-  const periode=document.getElementById('keu-b-periode')?.value;const el=document.getElementById('keu-b-content');if(!el||!periode)return;
-  el.innerHTML='<div style="color:var(--muted);padding:16px"><i class="bi bi-arrow-repeat spin" aria-hidden="true"></i> Memuat...</div>';
+function financeProgramTable(k){
+  const rows=Object.entries(k.perProgram||{});
+  if(!rows.length)return financeEmpty('Belum ada data program','Kontribusi program belum tersedia.',true);
+  let html='<div class="finance-table-shell"><table class="finance-table"><thead><tr><th style="width:25%">Program</th><th>Internal</th><th>STISDU</th><th>STITBU</th><th>Kas Setor</th><th>Total</th></tr></thead><tbody>';
+  rows.forEach(([name,v])=>{v=v||{};html+='<tr><td data-label="Program"><b>'+escH(name)+'</b></td><td class="num" data-label="Internal">'+rp(v.internal)+'</td><td class="num" data-label="STISDU">'+rp(v.stisdu)+'</td><td class="num" data-label="STITBU">'+rp(v.stitbu)+'</td><td class="num" data-label="Kas Setor">'+rp(v.setor)+'</td><td class="num positive" data-label="Total">'+rp(v.total)+'</td></tr>';});
+  html+='<tr class="finance-total-row"><td data-label="Ringkasan">Total</td><td class="num" data-label="Internal">'+rp(k.totalInternal)+'</td><td class="num" data-label="STISDU">'+rp(k.totalSTISDU)+'</td><td class="num" data-label="STITBU">'+rp(k.totalSTITBU)+'</td><td class="num" data-label="Kas Setor">'+rp(k.totalKasSetor)+'</td><td class="num positive" data-label="Total">'+rp(k.totalDanaMasuk)+'</td></tr></tbody></table></div>';
+  return html;
+}
+function financeExpenseTable(k){
+  const rows=k.perKategoriKeluar||[];
+  if(!rows.length)return financeEmpty('Belum ada dana keluar','Tidak ada dana keluar pada periode laporan ini.',true);
+  let html='<div class="finance-table-shell"><table class="finance-table"><thead><tr><th style="width:32%">Kategori</th><th>Subkategori</th><th style="width:25%;text-align:right">Total</th></tr></thead><tbody>';
+  rows.forEach(r=>{html+='<tr><td data-label="Kategori"><b>'+escH(r.kategori||'—')+'</b></td><td data-label="Subkategori">'+escH(r.sub_kategori||'—')+'</td><td class="num negative" data-label="Total">'+rp(r.total)+'</td></tr>';});
+  html+='<tr class="finance-total-row"><td data-label="Ringkasan" colspan="2">Total dana keluar</td><td class="num negative" data-label="Total">'+rp(k.totalDanaKeluar)+'</td></tr></tbody></table></div>';
+  return html;
+}
+function financeKasInternal(k){
+  const c=k.kasInternalTotal||{};const total=Number(c.total)||0;
+  return financeBars([{name:'Gaji',value:c.gaji,tone:'green'},{name:'Gedung',value:c.gedung,tone:'blue'},{name:'Operasional',value:c.operasional,tone:'gold'},{name:'Lain-lain',value:c.lain,tone:'purple'}],total);
+}
+function financePiutangCategory(k){
+  const p=k.totalPerKategoriPiutang||{};const total=Number(k.totalPiutang)||0;
+  return financeBars([{name:'Bulan berjalan',value:p.bln_berjalan,tone:'gold'},{name:'Tahun 2026',value:p.thn_2026,tone:'blue'},{name:'Tahun 2025',value:p.thn_2025,tone:'purple'},{name:'Tahun sebelumnya',value:p.thn_sebelumnya,tone:'teal'}],total);
+}
+function financePiutangProgram(k){
+  const rows=Object.entries(k.perProgramPiutang||{}).sort((a,b)=>(Number(b[1]?.total)||0)-(Number(a[1]?.total)||0));
+  if(!rows.length)return financeEmpty('Belum ada data piutang','Piutang belum diinput untuk periode ini.',true);
+  let html='<div class="finance-table-shell"><table class="finance-table"><thead><tr><th style="width:40%">Program</th><th style="text-align:right">Total Piutang</th></tr></thead><tbody>';
+  rows.forEach(([name,v])=>{html+='<tr><td data-label="Program"><b>'+escH(name)+'</b></td><td class="num negative" data-label="Total piutang">'+rp(v.total)+'</td></tr>';});
+  html+='<tr class="finance-total-row"><td data-label="Ringkasan">Total seluruh piutang</td><td class="num negative" data-label="Total piutang">'+rp(k.totalPiutang)+'</td></tr></tbody></table></div>';
+  return html;
+}
+function financeTrend(k){
+  const rows=(k.perHari||[]).slice().sort((a,b)=>String(a.tanggal).localeCompare(String(b.tanggal)));
+  if(!rows.length)return financeEmpty('Belum ada tren harian','Belum ada laporan submitted pada periode ini.',true);
+  const max=Math.max(1,...rows.flatMap(r=>[Number(r.masuk)||0,Number(r.keluar)||0]));
+  return '<div class="finance-legend"><span><i></i>Dana masuk</span><span class="out"><i></i>Dana keluar</span></div><div class="finance-trend">'+rows.map(r=>{const mi=Math.max(2,Math.round(((Number(r.masuk)||0)/max)*125));const ko=Math.max(2,Math.round(((Number(r.keluar)||0)/max)*125));const d=String(r.tanggal||'').slice(8,10);return '<div class="finance-trend-item" title="'+escH(r.tanggal)+' · Masuk '+rp(r.masuk)+' · Keluar '+rp(r.keluar)+'"><div class="finance-trend-bars"><div class="finance-trend-bar" style="height:'+mi+'px"></div><div class="finance-trend-bar out" style="height:'+ko+'px"></div></div><div class="finance-trend-label">'+escH(d)+'</div></div>';}).join('')+'</div>';
+}
+function financeDailyTable(k){
+  const rows=(k.perHari||[]).slice().sort((a,b)=>String(b.tanggal).localeCompare(String(a.tanggal)));
+  if(!rows.length)return financeEmpty('Belum ada laporan harian','Tidak ada laporan Keuangan submitted pada periode ini.',true);
+  let html='<div class="finance-table-shell"><table class="finance-table"><thead><tr><th>Tanggal</th><th>Diisi oleh</th><th>Masuk</th><th>Keluar</th><th>Saldo</th><th>Status</th></tr></thead><tbody>';
+  rows.forEach(r=>{const net=Number(r.net)||0;html+='<tr><td data-label="Tanggal"><b>'+escH(r.tanggal||'—')+'</b></td><td data-label="Diisi oleh">'+escH(r.diisi_oleh||'—')+'</td><td class="num positive" data-label="Dana masuk">'+rp(r.masuk)+'</td><td class="num negative" data-label="Dana keluar">'+rp(r.keluar)+'</td><td class="num '+(net>=0?'positive':'negative')+'" data-label="Saldo">'+rp(net)+'</td><td data-label="Status"><span class="finance-chip success"><i class="bi bi-check-circle-fill" aria-hidden="true"></i> Submitted</span></td></tr>';});
+  html+='</tbody></table></div>';return html;
+}
+function financeTransactionTable(k){
+  const rows=(k.danaKeluarDetail||[]).slice().sort((a,b)=>String(b.tanggal).localeCompare(String(a.tanggal)));
+  if(!rows.length)return financeEmpty('Belum ada transaksi pengeluaran','Tidak ada rincian dana keluar pada periode ini.',true);
+  let html='<div class="finance-table-shell"><table class="finance-table"><thead><tr><th>Tanggal</th><th>Kategori</th><th>Subkategori</th><th>Keterangan</th><th style="text-align:right">Nominal</th></tr></thead><tbody>';
+  rows.slice(0,50).forEach(r=>{html+='<tr><td data-label="Tanggal">'+escH(r.tanggal||'—')+'</td><td data-label="Kategori"><b>'+escH(r.kategori||'—')+'</b></td><td data-label="Subkategori">'+escH(r.sub_kategori||'—')+'</td><td data-label="Keterangan">'+escH(r.keterangan||'—')+'</td><td class="num negative" data-label="Nominal">'+rp(r.nominal)+'</td></tr>';});
+  html+='</tbody></table></div>';return html;
+}
+function financeWorkdays(periode){const a=String(periode||'').split('-').map(Number);if(a.length<2||!a[0]||!a[1])return 0;const now=new Date(),last=(now.getFullYear()===a[0]&&now.getMonth()+1===a[1])?now.getDate():new Date(a[0],a[1],0).getDate();let n=0;for(let d=1;d<=last;d++)if(new Date(a[0],a[1]-1,d).getDay()!==0)n++;return n;}
+function renderKeuDashboard(k,meta){
+  const net=Number(k.net)||0;const monthly=meta.mode==='bulanan';const totalHari=monthly?financeWorkdays(meta.periode):1;const progress=totalHari?Math.min(100,Math.round(((Number(k.hariSubmit)||0)/totalHari)*100)):0;
+  let html='<div class="finance-report-head"><div><div class="finance-report-title">'+escH(meta.title)+'</div><div class="finance-report-sub">'+escH(meta.subtitle)+'</div></div><span class="finance-report-status"><i class="bi bi-database-check" aria-hidden="true"></i> '+(monthly?escH(String(k.hariSubmit||0)+' hari submitted'):'Laporan submitted')+'</span></div>';
+  if(monthly)html+='<div class="finance-progress-summary"><div class="finance-progress-icon"><i class="bi bi-calendar-check" aria-hidden="true"></i></div><div class="finance-progress-copy"><b>Kelengkapan laporan bulanan</b><span>'+escH(String(k.hariSubmit||0))+' dari '+escH(String(totalHari))+' hari kerja telah disubmit</span><div class="finance-progress-track"><div class="finance-progress-fill" style="width:'+progress+'%"></div></div></div><div class="finance-progress-number">'+progress+'%</div></div>';
+  html+='<div class="finance-kpi-grid">'+financeKpi('Total Dana Masuk',k.totalDanaMasuk,'green',(k.jumlahTransaksiMasuk||0)+' transaksi resmi')+financeKpi('Total Dana Keluar',k.totalDanaKeluar,'red',(k.jumlahTransaksiKeluar||0)+' transaksi pengeluaran')+financeKpi('Saldo Bersih',net,net>=0?'green':'red','Dana masuk dikurangi dana keluar')+financeKpi('Total Piutang',k.totalPiutang,'gold',monthly?'Piutang periode terpilih':'Piutang bulan terkait')+financeKpi('Dana Internal',k.totalInternal,'gold',financePct(k.totalInternal,k.totalDanaMasuk)+'% dari dana masuk')+financeKpi('STISDU',k.totalSTISDU,'blue',financePct(k.totalSTISDU,k.totalDanaMasuk)+'% dari dana masuk')+financeKpi('STITBU',k.totalSTITBU,'purple',financePct(k.totalSTITBU,k.totalDanaMasuk)+'% dari dana masuk')+financeKpi('Kas Setor',k.totalKasSetor,'teal',financePct(k.totalKasSetor,k.totalDanaMasuk)+'% dari dana masuk')+'</div>';
+  html+='<div class="finance-grid-2"><section class="finance-panel"><div class="finance-panel-head"><div class="finance-panel-title"><i class="bi bi-pie-chart-fill" aria-hidden="true"></i> Komposisi dana masuk</div><div class="finance-panel-note">Semua program digabung</div></div><div class="finance-panel-body">'+financeBars([{name:'Dana Internal',value:k.totalInternal,tone:'gold'},{name:'STISDU',value:k.totalSTISDU,tone:'blue'},{name:'STITBU',value:k.totalSTITBU,tone:'purple'},{name:'Kas Setor',value:k.totalKasSetor,tone:'teal'}],k.totalDanaMasuk)+'</div></section><section class="finance-panel"><div class="finance-panel-head"><div class="finance-panel-title"><i class="bi bi-grid-1x2-fill" aria-hidden="true"></i> Kontribusi per program</div><div class="finance-panel-note">Analisis pimpinan</div></div><div class="finance-panel-body">'+financeProgramTable(k)+'</div></section></div>';
+  if(monthly)html+='<div class="finance-grid-2"><section class="finance-panel full"><div class="finance-panel-head"><div class="finance-panel-title"><i class="bi bi-graph-up-arrow" aria-hidden="true"></i> Tren dana masuk dan keluar</div><div class="finance-panel-note">Per hari laporan submitted</div></div><div class="finance-panel-body">'+financeTrend(k)+'</div></section></div>';
+  html+='<div class="finance-grid-2"><section class="finance-panel"><div class="finance-panel-head"><div class="finance-panel-title"><i class="bi bi-wallet2" aria-hidden="true"></i> Dana keluar per kategori</div><div class="finance-panel-note">Urut dari nominal terbesar</div></div><div class="finance-panel-body">'+financeExpenseTable(k)+'</div></section><section class="finance-panel"><div class="finance-panel-head"><div class="finance-panel-title"><i class="bi bi-diagram-3-fill" aria-hidden="true"></i> Pembagian kas internal</div><div class="finance-panel-note">Akumulasi laporan submitted</div></div><div class="finance-panel-body">'+financeKasInternal(k)+'</div></section></div>';
+  html+='<div class="finance-grid-2"><section class="finance-panel"><div class="finance-panel-head"><div class="finance-panel-title"><i class="bi bi-exclamation-circle-fill" aria-hidden="true"></i> Komposisi piutang</div><div class="finance-panel-note">Berdasarkan umur piutang</div></div><div class="finance-panel-body">'+financePiutangCategory(k)+'</div></section><section class="finance-panel"><div class="finance-panel-head"><div class="finance-panel-title"><i class="bi bi-mortarboard-fill" aria-hidden="true"></i> Piutang per program</div><div class="finance-panel-note">Periode terpilih</div></div><div class="finance-panel-body">'+financePiutangProgram(k)+'</div></section></div>';
+  if(monthly)html+='<div class="finance-grid-2"><section class="finance-panel full"><div class="finance-panel-head"><div class="finance-panel-title"><i class="bi bi-calendar3" aria-hidden="true"></i> Rekap laporan harian</div><div class="finance-panel-note">'+escH(String(k.hariSubmit||0))+' laporan submitted</div></div><div class="finance-panel-body">'+financeDailyTable(k)+'</div></section></div>';
+  html+='<div class="finance-grid-2"><section class="finance-panel full"><div class="finance-panel-head"><div class="finance-panel-title"><i class="bi bi-receipt-cutoff" aria-hidden="true"></i> Rincian transaksi dana keluar</div><div class="finance-panel-note">Maksimal 50 transaksi terbaru</div></div><div class="finance-panel-body">'+financeTransactionTable(k)+'</div></section></div>';
+  return html;
+}
+async function loadKeuHarian(btn){
+  const tgl=document.getElementById('keu-h-tgl')?.value;const el=document.getElementById('keu-h-content');if(!el||!tgl)return;
+  if(btn)setButtonLoading(btn,true,'Memuat laporan...');el.innerHTML=animatedLoader('Memuat dashboard Keuangan harian...');
   try{
-    const d=await apiGet({action:'getRollupBulanan',periode,divisi:'Keuangan'});
-    const k=d?.keuangan||{};const bln=['','Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
-    const [y,m]=periode.split('-');const label=bln[parseInt(m)]+' '+y;
-    let html='<div style="font-family:DM Serif Display,serif;font-size:16px;margin-bottom:14px">Laporan Keuangan Bulanan — '+escH(label)+'</div>';
-    html+='<div class="stat-row" style="margin-bottom:16px"><div class="stat-card"><div class="stat-lbl">Total Dana Masuk</div><div class="stat-val green" style="font-size:18px">'+rp(k.totalDanaMasuk)+'</div></div><div class="stat-card"><div class="stat-lbl">Total Dana Keluar</div><div class="stat-val red" style="font-size:18px">'+rp(k.totalDanaKeluar)+'</div></div></div>';
-    el.innerHTML=html;
-  }catch(e){el.innerHTML='<div style="color:var(--muted);padding:16px">Gagal: '+e.message+'</div>';}
+    const d=await apiGet({action:'getKeuRingkasan',dari:tgl,sampai:tgl});const k=d||{};
+    if(!Number(k.hariSubmit)){el.innerHTML=financeEmpty('Belum ada laporan resmi','Laporan Keuangan tanggal '+tgl+' belum disubmit. Data draft tidak ditampilkan dalam dashboard GM.');return;}
+    const row=(k.perHari||[])[0]||{};
+    el.innerHTML=renderKeuDashboard(k,{mode:'harian',title:'Laporan Keuangan Harian — '+tgl,subtitle:'Diisi oleh '+(row.diisi_oleh||'—')+' · Seluruh angka berasal dari database setelah submit.'});
+  }catch(e){el.innerHTML=financeEmpty('Gagal memuat laporan',e.message||'Periksa koneksi lalu coba lagi.');}finally{if(btn)setButtonLoading(btn,false);}
+}
+async function loadKeuBulanan(btn){
+  const periode=document.getElementById('keu-b-periode')?.value;const el=document.getElementById('keu-b-content');if(!el||!periode)return;
+  if(btn)setButtonLoading(btn,true,'Memuat laporan...');el.innerHTML=animatedLoader('Memuat dashboard Keuangan bulanan...');
+  try{
+    const a=periode.split('-').map(Number),last=new Date(a[0],a[1],0).getDate();const sampai=periode+'-'+String(last).padStart(2,'0');
+    const d=await apiGet({action:'getKeuRingkasan',dari:periode+'-01',sampai});const k=d||{};
+    if(!Number(k.hariSubmit)){el.innerHTML=financeEmpty('Belum ada laporan bulanan','Belum ada laporan Keuangan submitted pada periode '+periode+'.');return;}
+    const bln=['','Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];const label=bln[a[1]]+' '+a[0];
+    el.innerHTML=renderKeuDashboard(k,{mode:'bulanan',periode,title:'Laporan Keuangan Bulanan — '+label,subtitle:'Ringkasan eksekutif dana masuk, dana keluar, saldo, piutang, dan kelengkapan laporan.'});
+  }catch(e){el.innerHTML=financeEmpty('Gagal memuat laporan',e.message||'Periksa koneksi lalu coba lagi.');}finally{if(btn)setButtonLoading(btn,false);}
 }
 
 async function loadAdmHarian(){
