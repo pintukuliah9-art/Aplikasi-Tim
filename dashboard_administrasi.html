@@ -830,13 +830,12 @@ table.adm-tbl,table.mkt-tbl,table.gm-tbl{width:100%;border-collapse:separate;bor
     <input class="f-inp" id="setup-url-inp" type="url" placeholder="https://script.google.com/macros/s/.../exec" style="margin-bottom:10px"/>
     <div id="setup-status" style="font-size:12px;color:var(--red);min-height:16px;margin-bottom:10px"></div>
     <button onclick="connectBackend()" style="width:100%;padding:11px;border-radius:9px;border:none;background:var(--teal);color:#fff;font-weight:700;font-size:14px;cursor:pointer;font-family:var(--font);margin-bottom:8px">Hubungkan</button>
-    <button onclick="demoMode()" style="width:100%;padding:9px;border-radius:9px;border:1.5px solid var(--border);background:none;color:var(--muted);font-weight:600;font-size:13px;cursor:pointer;font-family:var(--font)">Coba Mode Demo</button>
   </div>
 </div>
 <div class="toast" id="toast"><div class="toast-title" id="toast-title"></div><div class="toast-body" id="toast-body"></div></div>
 <script>
 // ── State ─────────────────────────────────────────────────────────
-let BACKEND='', DEMO=false, USER='';
+let BACKEND='', USER='';
 let PENGATURAN={
   kampusList:  ['STISDU','STITBU','UNKRIS','STIA Mensis','STAISU'],
   programList: ['RPL Khusus','RPL Reguler (6 Bln)','RPL Reguler (1 Thn)','RPL Reguler (2 Thn)','Kelas Karyawan'],
@@ -876,13 +875,13 @@ document.addEventListener('DOMContentLoaded',()=>{
     }
   }catch(e){}
   initTheme();
-  if(BACKEND||DEMO) initialLoad();
+  if(BACKEND) initialLoad();
 });
 
 // ── Auto-refresh saat aplikasi dibuka kembali (dari background/bfcache/tab lain) ──
 let _lastAutoRefresh = 0;
 function _autoRefreshIfStale(){
-  if(!BACKEND&&!DEMO) return;
+  if(!BACKEND) return;
   const now = Date.now();
   if(now - _lastAutoRefresh < 3000) return;
   _lastAutoRefresh = now;
@@ -913,14 +912,11 @@ async function initialLoad(){
       ALL_SURAT  =data.surat  ||[];
       if(data.pengaturan) PENGATURAN={...PENGATURAN,...data.pengaturan};
     }
-  }catch(e){
-    ALL_MASALAH=getDemoMasalah();
-    ALL_SURAT  =getDemoSurat();
-  }
+  }catch(e){ALL_MASALAH=[];ALL_SURAT=[];toast('<i class="bi bi-x-circle-fill"></i> Gagal memuat',e.message,'err');}
   try{
     const kd=await apiGet({action:'getKaryawan'});
-    KARYAWAN=(kd&&kd.karyawan)||getDemoKaryawan();
-  }catch(e){KARYAWAN=getDemoKaryawan();}
+    KARYAWAN=(kd&&kd.karyawan)||[];
+  }catch(e){KARYAWAN=[];}
 
   populateUserSelect();
   loadPengaturan();  // render tags + dropdown dari PENGATURAN backend
@@ -962,7 +958,7 @@ function switchTab(el,id){document.querySelectorAll('.lap-tab').forEach(t=>t.cla
 
 // ── API ───────────────────────────────────────────────────────────
 async function apiGet(params){
-  if(DEMO||!BACKEND) return null;
+  if(!BACKEND) throw new Error('Hubungkan aplikasi ke Google Sheets terlebih dahulu.');
   const res  = await fetch(BACKEND+'?'+new URLSearchParams(params), {redirect:'follow',credentials:'omit'});
   const text = await res.text();
   let json;
@@ -970,14 +966,9 @@ async function apiGet(params){
   if(json.success === false) throw new Error(json.error||'Server error');
   return json.data !== undefined ? json.data : json;
 }async function apiPost(action, payload){
-  if(DEMO||!BACKEND) return null;const btn=getRecentActionButton();if(btn)setButtonLoading(btn,true);
+  if(!BACKEND) throw new Error('Hubungkan aplikasi ke Google Sheets terlebih dahulu.');const btn=getRecentActionButton();if(btn)setButtonLoading(btn,true);
   try{const res=await fetch(BACKEND,{method:'POST',redirect:'follow',credentials:'omit',headers:{'Content-Type':'text/plain'},body:JSON.stringify({action,...payload})});const text=await res.text();let json;try{json=JSON.parse(text);}catch(e){throw new Error('Response tidak valid');}if(json.success===false)throw new Error(json.error||'Server error');return json.data!==undefined?json.data:json;}finally{if(btn)setButtonLoading(btn,false);}
 }
-// ── Demo data ─────────────────────────────────────────────────────
-function getDemoMasalah(){return[{id:'AM-001',judul:'KTP tidak terbaca',kampus:'STISDU',program:'RPL Khusus',jenis:'Revisi Dokumen',status:'Proses',prioritas:'Tinggi',catatan:'Sudah dikomunikasikan ke mahasiswa',pic:'Ismawati',dibuat_pada:'2026-07-01'},{id:'AM-002',judul:'Foto tidak sesuai ketentuan',kampus:'STITBU',program:'RPL Reguler',jenis:'Revisi Dokumen',status:'Belum Ditangani',prioritas:'Sedang',catatan:'',pic:'Ismawati',dibuat_pada:'2026-07-03'},{id:'AM-003',judul:'Ijazah tidak ada',kampus:'STISDU',program:'Kelas Karyawan',jenis:'Data Hilang',status:'Selesai',prioritas:'Urgent',catatan:'Sudah dilengkapi',pic:'Ismawati',dibuat_pada:'2026-07-02'}];}
-function getDemoSurat(){return[{id:'SR-001',jenis:'Masuk',nomor_surat:'001/ADM/VII/2026',tanggal:'2026-07-01',perihal:'Permohonan Validasi Data',dari_ke:'DIKTI',instansi:'Kemdikbud',catatan:''},{id:'SR-002',jenis:'Keluar',nomor_surat:'002/ADM/VII/2026',tanggal:'2026-07-03',perihal:'Laporan Data Mahasiswa Aktif',dari_ke:'STISDU',instansi:'STISDU',catatan:''}];}
-function getDemoKaryawan(){return[{id:'KRY-001',nama:'Ismawati',divisi:'Administrasi',aktif:true}];}
-
 // ── LAPORAN HARIAN — baris dinamis ───────────────────────────────
 function addLapRow(data){
   // Gunakan nilai dari PENGATURAN (sudah di-load dari backend)
@@ -1186,7 +1177,7 @@ async function saveMasalah(){
   const p={judul,kampus:getSel('ms-kampus'),program:getSel('ms-program'),jenis:getSel('ms-jenis'),prioritas:getSel('ms-prioritas'),status:getSel('ms-status'),pic:getSel('ms-pic'),catatan:getInp('ms-deskripsi'),dibuat_oleh:USER};
   try{
     if(editingId.masalah){p.id=editingId.masalah;await apiPost('updateAdmMasalah',p);const idx=ALL_MASALAH.findIndex(x=>x.id===editingId.masalah);if(idx>=0)ALL_MASALAH[idx]={...ALL_MASALAH[idx],...p};}
-    else{const res=await apiPost('addAdmMasalah',p);p.id=(DEMO?'AM-'+Date.now():res?.id)||'AM-'+Date.now();ALL_MASALAH.push(p);}
+    else{const res=await apiPost('addAdmMasalah',p);p.id=res?.id;if(!p.id)throw new Error('ID masalah tidak diterima dari server.');ALL_MASALAH.push(p);}
     closeModal('modal-masalah');renderMasalah();toast('<i class=bi-check-circle-fill aria-hidden=true></i> Masalah Tersimpan','');
   }catch(e){toast('<i class=bi-x-circle-fill aria-hidden=true></i> Gagal',e.message,'err');}
 }
@@ -1221,7 +1212,7 @@ async function saveSurat(){
   const p={jenis:getSel('sr-jenis'),nomor_surat:nomor,tanggal:getInp('sr-tanggal'),instansi:getInp('sr-instansi'),perihal:getInp('sr-perihal'),dari_ke:getInp('sr-darke'),catatan:getInp('sr-catatan'),dibuat_oleh:USER};
   try{
     if(editingId.surat){p.id=editingId.surat;await apiPost('updateAdmSurat',p);const idx=ALL_SURAT.findIndex(x=>x.id===editingId.surat);if(idx>=0)ALL_SURAT[idx]={...ALL_SURAT[idx],...p};}
-    else{const res=await apiPost('addAdmSurat',p);p.id=(DEMO?'SR-'+Date.now():res?.id)||'SR-'+Date.now();ALL_SURAT.unshift(p);}
+    else{const res=await apiPost('addAdmSurat',p);p.id=res?.id;if(!p.id)throw new Error('ID surat tidak diterima dari server.');ALL_SURAT.unshift(p);}
     closeModal('modal-surat');filterSurat();renderSuratHariIni(document.getElementById('lap-tanggal')?.value||todayStr());toast('<i class=bi-check-circle-fill aria-hidden=true></i> Surat Tersimpan','');
   }catch(e){toast('<i class=bi-x-circle-fill aria-hidden=true></i> Gagal',e.message,'err');}
 }
@@ -1299,10 +1290,10 @@ async function connectBackend(){
     stEl.innerHTML='<i class=bi-x-circle-fill aria-hidden=true></i> <b>Gagal:</b> '+err.message+
       '<br><small>Cek: (1) URL benar? (2) Web App sudah di-deploy ulang? (3) Akses diset ke <b>Anyone</b>?</small>';
   }
-}function demoMode(){DEMO=true;document.getElementById('setup-overlay').classList.add('hidden');setSyncStatus('demo');initialLoad();toast('<i class=bi-tools aria-hidden=true></i> Mode Demo','');}
+}
 function openSetup(){document.getElementById('sync-menu').classList.remove('open');document.getElementById('setup-overlay').classList.remove('hidden');}
 function manualRefresh(){document.getElementById('sync-menu').classList.remove('open');initialLoad();toast('<i class=bi-arrow-repeat aria-hidden=true></i> Refresh','');}
-function setSyncStatus(s){const b=document.getElementById('sync-badge');const d=b?.querySelector('.live-dot');const l=document.getElementById('sync-label');b?.classList.toggle('live',s==='live');if(d)d.style.background=s==='live'?'var(--green)':s==='demo'?'var(--gold)':'var(--muted)';if(l)l.textContent=s==='live'?'Live':s==='demo'?'Demo':'Offline';}
+function setSyncStatus(s){const b=document.getElementById('sync-badge');const d=b?.querySelector('.live-dot');const l=document.getElementById('sync-label');b?.classList.toggle('live',s==='live');if(d)d.style.background=s==='live'?'var(--green)':'var(--muted)';if(l)l.textContent=s==='live'?'Live':'Offline';}
 
 
 // ── Loading tombol dan dialog reusable ───────────────────────────
@@ -1341,15 +1332,10 @@ function toast(title,body,type){const el=document.getElementById('toast');el.sty
 // ── Tugas dari GM ────────────────────────────────────────────────
 async function loadTugas() {
   ALL_TUGAS_GM = [];
-  if (DEMO) {
-    // Mode demo: tampilkan contoh data
-    ALL_TUGAS_GM = [{id:'GT-001',judul:'Cek status berkas PDDikti STISDU',deskripsi:'Pastikan semua berkas bulan ini sudah terkirim.',prioritas:'Tinggi',status:'Belum Mulai',deadline:todayStr()},{id:'GT-002',judul:'Kirim laporan mingguan ke direktur',deskripsi:'Rekap data masuk minggu ini.',prioritas:'Sedang',status:'Proses',deadline:''}];
-  } else {
-    try {
-      const gd = await apiGet({ action: 'getGMTugas', divisi: 'Administrasi' });
-      ALL_TUGAS_GM = (gd?.tugas || []);
-    } catch(e) {}
-  }
+  try {
+    const gd = await apiGet({ action: 'getGMTugas', divisi: 'Administrasi' });
+    ALL_TUGAS_GM = (gd?.tugas || []);
+  } catch(e) {}
   renderTugasGM();
   const badge = document.getElementById('badge-tugas');
   const n = ALL_TUGAS_GM.filter(t=>t.status!=='Selesai').length;
