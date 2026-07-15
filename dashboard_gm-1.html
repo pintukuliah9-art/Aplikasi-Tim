@@ -61,6 +61,14 @@ body.dark .topbar-title{color:var(--text)}
 /* STAT CARDS */
 .stat-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:12px;margin-bottom:18px}
 .stat-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 16px}
+.stat-card{border-left:4px solid var(--border);box-shadow:0 1px 3px rgba(0,0,0,.05)}
+.stat-card.accent-teal::before{background:var(--teal)}
+.stat-card.accent-gold{border-left-color:var(--gold)}
+.stat-card.accent-blue{border-left-color:var(--blue)}
+.stat-card.accent-purple{border-left-color:var(--purple)}
+.stat-card.accent-red{border-left-color:var(--red)}
+.stat-card.accent-green{border-left-color:var(--green)}
+.sec,.kanban-col{box-shadow:0 1px 3px rgba(0,0,0,.05)}
 .stat-lbl{font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-bottom:5px}
 .stat-val{font-family:'DM Serif Display',serif;font-size:22px;font-weight:700}
 .stat-val.gold{color:var(--gold)}.stat-val.green{color:var(--green)}.stat-val.teal{color:var(--teal)}.stat-val.red{color:var(--red)}.stat-val.blue{color:var(--blue)}.stat-val.purple{color:var(--purple)}
@@ -106,7 +114,9 @@ table.gm-tbl{width:100%;border-collapse:collapse;font-size:12.5px}
 .gm-tbl th{text-align:left;font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;padding:8px 10px;border-bottom:2px solid var(--border);background:var(--surface);white-space:nowrap}
 .gm-tbl td{padding:9px 10px;border-bottom:1px solid var(--border);vertical-align:middle}
 .gm-tbl tr:last-child td{border-bottom:none}
-.gm-tbl tr:hover td{background:var(--surface)}
+.gm-tbl tr:nth-child(even) td{background:var(--surface)}
+.gm-tbl tr:hover td{background:#FEF3C7}
+body.dark .gm-tbl tr:hover td{background:rgba(245,158,11,.15)}
 .tbl-empty{text-align:center;padding:28px;color:var(--muted);font-size:13px}
 
 /* KANBAN */
@@ -299,10 +309,10 @@ body.dark .hamburger-btn{color:var(--text)}
 
   <!-- Stat Cards hari ini -->
   <div class="stat-row">
-    <div class="stat-card"><div class="stat-lbl">Dana Masuk Hari Ini</div><div class="stat-val green" id="home-dana-masuk">—</div><div class="stat-sub">3 program</div></div>
-    <div class="stat-card"><div class="stat-lbl">Closing Hari Ini</div><div class="stat-val gold" id="home-closing">—</div><div class="stat-sub" id="home-closing-sub">mahasiswa baru</div></div>
-    <div class="stat-card"><div class="stat-lbl">Lead Baru</div><div class="stat-val purple" id="home-lead">—</div><div class="stat-sub">masuk hari ini</div></div>
-    <div class="stat-card"><div class="stat-lbl">Masalah Aktif</div><div class="stat-val red" id="home-masalah">—</div><div class="stat-sub">semua divisi</div></div>
+    <div class="stat-card accent-green"><div class="stat-lbl">Dana Masuk Hari Ini</div><div class="stat-val green" id="home-dana-masuk">—</div><div class="stat-sub">3 program</div></div>
+    <div class="stat-card accent-gold"><div class="stat-lbl">Closing Hari Ini</div><div class="stat-val gold" id="home-closing">—</div><div class="stat-sub" id="home-closing-sub">mahasiswa baru</div></div>
+    <div class="stat-card accent-purple"><div class="stat-lbl">Lead Baru</div><div class="stat-val purple" id="home-lead">—</div><div class="stat-sub">masuk hari ini</div></div>
+    <div class="stat-card accent-red"><div class="stat-lbl">Masalah Aktif</div><div class="stat-val red" id="home-masalah">—</div><div class="stat-sub">semua divisi</div></div>
   </div>
 
   <!-- Progress target bulan ini -->
