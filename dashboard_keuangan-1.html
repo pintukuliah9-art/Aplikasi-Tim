@@ -95,6 +95,7 @@ body.dark .adm-tbl tr:hover td{background:rgba(217,119,6,.12)}
 .program-total{font-family:'DM Serif Display',serif;font-size:15px;color:var(--teal)}
 .kas-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:14px}
 .kas-grid-4{grid-template-columns:repeat(4,1fr)}
+.kas-grid-3{grid-template-columns:repeat(3,1fr)}
 .kas-field.setor-field{background:var(--red2);border-color:var(--red)}
 .kas-field.setor-field .kas-label{color:var(--red)}
 body.dark .kas-field.setor-field{background:rgba(220,38,38,.12)}
@@ -235,7 +236,7 @@ body.dark .setup-title{color:var(--text)}
   .ki-override{width:auto;flex:1}
   .kanban-keu{grid-template-columns:1fr}
 }
-@media(max-width:860px) and (min-width:701px){.kas-grid-4{grid-template-columns:1fr 1fr}}
+@media(max-width:860px) and (min-width:701px){.kas-grid-4,.kas-grid-3{grid-template-columns:1fr 1fr}}
 
 /* ── RESPONSIVE: sidebar jadi menu geser (drawer) di layar HP/tablet ── */
 .hamburger-btn{display:none;background:none;border:none;font-size:20px;cursor:pointer;color:var(--navy);padding:2px 6px;margin-right:2px;line-height:1;flex-shrink:0}
@@ -303,7 +304,7 @@ body.dark .official-note{background:rgba(29,78,216,.14);border-color:rgba(59,130
 .confirm-title{font-family:'DM Serif Display',serif;font-size:18px;margin-bottom:4px}.confirm-message{font-size:12.5px;color:var(--muted);line-height:1.6}.confirm-actions{display:flex;justify-content:flex-end;gap:8px;padding:14px 18px 18px}
 @media(max-width:1024px){.report-category-grid,.monthly-stat-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:700px){.page-action-bar{align-items:stretch}.page-action-buttons{width:100%}.page-action-buttons .btn{flex:1}.report-hero{align-items:flex-start;flex-direction:column}.report-category-grid,.monthly-stat-grid{grid-template-columns:1fr}.report-hero-value{font-size:26px}.confirm-actions{flex-direction:column-reverse}.confirm-actions .btn{width:100%;justify-content:center}}
-@media(max-width:480px){.date-bar>div{width:100%}.date-bar .btn{flex:1}.kas-grid-4{grid-template-columns:1fr}.page-action-buttons{flex-direction:column}.page-action-buttons .btn{width:100%;justify-content:center}.report-category-card{padding:14px}.monthly-stat-grid .stat-card{min-height:96px}}
+@media(max-width:480px){.date-bar>div{width:100%}.date-bar .btn{flex:1}.kas-grid-4,.kas-grid-3{grid-template-columns:1fr}.page-action-buttons{flex-direction:column}.page-action-buttons .btn{width:100%;justify-content:center}.report-category-card{padding:14px}.monthly-stat-grid .stat-card{min-height:96px}}
 
 
 /* ============================================================
@@ -331,10 +332,10 @@ body.dark .official-note{background:rgba(29,78,216,.14);border-color:rgba(59,130
 .tbl-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:10px}.adm-tbl{min-width:680px}.sec .tbl-wrap .adm-tbl{border:0}.adm-tbl th{padding:10px 12px}.adm-tbl td{padding:10px 12px}.report-table-wrap{scrollbar-width:thin}
 .pg-section{border-radius:13px;box-shadow:0 2px 10px rgba(15,31,13,.045)}.settings-savebar{position:sticky;bottom:12px;z-index:20;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px;border-radius:13px;margin-top:14px}.settings-total-label{display:block;font-size:10px;text-transform:uppercase;letter-spacing:.55px;color:var(--muted);font-weight:700}.settings-total-value{display:block;font-family:var(--serif);font-size:17px;font-weight:700;margin-top:2px}
 .modal-foot .btn{min-width:105px;justify-content:center}
-@media(max-width:1180px){.finance-overview-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.finance-overview-grid .stat-card:first-child{grid-column:1/-1}.kas-grid-4{grid-template-columns:repeat(2,minmax(0,1fr))}.report-category-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:1180px){.finance-overview-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.finance-overview-grid .stat-card:first-child{grid-column:1/-1}.kas-grid-4,.kas-grid-3{grid-template-columns:repeat(2,minmax(0,1fr))}.report-category-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:860px){.content{padding:14px 14px 26px}.finance-date-bar{align-items:stretch}.date-controls{flex:1}.date-actions{width:100%}.date-actions .btn{flex:1}.page-toolbar{align-items:stretch}.page-toolbar-actions{width:100%}.page-toolbar-actions .btn{flex:1}.monthly-stat-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.summary-control-head{align-items:stretch}.summary-tabs .btn{flex:1}.summary-period-row>*{flex:1 1 180px}.settings-savebar{bottom:8px}}
 @media(max-width:700px){.dk-header,.piu-header{display:none}.dk-row,.piu-row{display:grid;grid-template-columns:1fr;padding:42px 13px 13px;margin-bottom:10px;border:1px solid var(--border);border-radius:11px;background:var(--card);position:relative;gap:10px}.dk-row::before,.piu-row::before{content:'Baris ' attr(data-row);position:absolute;left:13px;top:12px;font-size:11px;font-weight:800;color:var(--text)}.dk-row::after,.piu-row::after{content:'';position:absolute;left:13px;right:13px;top:34px;border-top:1px solid var(--border)}.row-field-label{display:block}.row-remove,.piu-del.row-remove{width:100%;height:38px;justify-content:center;gap:7px}.row-remove .remove-label,.piu-del .remove-label{display:inline}.report-category-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.report-category-card{min-height:112px;padding:13px}.report-category-value{font-size:17px}.kas-category-table th:nth-child(2),.kas-category-table td:nth-child(2){display:none}.kas-category-table th:nth-child(1){width:54%}.kas-category-table th:nth-child(3){width:46%}.ki-row{display:grid;grid-template-columns:1fr auto;gap:8px 10px}.ki-label{grid-column:1/-1}.ki-pct{width:auto;text-align:left}.ki-auto{width:auto;text-align:right}.ki-override{grid-column:1/-1;width:100%}.summary-control-head .pdf-btn{width:100%;justify-content:center}.summary-tabs{display:grid;grid-template-columns:1fr 1fr}.summary-period-row{display:grid;grid-template-columns:1fr}.summary-period-row>*{width:100%;min-width:0!important}.settings-savebar{position:static;align-items:stretch;flex-direction:column}.settings-savebar .page-toolbar-actions{display:grid;grid-template-columns:1fr 1fr}.modal-foot{gap:8px}}
-@media(max-width:480px){.finance-overview-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.finance-overview-grid .stat-card:first-child{grid-column:1/-1}.finance-overview-grid .stat-card{min-height:112px;padding:13px}.finance-overview-grid .stat-val{font-size:17px}.stat-card-head{align-items:flex-start}.stat-card-icon{width:27px;height:27px}.date-controls,.date-actions{display:grid;grid-template-columns:1fr}.date-input{width:100%;min-width:0}.date-actions .status-chip{text-align:center}.kas-grid-4{grid-template-columns:1fr}.program-head{align-items:flex-start;gap:6px;flex-direction:column}.report-hero{padding:18px}.report-hero-value{font-size:27px}.report-category-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.report-category-icon{width:30px;height:30px}.monthly-stat-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.summary-stat-card{min-height:105px;padding:12px}.summary-stat-card .stat-val{font-size:17px}.summary-stat-card .stat-lbl{font-size:9px}.page-toolbar-actions{display:grid;grid-template-columns:1fr}.page-toolbar-actions>*{width:100%}.settings-savebar .page-toolbar-actions{grid-template-columns:1fr}.kanban-keu{gap:10px}}
+@media(max-width:480px){.finance-overview-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.finance-overview-grid .stat-card:first-child{grid-column:1/-1}.finance-overview-grid .stat-card{min-height:112px;padding:13px}.finance-overview-grid .stat-val{font-size:17px}.stat-card-head{align-items:flex-start}.stat-card-icon{width:27px;height:27px}.date-controls,.date-actions{display:grid;grid-template-columns:1fr}.date-input{width:100%;min-width:0}.date-actions .status-chip{text-align:center}.kas-grid-4,.kas-grid-3{grid-template-columns:1fr}.program-head{align-items:flex-start;gap:6px;flex-direction:column}.report-hero{padding:18px}.report-hero-value{font-size:27px}.report-category-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.report-category-icon{width:30px;height:30px}.monthly-stat-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.summary-stat-card{min-height:105px;padding:12px}.summary-stat-card .stat-val{font-size:17px}.summary-stat-card .stat-lbl{font-size:9px}.page-toolbar-actions{display:grid;grid-template-columns:1fr}.page-toolbar-actions>*{width:100%}.settings-savebar .page-toolbar-actions{grid-template-columns:1fr}.kanban-keu{gap:10px}}
 @media(max-width:350px){.finance-overview-grid,.report-category-grid,.monthly-stat-grid{grid-template-columns:1fr}.finance-overview-grid .stat-card:first-child{grid-column:auto}}
 
 </style>
@@ -409,7 +410,7 @@ body.dark .official-note{background:rgba(29,78,216,.14);border-color:rgba(59,130
     <div class="stat-card accent-gold"><div class="stat-card-head"><span class="stat-card-icon"><i class="bi bi-building"></i></span><div class="stat-lbl">Dana Internal</div></div><div class="stat-val gold" id="sum-internal">Rp 0</div><div class="stat-sub">Gabungan seluruh program</div></div>
     <div class="stat-card accent-blue"><div class="stat-card-head"><span class="stat-card-icon"><i class="bi bi-bank2"></i></span><div class="stat-lbl">STISDU</div></div><div class="stat-val blue" id="sum-stisdu">Rp 0</div><div class="stat-sub">Gabungan seluruh program</div></div>
     <div class="stat-card accent-purple"><div class="stat-card-head"><span class="stat-card-icon"><i class="bi bi-bank"></i></span><div class="stat-lbl">STITBU</div></div><div class="stat-val purple" id="sum-stitbu">Rp 0</div><div class="stat-sub">Gabungan seluruh program</div></div>
-    <div class="stat-card accent-green"><div class="stat-card-head"><span class="stat-card-icon"><i class="bi bi-cash-coin"></i></span><div class="stat-lbl">Kas Setor</div></div><div class="stat-val green" id="sum-total-setor">Rp 0</div><div class="stat-sub">Kategori dana masuk keempat</div></div>
+    <div class="stat-card accent-green"><div class="stat-card-head"><span class="stat-card-icon"><i class="bi bi-cash-coin"></i></span><div class="stat-lbl">Kas Setor</div></div><div class="stat-val green" id="sum-total-setor">Rp 0</div><div class="stat-sub">Hanya RPL Khusus dan RPL Reguler</div></div>
   </div>
 
   <div class="dana-grid">
@@ -471,7 +472,7 @@ body.dark .official-note{background:rgba(29,78,216,.14);border-color:rgba(59,130
         <div class="program-name"><i class=bi-person-badge-fill aria-hidden=true></i> Kelas Karyawan</div>
         <div>Total Masuk: <span class="program-total" id="tot-karyawan">Rp 0</span></div>
       </div>
-      <div class="kas-grid kas-grid-4">
+      <div class="kas-grid kas-grid-3">
         <div class="kas-field internal-field">
           <div class="kas-label"><i class=bi-buildings-fill aria-hidden=true></i> Dana Internal (Rp)</div>
           <input class="kas-input" type="number" id="karyawan-internal" placeholder="0" oninput="onFinanceInputChange()"/>
@@ -483,10 +484,6 @@ body.dark .official-note{background:rgba(29,78,216,.14);border-color:rgba(59,130
         <div class="kas-field stitbu-field">
           <div class="kas-label"><i class=bi-bank2 aria-hidden=true></i> STITBU (Rp)</div>
           <input class="kas-input" type="number" id="karyawan-stitbu" placeholder="0" oninput="onFinanceInputChange()"/>
-        </div>
-        <div class="kas-field setor-field">
-          <div class="kas-label"><i class=bi-bank aria-hidden=true></i> Kas Setor (Rp)</div>
-          <input class="kas-input" type="number" id="karyawan-setor" placeholder="0" oninput="onFinanceInputChange()"/>
         </div>
       </div>
     </div>
@@ -527,7 +524,7 @@ body.dark .official-note{background:rgba(29,78,216,.14);border-color:rgba(59,130
 
 <!-- PAGE: LAPORAN KAS -->
 <div id="page-kas" class="page">
-  <div class="official-note" id="kas-official-note"><i class="bi bi-shield-check"></i><span>Laporan Kas hanya menampilkan data resmi yang sudah disubmit. Semua program digabung dan dikelompokkan berdasarkan kategori dana.</span></div>
+  <div class="official-note" id="kas-official-note"><i class="bi bi-shield-check"></i><span>Laporan Kas hanya menampilkan data resmi yang sudah disubmit. Dana Internal, STISDU, dan STITBU menggabungkan semua program; Kas Setor hanya berasal dari RPL Khusus dan RPL Reguler.</span></div>
 
   <div class="report-hero">
     <div>
@@ -831,7 +828,7 @@ let KARYAWAN=[], DANA_KELUAR=[];
 let SAVED_KEU_LAP=null;
 let KEU_FORM_DIRTY=false;
 let KEU_ACTIVE_DATE='';
-const KEU_INPUT_IDS=['khusus-internal','khusus-stisdu','khusus-stitbu','khusus-setor','reguler-internal','reguler-stisdu','reguler-stitbu','reguler-setor','karyawan-internal','karyawan-stisdu','karyawan-stitbu','karyawan-setor'];
+const KEU_INPUT_IDS=['khusus-internal','khusus-stisdu','khusus-stitbu','khusus-setor','reguler-internal','reguler-stisdu','reguler-stitbu','reguler-setor','karyawan-internal','karyawan-stisdu','karyawan-stitbu'];
 const KEU_LOCAL_DRAFT_PREFIX='keu-unsent-v2:';
 let PIU_ROWS  = [];  // baris piutang dinamis
 let ALL_TUGAS = [];  // kanban tugas keuangan // [{_id, program, kampus, periode, nominal}]
@@ -950,7 +947,7 @@ function officialProgramTotals(lap){
   return{
     khusus:Number(lap.khusus_internal||0)+Number(lap.khusus_stisdu||0)+Number(lap.khusus_stitbu||0)+Number(lap.khusus_setor||0),
     reguler:Number(lap.reguler_internal||0)+Number(lap.reguler_stisdu||0)+Number(lap.reguler_stitbu||0)+Number(lap.reguler_setor||0),
-    karyawan:Number(lap.karyawan_internal||0)+Number(lap.karyawan_stisdu||0)+Number(lap.karyawan_stitbu||0)+Number(lap.karyawan_setor||0)
+    karyawan:Number(lap.karyawan_internal||0)+Number(lap.karyawan_stisdu||0)+Number(lap.karyawan_stitbu||0)
   };
 }
 function renderOfficialFinanceSummary(lap){
@@ -992,7 +989,7 @@ function officialCategoryTotals(lap){
   const internal=Number(lap.khusus_internal||0)+Number(lap.reguler_internal||0)+Number(lap.karyawan_internal||0);
   const stisdu=Number(lap.khusus_stisdu||0)+Number(lap.reguler_stisdu||0)+Number(lap.karyawan_stisdu||0);
   const stitbu=Number(lap.khusus_stitbu||0)+Number(lap.reguler_stitbu||0)+Number(lap.karyawan_stitbu||0);
-  const setor=Number(lap.khusus_setor||0)+Number(lap.reguler_setor||0)+Number(lap.karyawan_setor||0);
+  const setor=Number(lap.khusus_setor||0)+Number(lap.reguler_setor||0);
   return{internal,stisdu,stitbu,setor,total:internal+stisdu+stitbu+setor};
 }
 function renderOfficialKas(lap){
@@ -1000,7 +997,7 @@ function renderOfficialKas(lap){
   setEl('kas-total-masuk-lbl',formatRp(c.total));setEl('kas-cat-internal',formatRp(c.internal));setEl('kas-cat-stisdu',formatRp(c.stisdu));setEl('kas-cat-stitbu',formatRp(c.stitbu));setEl('kas-cat-setor',formatRp(c.setor));
   setEl('kas-report-meta',submitted?'Data resmi tanggal '+(lap.tanggal||'—')+' · disimpan oleh '+(lap.diisi_oleh||'—'):'Belum ada laporan yang disubmit pada tanggal ini.');
   const chip=document.getElementById('kas-report-status');if(chip){chip.className='status-chip '+(submitted?'terisi':'');chip.innerHTML=submitted?'<i class="bi bi-check-lg"></i> Submitted':'Belum disubmit';}
-  const tbody=document.getElementById('kas-category-table');if(tbody){const rows=[['internal','Dana Internal','Gabungan seluruh program',c.internal],['stisdu','STISDU','Gabungan seluruh program',c.stisdu],['stitbu','STITBU','Gabungan seluruh program',c.stitbu],['setor','Kas Setor','Gabungan seluruh program',c.setor]];tbody.innerHTML=rows.map(r=>'<tr class="category-row category-'+r[0]+'"><td><span class="category-name"><span class="category-dot"></span>'+r[1]+'</span></td><td>'+r[2]+'</td><td class="num category-total">'+formatRp(r[3])+'</td></tr>').join('');}
+  const tbody=document.getElementById('kas-category-table');if(tbody){const rows=[['internal','Dana Internal','Gabungan seluruh program',c.internal],['stisdu','STISDU','Gabungan seluruh program',c.stisdu],['stitbu','STITBU','Gabungan seluruh program',c.stitbu],['setor','Kas Setor','RPL Khusus + Reguler',c.setor]];tbody.innerHTML=rows.map(r=>'<tr class="category-row category-'+r[0]+'"><td><span class="category-name"><span class="category-dot"></span>'+r[1]+'</span></td><td>'+r[2]+'</td><td class="num category-total">'+formatRp(r[3])+'</td></tr>').join('');}
   renderKasInternal(c.internal,lap&&lap.kasInternal);
 }
 function updateKasDisplay(){renderOfficialKas(SAVED_KEU_LAP);}
@@ -1077,7 +1074,7 @@ function collectPayload(status){
     khusus_internal:gn('khusus-internal'),khusus_stisdu:gn('khusus-stisdu'),khusus_stitbu:gn('khusus-stitbu'),
     reguler_internal:gn('reguler-internal'),reguler_stisdu:gn('reguler-stisdu'),reguler_stitbu:gn('reguler-stitbu'),
     karyawan_internal:gn('karyawan-internal'),karyawan_stisdu:gn('karyawan-stisdu'),karyawan_stitbu:gn('karyawan-stitbu'),
-    khusus_setor:gn('khusus-setor'), reguler_setor:gn('reguler-setor'), karyawan_setor:gn('karyawan-setor'),
+    khusus_setor:gn('khusus-setor'), reguler_setor:gn('reguler-setor'),
     danaKeluarDetail:JSON.stringify(DANA_KELUAR),kasInternal
   };
 }
@@ -1558,14 +1555,14 @@ async function loadKeuRingkasan(btn){
     statCard('Dana Internal',formatRpShort(r.totalInternal||0),'semua program','var(--gold)'),
     statCard('STISDU',formatRpShort(r.totalSTISDU||0),'semua program','var(--blue)'),
     statCard('STITBU',formatRpShort(r.totalSTITBU||0),'semua program','var(--purple)'),
-    statCard('Kas Setor',formatRpShort(r.totalKasSetor||0),'semua program','var(--teal)'),
+    statCard('Kas Setor',formatRpShort(r.totalKasSetor||0),'RPL Khusus + Reguler','var(--teal)'),
     statCard('Dana Keluar',formatRpShort(r.totalDanaKeluar),'biaya operasional','var(--red)'),
     statCard('Saldo Bersih',formatRpShort(r.net),'masuk - keluar',r.net>=0?'var(--green)':'var(--red)'),
     statCard('Hari Submit',r.hariSubmit,'laporan resmi','var(--blue)')
   ].join('')+'</div>';
 
   html+='<div class="sec"><div class="sec-head"><div class="sec-title"><i class="bi bi-cash-stack"></i> Dana Masuk per Kategori</div></div><div class="sec-body">';
-  html+=buildTable(['Kategori','Cakupan','Total'],(r.perKategoriMasuk||[]).map(function(k){var colors={'Dana Internal':'var(--gold)','STISDU':'var(--blue)','STITBU':'var(--purple)','Kas Setor':'var(--green)'};return ['<b style="color:'+(colors[k.kategori]||'var(--text)')+'">'+escH(k.kategori)+'</b>','Semua program digabung','<b>'+formatRpShort(k.total)+'</b>'];}));
+  html+=buildTable(['Kategori','Cakupan','Total'],(r.perKategoriMasuk||[]).map(function(k){var colors={'Dana Internal':'var(--gold)','STISDU':'var(--blue)','STITBU':'var(--purple)','Kas Setor':'var(--green)'};return ['<b style="color:'+(colors[k.kategori]||'var(--text)')+'">'+escH(k.kategori)+'</b>',k.kategori==='Kas Setor'?'RPL Khusus + Reguler':'Semua program digabung','<b>'+formatRpShort(k.total)+'</b>'];}));
   html+='</div></div>';
 
   // ── Dana Keluar per Kategori ────────────────────────────────────
