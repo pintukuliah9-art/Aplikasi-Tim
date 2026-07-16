@@ -1190,32 +1190,73 @@ function collectPayload(status){
     danaKeluarDetail:JSON.stringify(DANA_KELUAR),kasInternal
   };
 }
+function captureIncomingValues(){const out={};KEU_INPUT_IDS.forEach(id=>{out[id]=document.getElementById(id)?.value||'';});return out;}
+function incomingValuesAreDirty(values){
+  const official=valuesFromLaporan(SAVED_KEU_LAP);
+  return KEU_INPUT_IDS.some(id=>(Number(values[id])||0)!==(Number(official[id])||0));
+}
+function comparableDanaKeluar(rows){
+  return (Array.isArray(rows)?rows:[]).map(r=>({
+    kategori:String(r.kategori||''),sub:String(r.sub||r.sub_kategori||''),
+    sumber:String(r.sumber||r.sumber_dana||''),keterangan:String(r.keterangan||''),nominal:Number(r.nominal)||0
+  }));
+}
+function outgoingValuesAreDirty(rows){
+  return JSON.stringify(comparableDanaKeluar(rows))!==JSON.stringify(comparableDanaKeluar(parseOfficialDanaKeluar(SAVED_KEU_LAP)));
+}
 async function saveDraft(btn){if(btn)setButtonLoading(btn,true);try{writeFinanceLocalDraft(true);return true;}finally{if(btn)setButtonLoading(btn,false);}}
 async function saveSubmit(btn){
-  const ok=await confirmAction({title:'Submit dana masuk?',message:'Setelah disubmit, data resmi akan tersimpan dan dipakai untuk perhitungan Laporan Kas serta Ringkasan Keuangan.',confirmText:'Ya, submit'});if(!ok)return;
-  return simpanLaporan('submitted',btn);
+  const ok=await confirmAction({title:'Submit dana masuk?',message:'Dana Masuk akan disimpan tanpa mengubah transaksi Dana Keluar pada tanggal yang sama.',confirmText:'Ya, submit'});if(!ok)return;
+  return simpanDanaMasuk(btn);
 }
 async function saveDanaKeluarDraft(btn){if(btn)setButtonLoading(btn,true);try{writeFinanceLocalDraft(true);return true;}finally{if(btn)setButtonLoading(btn,false);}}
-async function submitDanaKeluar(btn){const ok=await confirmAction({title:'Submit dana keluar?',message:'Pastikan kategori, keterangan, dan nominal sudah benar. Data baru dihitung setelah berhasil tersimpan.',confirmText:'Ya, submit'});if(!ok)return;return simpanLaporan('submitted',btn);}
-async function saveKasAllocation(btn){
-  if(!SAVED_KEU_LAP||SAVED_KEU_LAP.status!=='submitted'){showInfoDialog('Data belum disubmit','Submit Dana Masuk terlebih dahulu sebelum menyimpan pembagian kas.');return;}
-  const ok=await confirmAction({title:'Simpan pembagian kas?',message:'Pembagian Kas Internal akan diperbarui pada laporan resmi tanggal '+SAVED_KEU_LAP.tanggal+'.',confirmText:'Simpan pembagian'});if(!ok)return;
-  return simpanLaporan('submitted',btn);
+async function submitDanaKeluar(btn){
+  const ok=await confirmAction({title:'Submit dana keluar?',message:'Transaksi akan disimpan ke KeuDanaKeluar dan otomatis mengurangi saldo sumber dana yang dipilih.',confirmText:'Ya, submit'});if(!ok)return;
+  return simpanDanaKeluar(btn);
 }
-async function simpanLaporan(status,btn){
-  if(status!=='submitted')return false;
-  const payload=collectPayload('submitted');if(!payload.tanggal){toast('<i class=bi-exclamation-triangle-fill aria-hidden=true></i>','Pilih tanggal terlebih dahulu.','warn');return false;}
-  const dkError=validateDanaKeluarClient();if(dkError){toast('<i class=bi-exclamation-triangle-fill aria-hidden=true></i> Dana Keluar',dkError,'warn');return false;}
+async function saveKasAllocation(btn){
+  if(!SAVED_KEU_LAP||SAVED_KEU_LAP.status!=='submitted'){showInfoDialog('Data belum disubmit','Submit Dana Masuk atau Dana Keluar terlebih dahulu sebelum menyimpan pembagian kas.');return;}
+  const ok=await confirmAction({title:'Simpan pembagian kas?',message:'Pembagian Kas Internal akan diperbarui pada laporan resmi tanggal '+SAVED_KEU_LAP.tanggal+'.',confirmText:'Simpan pembagian'});if(!ok)return;
+  const payload=collectPayload('submitted');
   if(btn)setButtonLoading(btn,true);
   try{
-    await apiPost('saveLaporanKeuangan',payload);
-    clearFinanceLocalDraft(payload.tanggal);
+    await apiPost('saveKasAllocationKeuangan',{tanggal:payload.tanggal,diisi_oleh:payload.diisi_oleh,kasInternal:payload.kasInternal});
     await loadKeuangan();
-    const chip=document.getElementById('keu-status-chip');if(chip){chip.innerHTML=status==='submitted'?'<i class=bi-check-lg aria-hidden=true></i> Terisi':'Draft';chip.className='status-chip '+(status==='submitted'?'terisi':'draft');}
-    if(status==='submitted'&&document.getElementById('page-ringkasan')?.classList.contains('active'))await loadKeuRingkasan();
-    toast('<i class=bi-check-circle-fill aria-hidden=true></i> Laporan Tersimpan','Data tersimpan dan perhitungan resmi telah diperbarui.');return true;
+    toast('<i class=bi-check-circle-fill aria-hidden=true></i> Pembagian Tersimpan','Pembagian Kas Internal sudah diperbarui.');return true;
   }catch(e){toast('<i class=bi-x-circle-fill aria-hidden=true></i> Gagal',e.message,'err');return false;}finally{if(btn)setButtonLoading(btn,false);}
 }
+async function simpanDanaMasuk(btn){
+  const payload=collectPayload('submitted');
+  if(!payload.tanggal){toast('<i class=bi-exclamation-triangle-fill aria-hidden=true></i>','Pilih tanggal terlebih dahulu.','warn');return false;}
+  const outgoingDraft=comparableDanaKeluar(DANA_KELUAR);const keepOutgoing=outgoingValuesAreDirty(DANA_KELUAR);
+  if(btn)setButtonLoading(btn,true);
+  try{
+    await apiPost('saveDanaMasukKeuangan',payload);
+    clearFinanceLocalDraft(payload.tanggal);
+    await loadKeuangan();
+    if(keepOutgoing){DANA_KELUAR=outgoingDraft;renderDanaKeluar();writeFinanceLocalDraft(false);}
+    if(document.getElementById('page-ringkasan')?.classList.contains('active'))await loadKeuRingkasan();
+    toast('<i class=bi-check-circle-fill aria-hidden=true></i> Dana Masuk Tersimpan','Dana Masuk tersimpan tanpa mengubah Dana Keluar.');return true;
+  }catch(e){toast('<i class=bi-x-circle-fill aria-hidden=true></i> Gagal',e.message,'err');return false;}finally{if(btn)setButtonLoading(btn,false);}
+}
+async function simpanDanaKeluar(btn){
+  const payload=collectPayload('submitted');
+  if(!payload.tanggal){toast('<i class=bi-exclamation-triangle-fill aria-hidden=true></i>','Pilih tanggal terlebih dahulu.','warn');return false;}
+  const dkError=validateDanaKeluarClient();if(dkError){toast('<i class=bi-exclamation-triangle-fill aria-hidden=true></i> Dana Keluar',dkError,'warn');return false;}
+  if(!DANA_KELUAR.length){toast('<i class=bi-exclamation-triangle-fill aria-hidden=true></i> Dana Keluar','Tambahkan minimal satu transaksi Dana Keluar.','warn');return false;}
+  const incomingDraft=captureIncomingValues();const keepIncoming=incomingValuesAreDirty(incomingDraft);
+  if(btn)setButtonLoading(btn,true);
+  try{
+    await apiPost('saveDanaKeluarKeuangan',{tanggal:payload.tanggal,diisi_oleh:payload.diisi_oleh,danaKeluarDetail:payload.danaKeluarDetail});
+    clearFinanceLocalDraft(payload.tanggal);
+    await loadKeuangan();
+    if(keepIncoming){applyFinanceFormValues(incomingDraft);renderDanaKeluarBalances();writeFinanceLocalDraft(false);}
+    if(document.getElementById('page-ringkasan')?.classList.contains('active'))await loadKeuRingkasan();
+    toast('<i class=bi-check-circle-fill aria-hidden=true></i> Dana Keluar Tersimpan','Transaksi sudah masuk KeuDanaKeluar dan saldo sumber dana telah diperbarui.');return true;
+  }catch(e){toast('<i class=bi-x-circle-fill aria-hidden=true></i> Gagal',e.message,'err');return false;}finally{if(btn)setButtonLoading(btn,false);}
+}
+// Kompatibilitas untuk tombol/versi lama yang masih memanggil fungsi umum.
+async function simpanLaporan(status,btn){return status==='submitted'?simpanDanaMasuk(btn):false;}
 async function refreshKasReport(btn){if(btn)setButtonLoading(btn,true);try{await loadKeuangan();toast('<i class="bi bi-arrow-repeat"></i> Diperbarui','Laporan Kas dimuat dari database.');}finally{if(btn)setButtonLoading(btn,false);}}
 
 
