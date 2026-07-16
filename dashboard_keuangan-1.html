@@ -839,7 +839,7 @@ let KEU_SALDO_SUMBER=null;
 let KEU_FORM_DIRTY=false;
 let KEU_ACTIVE_DATE='';
 const KEU_INPUT_IDS=['khusus-internal','khusus-stisdu','khusus-stitbu','khusus-setor','reguler-internal','reguler-stisdu','reguler-stitbu','reguler-setor','karyawan-internal','karyawan-stisdu','karyawan-stitbu'];
-const KEU_LOCAL_DRAFT_PREFIX='keu-unsent-v2:';
+const KEU_LOCAL_DRAFT_PREFIX='keu-unsent-v3:';
 let PIU_ROWS  = [];  // baris piutang dinamis
 let ALL_TUGAS = [];  // kanban tugas keuangan // [{_id, program, kampus, periode, nominal}]
 
@@ -1079,16 +1079,17 @@ function officialCurrentIncomingBySource(){
   return{internal:c.internal||0,stisdu:c.stisdu||0,stitbu:c.stitbu||0,setor:c.setor||0};
 }
 function getDanaKeluarPreviewSaldo(){
+  // Saldo resmi dari backend sudah mencakup seluruh Dana Masuk dan Dana Keluar
+  // yang tersimpan sampai tanggal aktif. Saat pengguna mengedit Dana Keluar pada
+  // tanggal yang sama, kembalikan dulu pengeluaran resmi tanggal tersebut lalu
+  // kurangi dengan draft pengeluaran yang sedang ditampilkan. Input Dana Masuk
+  // yang belum disubmit tidak boleh memengaruhi validasi Dana Keluar.
   const official=(KEU_SALDO_SUMBER&&KEU_SALDO_SUMBER.sumber)||emptySourceState();
   const officialCurrentOut=summarizeDanaKeluar(parseOfficialDanaKeluar(SAVED_KEU_LAP));
   const draftOut=summarizeDanaKeluar(DANA_KELUAR);
-  const officialCurrentIn=officialCurrentIncomingBySource();
-  const draftIn=currentDraftIncomingBySource();
   const preview={};
   ['internal','stisdu','stitbu','setor'].forEach(key=>{
     preview[key]=(Number(official[key]?.saldo)||0)
-      -(Number(officialCurrentIn[key])||0)
-      +(Number(draftIn[key])||0)
       +(Number(officialCurrentOut[key])||0)
       -(Number(draftOut[key])||0);
   });
