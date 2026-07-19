@@ -1189,23 +1189,52 @@ async function initialLoad(){
     const today=todayStr();
     const d=await apiGet({action:'getGMBoot',tanggal:today,periode:today.slice(0,7)});
     applyGMBoot(d);snapSave('gm-snap',d);
+    _prefetchGMReports();
     return;
   }catch(e){/* backend lama → fallback ke 3 request paralel */}
   await Promise.all([loadBerandaData(), loadTugas(), loadKaryawan()]);
+  _prefetchGMReports();
+}
+// Pemanasan cache di latar belakang (v5): begitu boot selesai, diam-diam ambil
+// data laporan Keuangan/Administrasi/Marketing (harian & bulanan), Ringkasan
+// Bulanan, dan Target — supaya saat menu-menu itu benar-benar dibuka, tampilannya
+// sudah instan tanpa loading.
+function _prefetchGMReports(){
+  const tasks=[loadKeuBulanan,loadKeuHarian,loadAdmBulanan,loadAdmHarian,loadMktBulanan,loadMktHarian,loadRingkasan,loadTarget];
+  tasks.forEach((fn,i)=>setTimeout(()=>{ try{fn();}catch(e){} }, 500+i*300));
 }
 
 // ── API ───────────────────────────────────────────────────────────
-async function apiGet(params){
+// ── Cache respons GET (v5) — sekali diambil, tampil instan di kunjungan berikutnya.
+// Kedaluwarsa otomatis 45 detik (supaya tetap sinkron kalau ada tim lain
+// yang mengubah data), dan langsung dikosongkan setiap ada simpan/hapus.
+const _GET_CACHE={};
+const _GET_CACHE_TTL_MS=45000;
+function _cacheKey(params){return JSON.stringify(params||{});}
+function hasCached(params){const c=_GET_CACHE[_cacheKey(params)];return !!(c&&(Date.now()-c.t)<_GET_CACHE_TTL_MS);}
+// Tampilkan "Memuat..." HANYA jika benar-benar butuh waktu (>120ms) — kalau datanya
+// sudah instan dari cache, timer ini dibatalkan sebelum sempat tampil.
+function showLoaderDelayed(el,html,delayMs){
+  if(!el) return function(){};
+  const timer=setTimeout(()=>{ if(el) el.innerHTML=html; },delayMs||120);
+  return function cancel(){ clearTimeout(timer); };
+}
+async function apiGet(params,opts){
   if(!BACKEND) throw new Error('Hubungkan aplikasi ke Google Sheets terlebih dahulu.');
+  const key=_cacheKey(params);
+  const cached=_GET_CACHE[key];
+  if(!(opts&&opts.force) && cached && (Date.now()-cached.t)<_GET_CACHE_TTL_MS) return cached.d;
   const res  = await fetch(BACKEND+'?'+new URLSearchParams(params), {redirect:'follow',credentials:'omit'});
   const text = await res.text();
   let json;
   try{ json = JSON.parse(text); }catch(e){ throw new Error('Response tidak valid'); }
   if(json.success === false) throw new Error(json.error||'Server error');
-  return json.data !== undefined ? json.data : json;
+  const data = json.data !== undefined ? json.data : json;
+  _GET_CACHE[key]={t:Date.now(),d:data};
+  return data;
 }async function apiPost(action, payload){
   if(!BACKEND) throw new Error('Hubungkan aplikasi ke Google Sheets terlebih dahulu.');const btn=getRecentActionButton();if(btn)setButtonLoading(btn,true);
-  try{const res=await fetch(BACKEND,{method:'POST',redirect:'follow',credentials:'omit',headers:{'Content-Type':'text/plain'},body:JSON.stringify({action,...payload})});const text=await res.text();let json;try{json=JSON.parse(text);}catch(e){throw new Error('Response tidak valid');}if(json.success===false)throw new Error(json.error||'Server error');return json.data!==undefined?json.data:json;}finally{if(btn)setButtonLoading(btn,false);}
+  try{const res=await fetch(BACKEND,{method:'POST',redirect:'follow',credentials:'omit',headers:{'Content-Type':'text/plain'},body:JSON.stringify({action,...payload})});const text=await res.text();let json;try{json=JSON.parse(text);}catch(e){throw new Error('Response tidak valid');}if(json.success===false)throw new Error(json.error||'Server error');Object.keys(_GET_CACHE).forEach(k=>delete _GET_CACHE[k]);return json.data!==undefined?json.data:json;}finally{if(btn)setButtonLoading(btn,false);}
 }
 
 // ── Beranda ───────────────────────────────────────────────────────
@@ -1473,31 +1502,33 @@ function renderKeuDashboard(k,meta){
 }
 async function loadKeuHarian(btn){
   const tgl=document.getElementById('keu-h-tgl')?.value;const el=document.getElementById('keu-h-content');if(!el||!tgl)return;
-  if(btn)setButtonLoading(btn,true,'Memuat laporan...');el.innerHTML=animatedLoader('Memuat dashboard Keuangan harian...');
+  if(btn)setButtonLoading(btn,true,'Memuat laporan...');const cancelLoader=showLoaderDelayed(el,animatedLoader('Memuat dashboard Keuangan harian...'));
   try{
     const d=await apiGet({action:'getKeuRingkasan',dari:tgl,sampai:tgl});const k=d||{};
     const row=(k.perHari||[])[0]||{};
+    cancelLoader();
     el.innerHTML=renderKeuDashboard(k,{mode:'harian',title:'Laporan Keuangan Harian — '+tgl,subtitle:Number(k.hariSubmit||0)?'Diisi oleh '+(row.diisi_oleh||'—')+' · Seluruh angka berasal dari database setelah submit.':'Belum ada laporan submitted pada tanggal ini; data draft tidak ditampilkan.'});
-  }catch(e){el.innerHTML=financeEmpty('Gagal memuat laporan',e.message||'Periksa koneksi lalu coba lagi.');}finally{if(btn)setButtonLoading(btn,false);}
+  }catch(e){cancelLoader();el.innerHTML=financeEmpty('Gagal memuat laporan',e.message||'Periksa koneksi lalu coba lagi.');}finally{if(btn)setButtonLoading(btn,false);}
 }
 async function loadKeuBulanan(btn){
   const periode=document.getElementById('keu-b-periode')?.value;const el=document.getElementById('keu-b-content');if(!el||!periode)return;
-  if(btn)setButtonLoading(btn,true,'Memuat laporan...');el.innerHTML=animatedLoader('Memuat dashboard Keuangan bulanan...');
+  if(btn)setButtonLoading(btn,true,'Memuat laporan...');const cancelLoader=showLoaderDelayed(el,animatedLoader('Memuat dashboard Keuangan bulanan...'));
   try{
     const a=periode.split('-').map(Number),last=new Date(a[0],a[1],0).getDate();const sampai=periode+'-'+String(last).padStart(2,'0');
     const d=await apiGet({action:'getKeuRingkasan',dari:periode+'-01',sampai});const k=d||{};
     const bln=['','Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];const label=bln[a[1]]+' '+a[0];
+    cancelLoader();
     el.innerHTML=renderKeuDashboard(k,{mode:'bulanan',periode,title:'Dashboard Keuangan Bulanan — '+label,subtitle:'Ringkasan eksekutif dana masuk, dana keluar, saldo, piutang, kelengkapan submit, dan rincian transaksi.'});
-  }catch(e){el.innerHTML=financeEmpty('Gagal memuat laporan',e.message||'Periksa koneksi lalu coba lagi.');}finally{if(btn)setButtonLoading(btn,false);}
+  }catch(e){cancelLoader();el.innerHTML=financeEmpty('Gagal memuat laporan',e.message||'Periksa koneksi lalu coba lagi.');}finally{if(btn)setButtonLoading(btn,false);}
 }
 
 async function loadAdmHarian(){
   const tgl=document.getElementById('adm-h-tgl')?.value;const el=document.getElementById('adm-h-content');if(!el||!tgl)return;
-  el.innerHTML='<div style="color:var(--muted);padding:16px"><i class="bi bi-arrow-repeat spin" aria-hidden="true"></i> Memuat...</div>';
+  const cancelLoader=showLoaderDelayed(el,'<div style="color:var(--muted);padding:16px"><i class="bi bi-arrow-repeat spin" aria-hidden="true"></i> Memuat...</div>');
   try{
     const d=await apiGet({action:'getLaporanHarianByTanggal',tanggal:tgl,divisi:'Administrasi'});
     const lap=d?.laporan;
-    if(!lap||lap.status!=='submitted'){el.innerHTML='<div style="color:var(--muted);padding:16px">Belum ada laporan Administrasi yang disubmit untuk '+escH(tgl)+'.</div>';return;}
+    if(!lap||lap.status!=='submitted'){cancelLoader();el.innerHTML='<div style="color:var(--muted);padding:16px">Belum ada laporan Administrasi yang disubmit untuk '+escH(tgl)+'.</div>';return;}
     let rows=[];try{rows=JSON.parse(lap.progresAdm||'[]');}catch(e){}
     const total=rows.reduce((a,r)=>a+(Number(r.jumlah)||0),0);
     let html='<div style="font-family:DM Serif Display,serif;font-size:16px;margin-bottom:14px">Laporan Administrasi — '+escH(tgl)+'</div>';
@@ -1511,32 +1542,34 @@ async function loadAdmHarian(){
     const masalah=await apiGet({action:'getAdmMasalah'});
     const aktif=(masalah?.masalah||[]).filter(m=>m.status!=='Selesai');
     if(aktif.length){html+='<div class="sec" style="margin-top:12px"><div class="sec-head"><div class="sec-title">Masalah Aktif ('+aktif.length+')</div></div><div class="sec-body"><table class="gm-tbl"><thead><tr><th>Masalah</th><th>Kampus</th><th>Jenis</th><th>Prioritas</th><th>Status</th></tr></thead><tbody>'+aktif.map(m=>'<tr><td>'+escH(m.judul)+'</td><td>'+escH(m.kampus||'—')+'</td><td>'+escH(m.jenis||'—')+'</td><td><span class="pill pill-'+((m.prioritas||'Sedang').toLowerCase())+'">'+escH(m.prioritas||'—')+'</span></td><td><span class="pill pill-'+(m.status==='Proses'?'proses':'belum')+'">'+m.status+'</span></td></tr>').join('')+'</tbody></table></div></div>';}
+    cancelLoader();
     el.innerHTML=html;
-  }catch(e){el.innerHTML='<div style="color:var(--muted);padding:16px">Gagal: '+e.message+'</div>';}
+  }catch(e){cancelLoader();el.innerHTML='<div style="color:var(--muted);padding:16px">Gagal: '+e.message+'</div>';}
 }
 
 async function loadAdmBulanan(){
   const periode=document.getElementById('adm-b-periode')?.value;const el=document.getElementById('adm-b-content');if(!el||!periode)return;
-  el.innerHTML='<div style="color:var(--muted);padding:16px"><i class="bi bi-arrow-repeat spin" aria-hidden="true"></i> Memuat...</div>';
+  const cancelLoader=showLoaderDelayed(el,'<div style="color:var(--muted);padding:16px"><i class="bi bi-arrow-repeat spin" aria-hidden="true"></i> Memuat...</div>');
   try{
     const d=await apiGet({action:'getRollupBulanan',periode,divisi:'Administrasi'});
     const a=d?.administrasi||{};const bln=['','Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
     const [y,m]=periode.split('-');
     let html='<div style="font-family:DM Serif Display,serif;font-size:16px;margin-bottom:14px">Laporan Administrasi Bulanan — '+bln[parseInt(m)]+' '+y+'</div>';
     html+='<div class="stat-row"><div class="stat-card"><div class="stat-lbl">Total Berkas</div><div class="stat-val teal" style="font-size:22px">'+(a.totalBerkas||0)+'</div></div><div class="stat-card"><div class="stat-lbl">Surat Masuk</div><div class="stat-val blue" style="font-size:22px">'+(a.suratMasuk||0)+'</div></div><div class="stat-card"><div class="stat-lbl">Surat Keluar</div><div class="stat-val blue" style="font-size:22px">'+(a.suratKeluar||0)+'</div></div></div>';
+    cancelLoader();
     el.innerHTML=html;
-  }catch(e){el.innerHTML='<div style="color:var(--muted);padding:16px">Gagal: '+e.message+'</div>';}
+  }catch(e){cancelLoader();el.innerHTML='<div style="color:var(--muted);padding:16px">Gagal: '+e.message+'</div>';}
 }
 
 async function loadMktHarian(){
   const tgl=document.getElementById('mkt-h-tgl')?.value;const el=document.getElementById('mkt-h-content');if(!el||!tgl)return;
-  el.innerHTML='<div style="color:var(--muted);padding:16px"><i class="bi bi-arrow-repeat spin" aria-hidden="true"></i> Memuat...</div>';
+  const cancelLoader=showLoaderDelayed(el,'<div style="color:var(--muted);padding:16px"><i class="bi bi-arrow-repeat spin" aria-hidden="true"></i> Memuat...</div>');
   try{
     // Ambil laporan harian yang di-submit tim marketing
     let lapHarian=null;
     try{const ld=await apiGet({action:'getLaporanHarianByTanggal',tanggal:tgl,divisi:'Marketing'});lapHarian=ld?.laporan;}catch(e){}
     if(!lapHarian||lapHarian.status!=='submitted'){
-      el.innerHTML='<div style="color:var(--muted);padding:16px">Belum ada laporan Marketing yang disubmit untuk '+escH(tgl)+'.</div>';return;
+      cancelLoader();el.innerHTML='<div style="color:var(--muted);padding:16px">Belum ada laporan Marketing yang disubmit untuk '+escH(tgl)+'.</div>';return;
     }
     const leads=await apiGet({action:'getMktLead'});const closing=await apiGet({action:'getMktClosing'});
     const allLeads=(leads?.leads||[]).filter(l=>l.tanggal_masuk===tgl||l.tanggal_update===tgl);
@@ -1551,13 +1584,14 @@ async function loadMktHarian(){
     if(lapCatatan)html+='<div style="padding:10px 14px;background:var(--surface);border-radius:8px;font-size:12.5px;margin-bottom:14px;border-left:3px solid var(--gold)"><b><i class=bi-journal-text aria-hidden=true></i> Catatan:</b> '+escH(lapCatatan)+'</div>';
     if(allLeads.length){html+='<div class="sec"><div class="sec-head"><div class="sec-title">Lead Hari Ini</div></div><div class="sec-body"><table class="gm-tbl"><thead><tr><th>Nama</th><th>Program</th><th>Sumber</th><th>Status</th><th>PIC</th></tr></thead><tbody>'+allLeads.map(l=>'<tr><td>'+escH(l.nama_lengkap)+'</td><td>'+escH(l.program_minat||'—')+'</td><td>'+escH(l.sumber_lead||'—')+'</td><td><span class="pill" style="background:var(--surface);border:1px solid var(--border)">'+escH(l.status||'—')+'</span></td><td>'+escH(l.pic||'—')+'</td></tr>').join('')+'</tbody></table></div></div>';}
     if(allClosing.length){html+='<div class="sec" style="margin-top:12px"><div class="sec-head"><div class="sec-title">Closing Hari Ini</div></div><div class="sec-body"><table class="gm-tbl"><thead><tr><th>Nama</th><th>Program</th><th>PT</th><th>Status</th><th>PIC</th></tr></thead><tbody>'+allClosing.map(c=>'<tr><td>'+escH(c.nama_lengkap)+'</td><td>'+escH(c.program||'—')+'</td><td>'+escH(c.perguruan_tinggi||'—')+'</td><td><span class="pill" style="background:var(--surface);border:1px solid var(--border)">'+escH(c.status||'—')+'</span></td><td>'+escH(c.pic||'—')+'</td></tr>').join('')+'</tbody></table></div></div>';}
+    cancelLoader();
     el.innerHTML=html;
-  }catch(e){el.innerHTML='<div style="color:var(--muted);padding:16px">Gagal: '+e.message+'</div>';}
+  }catch(e){cancelLoader();el.innerHTML='<div style="color:var(--muted);padding:16px">Gagal: '+e.message+'</div>';}
 }
 
 async function loadMktBulanan(){
   const periode=document.getElementById('mkt-b-periode')?.value;const el=document.getElementById('mkt-b-content');if(!el||!periode)return;
-  el.innerHTML='<div style="color:var(--muted);padding:16px"><i class="bi bi-arrow-repeat spin" aria-hidden="true"></i> Memuat...</div>';
+  const cancelLoader=showLoaderDelayed(el,'<div style="color:var(--muted);padding:16px"><i class="bi bi-arrow-repeat spin" aria-hidden="true"></i> Memuat...</div>');
   try{
     const d=await apiGet({action:'getRollupBulanan',periode,divisi:'Marketing'});
     const mkt=d?.marketing||{};const bln=['','Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
@@ -1565,8 +1599,9 @@ async function loadMktBulanan(){
     let html='<div style="font-family:DM Serif Display,serif;font-size:16px;margin-bottom:14px">Laporan Marketing Bulanan — '+bln[parseInt(m)]+' '+y+'</div>';
     html+='<div class="stat-row" style="margin-bottom:16px"><div class="stat-card"><div class="stat-lbl">Total Closing</div><div class="stat-val gold" style="font-size:22px">'+(mkt.totalClosing||0)+'</div></div><div class="stat-card"><div class="stat-lbl">Tim PMB</div><div class="stat-val purple" style="font-size:22px">'+(mkt.totalClosingTimPMB||0)+'</div></div><div class="stat-card"><div class="stat-lbl">Koordinator</div><div class="stat-val blue" style="font-size:22px">'+(mkt.totalClosingKoordinator||0)+'</div></div></div>';
     if(mkt.perTimPMB?.length){html+='<div class="sec"><div class="sec-head"><div class="sec-title"><i class=bi-trophy-fill aria-hidden=true></i> Ranking PIC Closing</div></div><div class="sec-body"><table class="gm-tbl"><thead><tr><th>#</th><th>PIC</th><th>Closing</th></tr></thead><tbody>'+mkt.perTimPMB.map((p,i)=>'<tr><td style="font-weight:700">'+(i===0?'<i class=bi-award-fill aria-hidden=true></i>':i===1?'<i class=bi-award aria-hidden=true></i>':i===2?'<i class=bi-award aria-hidden=true></i>':i+1)+'</td><td>'+escH(p.nama)+'</td><td style="font-weight:700;color:var(--gold)">'+p.total+'</td></tr>').join('')+'</tbody></table></div></div>';}
+    cancelLoader();
     el.innerHTML=html;
-  }catch(e){el.innerHTML='<div style="color:var(--muted);padding:16px">Gagal: '+e.message+'</div>';}
+  }catch(e){cancelLoader();el.innerHTML='<div style="color:var(--muted);padding:16px">Gagal: '+e.message+'</div>';}
 }
 
 // ── TUGAS GM ──────────────────────────────────────────────────────
@@ -1705,7 +1740,7 @@ async function saveAllTarget(btn){
 // ── RINGKASAN BULANAN ─────────────────────────────────────────────
 async function loadRingkasan(){
   const periode=document.getElementById('rs-periode')?.value;const el=document.getElementById('rs-content');if(!el||!periode)return;
-  el.innerHTML=animatedLoader('Memuat ringkasan bulanan...');
+  const cancelLoader=showLoaderDelayed(el,animatedLoader('Memuat ringkasan bulanan...'));
   try{
     const d=await apiGet({action:'getRollupBulanan',periode});
     const k=d?.keuangan||{},a=d?.administrasi||{},m=d?.marketing||{},p=d?.progress||{};
@@ -1726,8 +1761,9 @@ async function loadRingkasan(){
     html+='<div class="sec"><div class="sec-head"><div class="sec-title"><i class=bi-folder2-open aria-hidden=true></i> Administrasi</div></div><div class="sec-body">';
     html+='<div class="stat-row"><div class="stat-card"><div class="stat-lbl">Total Berkas</div><div class="stat-val teal" style="font-size:18px">'+(a.totalBerkas||0)+'</div></div><div class="stat-card"><div class="stat-lbl">Surat Masuk</div><div class="stat-val blue" style="font-size:18px">'+(a.suratMasuk||0)+'</div></div><div class="stat-card"><div class="stat-lbl">Surat Keluar</div><div class="stat-val blue" style="font-size:18px">'+(a.suratKeluar||0)+'</div></div></div>';
     html+='</div></div>';
+    cancelLoader();
     el.innerHTML=html;
-  }catch(e){el.innerHTML='<div style="color:var(--muted);padding:20px">Gagal memuat: '+e.message+'</div>';}
+  }catch(e){cancelLoader();el.innerHTML='<div style="color:var(--muted);padding:20px">Gagal memuat: '+e.message+'</div>';}
 }
 
 // ── KARYAWAN ──────────────────────────────────────────────────────
@@ -1792,7 +1828,7 @@ async function connectBackend(){
   }
 }
 function openSetup(){document.getElementById('sync-menu').classList.remove('open');document.getElementById('setup-overlay').classList.remove('hidden');}
-function manualRefresh(){document.getElementById('sync-menu').classList.remove('open');initialLoad();toast('<i class=bi-arrow-repeat aria-hidden=true></i> Refresh','Data diperbarui.');}
+function manualRefresh(){document.getElementById('sync-menu').classList.remove('open');Object.keys(_GET_CACHE).forEach(k=>delete _GET_CACHE[k]);initialLoad();toast('<i class=bi-arrow-repeat aria-hidden=true></i> Refresh','Data diperbarui.');}
 function setSyncStatus(s){const b=document.getElementById('sync-badge');const d=b?.querySelector('.live-dot');const l=document.getElementById('sync-label');b?.classList.toggle('live',s==='live');if(d)d.style.background=s==='live'?'var(--green)':'var(--muted)';if(l)l.textContent=s==='live'?'Live':'Offline';}
 
 
