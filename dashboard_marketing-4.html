@@ -4,6 +4,9 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>Dashboard Marketing</title>
+<link rel="preconnect" href="https://script.google.com"/>
+<link rel="preconnect" href="https://script.googleusercontent.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"/>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700&family=IBM+Plex+Mono:wght@500;600;700&display=swap');
@@ -249,6 +252,20 @@ body.dark .hamburger-btn{color:var(--text)}
 @media(max-width:720px){.laporan-input-head{align-items:stretch}.laporan-input-actions{width:100%}.laporan-input-actions .filter-select{flex:1 1 100%}.laporan-input-actions .btn{flex:1}.laporan-field-grid{grid-template-columns:1fr}.report-control-top{align-items:stretch}.report-tab-buttons,.report-period-controls{width:100%}.report-tab-buttons .btn{flex:1}.report-period-controls>*{flex:1 1 100%;min-width:0!important}.confirm-actions{flex-direction:column-reverse}.confirm-actions .btn{width:100%;justify-content:center}}
 @media(max-width:480px){.marketing-summary-grid{grid-template-columns:1fr}.laporan-mini-summary{grid-template-columns:1fr}.laporan-input-actions{display:grid;grid-template-columns:1fr;align-items:stretch;width:100%}.laporan-input-actions>*{width:100%!important;max-width:none!important;min-width:0!important;flex:none!important;transform:none!important;margin:0!important}.laporan-input-actions .filter-select{height:40px;min-height:40px}.laporan-input-actions .btn{width:100%;height:40px;justify-content:center}.laporan-input-actions #lap-input-chip{text-align:center}.report-tab-buttons{display:grid;grid-template-columns:1fr 1fr}.report-tab-buttons .btn{width:100%;justify-content:center}}
 
+
+/* ── Komponen Data Tersimpan Marketing ───────────────────────────── */
+.mh-header{position:sticky;top:55px;z-index:35;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px;margin:-2px 0 14px;background:color-mix(in srgb,var(--surface) 94%,transparent);backdrop-filter:blur(8px);border:1px solid var(--border);border-radius:12px;box-shadow:0 4px 16px rgba(15,23,42,.06)}
+.mh-heading{display:flex;align-items:center;gap:10px;min-width:0}.mh-back{width:36px;height:36px;border:1px solid var(--border);border-radius:9px;background:var(--card);color:var(--text);cursor:pointer;display:grid;place-items:center;flex:0 0 auto}.mh-back:hover{background:var(--surface)}
+.mh-title{font-family:'DM Serif Display',serif;font-size:18px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.mh-sub{font-size:11px;color:var(--muted);margin-top:1px}
+.mh-filter-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px;margin-bottom:12px;box-shadow:0 1px 3px rgba(15,23,42,.04)}
+.mh-filters{display:grid;grid-template-columns:minmax(210px,1.4fr) repeat(2,minmax(140px,.7fr)) minmax(150px,.7fr) auto;gap:9px;align-items:end}.mh-field label{display:block;font-size:9.5px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.55px;margin-bottom:4px}.mh-input{width:100%;border:1px solid var(--border);border-radius:8px;padding:8px 10px;background:var(--card);color:var(--text);font:inherit;outline:none}.mh-input:focus{border-color:var(--purple)}
+.mh-stats{display:grid;grid-template-columns:repeat(3,minmax(130px,1fr));gap:10px;margin-bottom:12px}.mh-stat{background:var(--card);border:1px solid var(--border);border-radius:11px;padding:11px 13px}.mh-stat-lbl{font-size:9.5px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}.mh-stat-val{font-family:'DM Serif Display',serif;font-size:19px;margin-top:2px}.mh-stat-val.warn{color:var(--gold)}
+.mh-shell{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden}.mh-table-wrap{overflow:auto;min-height:240px}.mh-table{width:100%;border-collapse:collapse;font-size:12px}.mh-table th{position:sticky;top:0;z-index:2;background:var(--surface);padding:10px;text-align:left;color:var(--muted);font-size:9px;text-transform:uppercase;letter-spacing:.55px;border-bottom:1px solid var(--border);white-space:nowrap}.mh-table td{padding:10px;border-bottom:1px solid var(--border);vertical-align:top}.mh-table tr:last-child td{border-bottom:0}.mh-table tr:hover td{background:color-mix(in srgb,var(--purple2) 38%,var(--card))}.mh-table tr.is-dup td{background:color-mix(in srgb,var(--gold2) 70%,var(--card))}
+.mh-actions{display:flex;gap:5px;white-space:nowrap}.mh-badge{display:inline-flex;align-items:center;gap:4px;border-radius:999px;padding:2px 7px;font-size:9px;font-weight:800;margin-left:5px}.mh-badge.dup{background:var(--gold2);color:#92400e;border:1px solid #fde68a}.mh-badge.updated{background:var(--blue2);color:#1e40af;border:1px solid #bfdbfe}
+.mh-empty{padding:42px 18px;text-align:center;color:var(--muted)}.mh-pagination{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:11px 13px;border-top:1px solid var(--border);background:var(--surface)}.mh-page-info{font-size:11px;color:var(--muted)}.mh-page-buttons{display:flex;gap:7px}.mh-page-btn{width:36px;height:34px;border:1px solid var(--border);border-radius:8px;background:var(--card);color:var(--text);cursor:pointer}.mh-page-btn:disabled{opacity:.4;cursor:not-allowed}
+.mh-delete-note{font-size:10.5px;color:var(--muted);margin-top:7px}.field-error{border-color:var(--red)!important;box-shadow:0 0 0 2px color-mix(in srgb,var(--red) 12%,transparent)!important}
+@media(max-width:900px){.mh-filters{grid-template-columns:1fr 1fr}.mh-filters>.btn{width:100%;justify-content:center}.mh-stats{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:680px){.mh-header{top:49px;align-items:flex-start}.mh-title{font-size:16px}.mh-filters{grid-template-columns:1fr}.mh-stats{grid-template-columns:1fr 1fr}.mh-stat:last-child{grid-column:1/-1}.mh-table-wrap{overflow:visible;padding:10px}.mh-table,.mh-table tbody,.mh-table tr,.mh-table td{display:block;width:100%}.mh-table thead{display:none}.mh-table tr{border:1px solid var(--border);border-radius:10px;padding:10px 12px;margin-bottom:10px;background:var(--card)}.mh-table td{display:flex;justify-content:space-between;gap:12px;padding:6px 0;border-bottom:1px solid var(--border);text-align:right}.mh-table td:last-child{border-bottom:0}.mh-table td::before{content:attr(data-label);max-width:44%;text-align:left;color:var(--muted);font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.5px}.mh-actions{justify-content:flex-end;flex-wrap:wrap}.mh-pagination{flex-direction:column}.mh-page-buttons{width:100%}.mh-page-btn{flex:1;width:auto}}
 </style>
 
 <style id="premium-redesign-2026">
@@ -484,6 +501,232 @@ table.adm-tbl,table.mkt-tbl,table.gm-tbl{width:100%;border-collapse:separate;bor
 .program-total-chip{font-size:10px;font-weight:700;color:var(--brand);background:var(--brand-soft);border:1px solid color-mix(in srgb,var(--brand) 20%,var(--border));padding:3px 8px;border-radius:999px;white-space:nowrap}
 @media(max-width:480px){.closing-program-report .sec-body{padding:10px}.closing-program-report .report-table th,.closing-program-report .report-table td{padding:9px 8px}.closing-program-report .report-table th:nth-child(1){width:52%}.closing-program-report .report-table th:nth-child(2),.closing-program-report .report-table th:nth-child(3){width:24%}}
 
+/* ── Komponen data tersimpan lama (kompatibilitas) ────────────────── */
+.history-page-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px;padding:11px 14px;border:1px solid var(--border);border-radius:10px;background:var(--card);box-shadow:0 1px 3px rgba(0,0,0,.04)}
+.history-page-copy{min-width:0}.history-page-title{font-size:12.5px;font-weight:750;color:var(--text)}.history-page-sub{font-size:11px;color:var(--muted);margin-top:1px}
+.history-overlay{display:none;position:fixed;inset:0;background:rgba(15,23,42,.55);z-index:1200;padding:18px;align-items:center;justify-content:center}.history-overlay.open{display:flex}
+.history-panel{width:min(1180px,100%);max-height:92vh;background:var(--card);border:1px solid var(--border);border-radius:16px;box-shadow:0 24px 70px rgba(15,23,42,.28);display:flex;flex-direction:column;overflow:hidden}
+.history-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;padding:16px 18px;border-bottom:1px solid var(--border)}.history-title{font-size:16px;font-weight:800}.history-meta{font-size:11.5px;color:var(--muted);margin-top:3px}.history-close{border:1px solid var(--border);background:var(--surface);color:var(--text);width:34px;height:34px;border-radius:9px;cursor:pointer}
+.history-tools{display:flex;gap:10px;padding:12px 18px;border-bottom:1px solid var(--border);align-items:center;flex-wrap:wrap}.history-search{flex:1;min-width:200px;border:1px solid var(--border);border-radius:9px;padding:9px 11px;background:var(--card);color:var(--text);font:inherit}.history-warning{font-size:11px;color:var(--gold);font-weight:700}
+.history-body{padding:14px 18px 18px;overflow:auto}.history-table-shell{border:1px solid var(--border);border-radius:10px;overflow:auto}.history-table{width:100%;border-collapse:collapse;font-size:12px}.history-table th{position:sticky;top:0;background:var(--surface);padding:9px 10px;text-align:left;color:var(--muted);font-size:9.5px;text-transform:uppercase;letter-spacing:.55px;border-bottom:1px solid var(--border);white-space:nowrap}.history-table td{padding:10px;border-bottom:1px solid var(--border);vertical-align:top}.history-table tr:last-child td{border-bottom:0}.history-table tr.history-dup td{background:color-mix(in srgb,var(--gold2) 65%,var(--card))}.history-dup-badge{display:inline-flex;align-items:center;gap:4px;font-size:9.5px;font-weight:800;color:#92400e;background:#fef3c7;border:1px solid #fde68a;border-radius:999px;padding:2px 7px;margin-left:5px}.history-empty{padding:28px;text-align:center;color:var(--muted)}
+@media(max-width:680px){.history-page-bar{align-items:flex-start;flex-direction:column}.history-page-bar .btn{width:100%;justify-content:center}.history-overlay{padding:8px}.history-panel{max-height:96vh;border-radius:12px}.history-head,.history-tools,.history-body{padding-left:12px;padding-right:12px}.history-table-shell{border:0;overflow:visible}.history-table,.history-table tbody,.history-table tr,.history-table td{display:block;width:100%}.history-table thead{display:none}.history-table tr{border:1px solid var(--border);border-radius:10px;padding:10px 12px;margin-bottom:10px;background:var(--card)}.history-table td{display:flex;justify-content:space-between;gap:12px;padding:6px 0;border-bottom:1px solid var(--border);text-align:right}.history-table td:last-child{border-bottom:0}.history-table td::before{content:attr(data-label);max-width:46%;text-align:left;color:var(--muted);font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.5px}.history-table tr.history-dup{background:var(--gold2)}}
+
+/* ── Tab kerja + Data Tersimpan Marketing ───────────────────────── */
+.data-workspace-tabs{display:flex;align-items:center;gap:6px;margin-bottom:14px;padding:5px;border:1px solid var(--border);border-radius:12px;background:var(--surface);width:max-content;max-width:100%;box-shadow:0 1px 2px rgba(15,23,42,.04)}
+.data-workspace-tab{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:38px;padding:8px 14px;border:0;border-radius:9px;background:transparent;color:var(--muted);font:inherit;font-size:12.5px;font-weight:750;cursor:pointer;white-space:nowrap;transition:.16s ease}
+.data-workspace-tab:hover{color:var(--text);background:var(--card)}
+.data-workspace-tab.active{color:var(--purple);background:var(--card);box-shadow:0 1px 4px rgba(15,23,42,.10)}
+.data-workspace-pane[hidden]{display:none!important}
+.embedded-data-shell{display:block}
+.embedded-data-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px;padding:14px 16px;border:1px solid var(--border);border-radius:12px;background:var(--card);box-shadow:0 1px 3px rgba(15,23,42,.05)}
+.embedded-data-title{font-size:15px;font-weight:800;color:var(--text)}
+.embedded-data-sub{font-size:11.5px;color:var(--muted);margin-top:3px}
+.embedded-data-shell .mh-filter-card{margin-bottom:10px}
+.embedded-data-shell .mh-filters{grid-template-columns:minmax(220px,1.4fr) repeat(2,minmax(140px,.7fr)) minmax(145px,.7fr) auto auto}
+.embedded-data-shell .mh-stats{margin-bottom:10px}
+.data-pane-placeholder{padding:32px;text-align:center;color:var(--muted);border:1px dashed var(--border);border-radius:12px;background:var(--surface)}
+@media(max-width:1100px){.embedded-data-shell .mh-filters{grid-template-columns:repeat(3,minmax(0,1fr))}.embedded-data-shell .mh-filters>.btn{width:100%;justify-content:center}}
+@media(max-width:680px){.data-workspace-tabs{display:grid;grid-template-columns:1fr 1fr;width:100%}.data-workspace-tab{width:100%;padding:8px 10px}.embedded-data-head{align-items:flex-start;flex-direction:column}.embedded-data-head .btn{width:100%;justify-content:center}.embedded-data-shell .mh-filters{grid-template-columns:1fr}}
+
+</style>
+
+
+<style id="ui-v5">
+/* ============================================================
+   UI v5 — Redesain total: gaya "ink & paper" datar-modern.
+   Layer final; menimpa seluruh layer gaya lama tanpa menyentuh
+   struktur HTML/ID sehingga semua fungsi tetap berjalan.
+   Aksen divisi: Marketing — violet
+   ============================================================ */
+:root{
+  /* Aksen divisi */
+  --brand:#7C3AED;--brand-hover:#6D28D9;--brand-deep:#5B21B6;
+  --brand-soft:#F1EBFD;--brand-soft-2:#F8F5FE;--brand-ring:rgba(124,58,237,.22);
+  --purple:#7C3AED;--purple2:#F1EBFD;
+  /* Netral terang, datar */
+  --surface:#F6F6F7;--card:#FFFFFF;
+  --border:#E6E6EA;--border-strong:#D8D8DE;
+  --text:#191A20;--muted:#71737E;--navy:#191A20;
+  /* Sidebar tinta pekat */
+  --sb-bg:#131318;--sb-bg2:#0E0E12;
+  --sidebar-start:var(--sb-bg);--sidebar-mid:var(--sb-bg);--sidebar-end:var(--sb-bg);
+  /* Tipografi: Inter untuk semuanya, mono hanya untuk angka */
+  --display:Inter,system-ui,sans-serif;
+  --fig:'IBM Plex Mono',ui-monospace,monospace;
+  --font:Inter,system-ui,sans-serif;
+  /* Bentuk & bayangan: minimal */
+  --r-xs:6px;--r-sm:8px;--r:12px;--r-lg:14px;
+  --shadow-xs:none;--shadow-sm:none;
+  --shadow-md:0 8px 24px -12px rgba(20,20,30,.18);
+  --shadow-lg:0 20px 48px -16px rgba(15,15,25,.28);
+  --focus:0 0 0 3px var(--brand-ring);
+  --sidebar:220px;
+}
+body.dark{
+  --surface:#101116;--card:#17181E;--border:#262832;--border-strong:#343642;
+  --text:#E8E9EE;--muted:#9A9DA9;--navy:#E8E9EE;
+  --sb-bg:#0B0C10;--sb-bg2:#08090C;
+  --brand-soft:color-mix(in srgb,var(--brand) 16%,transparent);
+  --brand-soft-2:color-mix(in srgb,var(--brand) 9%,transparent);
+  --shadow-md:0 10px 28px -12px rgba(0,0,0,.6);--shadow-lg:0 22px 54px -16px rgba(0,0,0,.7);
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);background:var(--surface);color:var(--text);font-size:13.5px;line-height:1.55;-webkit-font-smoothing:antialiased}
+::selection{background:var(--brand-soft);color:var(--brand-deep)}
+body.dark ::selection{color:#fff}
+:focus-visible{outline:2px solid var(--brand);outline-offset:2px;border-radius:var(--r-xs)}
+
+/* ── Sidebar: tinta pekat, datar, tanpa gradien/tekstur ─────────── */
+.sidebar{width:var(--sidebar);background:var(--sb-bg);border-right:1px solid rgba(255,255,255,.06);box-shadow:none}
+.sidebar::before{content:none}
+.sb-top{padding:18px 16px 14px;border-bottom:1px solid rgba(255,255,255,.07)}
+.sb-brand-row{display:flex;align-items:center;gap:10px;margin-bottom:2px}
+.sb-mark{width:34px;height:34px;flex:0 0 34px;display:grid;place-items:center;border-radius:9px;
+  background:var(--brand);border:0;box-shadow:none;color:#fff;font-family:var(--font);font-size:12px;font-weight:800;letter-spacing:.2px}
+.sb-app,.sb-logo{font-family:var(--font);font-size:14.5px;font-weight:800;letter-spacing:-.2px;color:#fff;margin:0;line-height:1.2}
+.sb-role{font-size:10px;color:rgba(255,255,255,.42);letter-spacing:.3px;margin-top:2px}
+.sb-user-select{margin-top:12px;height:36px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:var(--r-sm);transition:.15s}
+.sb-user-select:hover,.sb-user-select:focus{background:rgba(255,255,255,.1);border-color:color-mix(in srgb,var(--brand) 65%,#fff 0%);box-shadow:none}
+.sb-user-select option{background:var(--sb-bg)}
+.sb-nav{padding:8px 10px 12px}
+.sb-group-lbl{padding:14px 8px 5px;font-size:9px;font-weight:800;letter-spacing:1.4px;color:rgba(255,255,255,.28)}
+.sb-item{min-height:38px;margin:1px 0;padding:7px 9px;border:0;border-left:0;border-radius:var(--r-sm);gap:10px;
+  color:rgba(255,255,255,.58);font-weight:600;transition:background .13s,color .13s;transform:none}
+.sb-item::before{content:none}
+.sb-item:hover{color:#fff;background:rgba(255,255,255,.06);transform:none}
+.sb-item.active{color:#fff;background:color-mix(in srgb,var(--brand) 26%,transparent);border-left:0}
+.sb-icon{width:24px;height:24px;flex:0 0 24px;display:grid;place-items:center;border-radius:7px;background:rgba(255,255,255,.06);font-size:12.5px}
+.sb-item.active .sb-icon{background:var(--brand);color:#fff;box-shadow:none}
+.sb-badge{margin-left:auto;box-shadow:none}
+.sb-footer{padding:12px 16px;border-top:1px solid rgba(255,255,255,.07)}
+.sb-darkmode{min-height:32px;color:rgba(255,255,255,.45)}.sb-darkmode:hover{color:#fff}
+
+/* ── Kerangka utama: konten dipusatkan, topbar tipis ────────────── */
+.main{margin-left:var(--sidebar)}
+.topbar{min-height:54px;padding:8px 22px;background:var(--card);backdrop-filter:none;-webkit-backdrop-filter:none;
+  border-bottom:1px solid var(--border);box-shadow:none}
+.topbar-title{font-family:var(--font);font-size:15px;font-weight:800;letter-spacing:-.2px;color:var(--text)}
+.live-badge{min-height:32px;padding:4px 11px;border-radius:999px;background:var(--surface);border:1px solid var(--border);box-shadow:none;transition:border-color .13s}
+.live-badge:hover{border-color:var(--brand);box-shadow:none;transform:none}
+.live-badge.live .live-dot{box-shadow:none}
+.sync-menu{border-radius:var(--r);box-shadow:var(--shadow-md)}
+.content{width:100%;max-width:1200px;margin-inline:auto;padding:22px 24px 48px}
+.page.active{animation:uiv5In .16s ease}
+@keyframes uiv5In{from{opacity:0}to{opacity:1}}
+
+/* ── Kartu & seksi: datar, garis 1px, tanpa bayangan ────────────── */
+.sec,.pg-section,.date-bar,.toolbar,.kanban-filter{background:var(--card);border:1px solid var(--border);box-shadow:none}
+.sec,.pg-section{border-radius:var(--r);margin-bottom:14px}
+.sec:hover,.pg-section:hover{border-color:var(--border)}
+.sec-head,.pg-sec-head{min-height:46px;padding:11px 16px;background:var(--card);border-bottom:1px solid var(--border)}
+.sec-title{font-size:13px;font-weight:800;letter-spacing:-.1px}
+.sec-title::before{content:'';width:8px;height:8px;border-radius:3px;background:var(--brand);flex:0 0 8px}
+.sec-body,.pg-sec-body{padding:16px}
+.date-bar{border-radius:var(--r);border-top:1px solid var(--border);padding:11px 14px;margin-bottom:14px}
+.toolbar,.kanban-filter{border-radius:var(--r);padding:10px;margin-bottom:14px}
+
+/* ── Kartu statistik: garis aksen di atas, angka menonjol ───────── */
+.stat-row{grid-template-columns:repeat(auto-fit,minmax(158px,1fr));gap:10px;margin-bottom:16px}
+.stat-card{min-height:98px;padding:14px 15px 12px;border:1px solid var(--border);border-left:1px solid var(--border);border-radius:var(--r);
+  box-shadow:none;transition:border-color .13s;transform:none}
+.stat-card::before{inset:0 0 auto 0;width:auto;height:3px;border-radius:var(--r) var(--r) 0 0}
+.stat-card::after{content:none}
+.stat-card:hover{transform:none;box-shadow:none;border-color:var(--border-strong)}
+.stat-lbl{font-size:9.5px;letter-spacing:.8px;margin-bottom:7px;font-weight:800}
+.stat-val{font-family:var(--fig);font-size:22px;font-weight:700;letter-spacing:-.5px;line-height:1.1}
+.stat-sub{margin-top:5px;font-size:10.5px}
+
+/* ── Tombol: solid datar untuk aksi utama, ghost untuk lainnya ──── */
+.btn{min-height:36px;padding:7px 13px;border-radius:var(--r-sm);border:1px solid var(--border-strong);background:var(--card);color:var(--text);
+  font-weight:650;box-shadow:none;transition:background .13s,border-color .13s,color .13s}
+.btn:hover{background:var(--surface);border-color:var(--border-strong);color:var(--text);box-shadow:none}
+.btn:active{transform:translateY(1px)}
+.btn.primary{background:var(--brand);border-color:var(--brand);color:#fff;box-shadow:none}
+.btn.primary:hover{background:var(--brand-hover);border-color:var(--brand-hover);color:#fff}
+.btn.success{background:#059669;border-color:#059669;color:#fff}
+.btn.danger{background:var(--card);border-color:color-mix(in srgb,var(--red) 45%,var(--border));color:var(--red)}
+.btn.danger:hover{background:var(--red2);border-color:var(--red)}
+.btn.sm{min-height:31px;padding:4px 10px;border-radius:7px}
+
+/* ── Kontrol form ───────────────────────────────────────────────── */
+.search-box,.f-sel,.f-sel-inline,.filter-select,.date-input,.f-inp,.f-sel2,.f-ta,.tag-input,.target-inp,.prog-input,.lap-inp,.lap-sel{
+  min-height:38px;border:1px solid var(--border-strong);border-radius:var(--r-sm);background:var(--card);color:var(--text)}
+.search-box:focus,.f-sel:focus,.f-sel-inline:focus,.filter-select:focus,.date-input:focus,.f-inp:focus,.f-sel2:focus,.f-ta:focus,.tag-input:focus,.target-inp:focus,.prog-input:focus,.lap-inp:focus,.lap-sel:focus{
+  border-color:var(--brand);box-shadow:var(--focus)}
+.f-lbl{font-size:10px;letter-spacing:.6px;font-weight:800;margin-bottom:5px}
+.lap-row{border-radius:var(--r-sm);background:var(--surface)}
+.lap-row:focus-within{background:var(--card);border-color:var(--brand);box-shadow:var(--focus)}
+
+/* ── Tabel: header lengket putih, zebra sangat halus ────────────── */
+.tbl-wrap{border-radius:0 0 var(--r) var(--r)}
+.adm-tbl th,.mkt-tbl th,.gm-tbl th{background:var(--card);border-bottom:1px solid var(--border-strong);font-size:9.5px;letter-spacing:.7px}
+.adm-tbl td,.mkt-tbl td,.gm-tbl td{padding:10px 12px;border-bottom:1px solid var(--border)}
+.adm-tbl tr:nth-child(even) td,.mkt-tbl tr:nth-child(even) td,.gm-tbl tr:nth-child(even) td{background:color-mix(in srgb,var(--surface) 55%,var(--card))}
+.adm-tbl tr:hover td,.mkt-tbl tr:hover td,.gm-tbl tr:hover td{background:var(--brand-soft-2)}
+.tbl-empty{padding:32px 16px!important}
+
+/* ── Pill status: datar ─────────────────────────────────────────── */
+.pill,.divisi-tag,.status-chip{box-shadow:none;border-radius:999px}
+
+/* ── Kanban: kolom abu datar, kartu putih ───────────────────────── */
+.kanban{gap:12px}
+.kanban-col,.k-col{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);box-shadow:none;border-top-width:1px}
+.kanban-col:nth-child(1),.kanban-col:nth-child(2),.kanban-col:nth-child(3){border-top:3px solid var(--border-strong)}
+.kanban-col:nth-child(1){border-top-color:#2563EB}
+.kanban-col:nth-child(2){border-top-color:#D97706}
+.kanban-col:nth-child(3){border-top-color:#059669}
+.kanban-card,.k-card{border-radius:var(--r-sm);box-shadow:none;transition:border-color .13s}
+.kanban-card:hover,.k-card:hover{transform:none;box-shadow:none;border-color:var(--brand)}
+
+/* ── Tab ────────────────────────────────────────────────────────── */
+.lap-tabs,.laporan-tabs,.data-workspace-tabs,.finance-tabs{background:var(--surface);border:1px solid var(--border);border-radius:10px;box-shadow:none;padding:3px}
+.lap-tab,.laporan-tab,.data-workspace-tab{border-radius:7px;color:var(--muted)}
+.lap-tab.active,.laporan-tab.active,.data-workspace-tab.active{color:#fff;background:var(--brand);box-shadow:none}
+.data-workspace-tab.active{color:#fff}
+
+/* ── Modal, setup, toast ────────────────────────────────────────── */
+.modal-overlay{background:rgba(12,12,18,.5);backdrop-filter:blur(2px)}
+.modal-box{border-radius:var(--r-lg);box-shadow:var(--shadow-lg);animation:uiv5In .14s ease}
+.modal-head{background:var(--card);backdrop-filter:none;border-bottom:1px solid var(--border)}
+.modal-title{font-family:var(--font);font-size:16px;font-weight:800;letter-spacing:-.2px}
+.setup-overlay{background:var(--sb-bg2);backdrop-filter:none}
+.setup-box{border-radius:16px;box-shadow:var(--shadow-lg)}
+.setup-box::before{height:3px;background:var(--brand)}
+.setup-title{font-family:var(--font);font-size:19px;font-weight:800;letter-spacing:-.3px}
+.toast{border-radius:10px;border-left:3px solid var(--brand);background:var(--sb-bg);box-shadow:var(--shadow-lg)}
+
+/* ── Komponen laporan/riwayat lama mengikuti bahasa baru ────────── */
+.history-page-bar,.embedded-data-head,.mh-filter-card{box-shadow:none;border-radius:var(--r)}
+.history-panel{border-radius:14px}
+.iklan-card{border-radius:var(--r);box-shadow:none}
+.iklan-card:hover{transform:none;box-shadow:none;border-color:var(--brand)}
+.iklan-card-head{background:var(--surface)}
+.finance-kpi{box-shadow:none;border-radius:var(--r)}
+.finance-kpi::after{content:none}
+.finance-panel,.finance-report-head,.finance-filter-card,.finance-control-panel,.finance-progress-summary{box-shadow:none;border-radius:var(--r)}
+.finance-control-panel{background:var(--card)}
+.finance-report-title{font-family:var(--font);font-weight:800;letter-spacing:-.3px}
+.prog-bar{background:var(--surface)}
+
+/* ── Responsif ──────────────────────────────────────────────────── */
+@media(max-width:1024px){
+  .sidebar{transform:translateX(-100%);transition:transform .22s ease}
+  .sidebar.mobile-open{transform:translateX(0);box-shadow:14px 0 34px rgba(0,0,0,.35)}
+  .main{margin-left:0}
+  .content{padding:16px 14px 36px}
+}
+@media(max-width:720px){
+  .stat-row{grid-template-columns:1fr 1fr;gap:8px}
+  .stat-card{min-height:88px;padding:12px 13px}
+  .stat-val{font-size:19px}
+  .sec-body,.pg-sec-body{padding:13px}
+}
+@media(max-width:480px){
+  .content{padding:12px 10px 28px}
+  .stat-row{grid-template-columns:1fr 1fr}
+  .btn{min-height:40px}
+}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
 </style>
 
 </head>
@@ -578,7 +821,7 @@ table.adm-tbl,table.mkt-tbl,table.gm-tbl{width:100%;border-collapse:separate;bor
 <!-- PAGE: LEAD -->
 <div id="page-lead" class="page">
   <div class="toolbar">
-    <div class="search-field"><i class=bi-search aria-hidden=true></i><input class="search-box" id="lead-search" placeholder="Cari nama, HP, program..." oninput="filterLead()"/></div>
+    <div class="search-field"><i class=bi-search aria-hidden=true></i><input class="search-box" id="lead-search" placeholder="Cari nama, HP, program..." oninput="debounced(filterLead)"/></div>
     <select class="filter-select" id="lead-f-status" onchange="filterLead()"><option value="">Semua Status</option></select>
     <select class="filter-select" id="lead-f-sumber" onchange="filterLead()"><option value="">Semua Sumber</option></select>
     <select class="filter-select" id="lead-f-prodi"  onchange="filterLead()"><option value="">Semua Prodi</option></select>
@@ -617,7 +860,7 @@ table.adm-tbl,table.mkt-tbl,table.gm-tbl{width:100%;border-collapse:separate;bor
 <!-- PAGE: CLOSING -->
 <div id="page-closing" class="page">
   <div class="toolbar">
-    <div class="search-field"><i class=bi-search aria-hidden=true></i><input class="search-box" id="cl-search" placeholder="Cari nama, HP, NIK, email..." oninput="renderClosing()"/></div>
+    <div class="search-field"><i class=bi-search aria-hidden=true></i><input class="search-box" id="cl-search" placeholder="Cari nama, HP, NIK, email..." oninput="debounced(renderClosing)"/></div>
     <select class="filter-select" id="cl-f-status" onchange="renderClosing()"><option value="">Semua Status</option></select>
     <select class="filter-select" id="cl-f-prog"   onchange="renderClosing()"><option value="">Semua Program</option></select>
     <select class="filter-select" id="cl-f-pt"     onchange="renderClosing()"><option value="">Semua PT</option></select>
@@ -751,13 +994,6 @@ table.adm-tbl,table.mkt-tbl,table.gm-tbl{width:100%;border-collapse:separate;bor
     <div id="mkt-rs-auto-content" style="margin-bottom:14px">
       <div style="color:var(--muted);font-size:12.5px;text-align:center;padding:16px">Klik tab di atas untuk melihat ringkasan.</div>
     </div>
-    <div style="font-weight:700;font-size:12px;margin-bottom:8px;color:var(--muted);border-top:1px solid var(--border);padding-top:12px"><i class=bi-clipboard2-check-fill aria-hidden=true></i> Histori Input Laporan Harian</div>
-    <div class="toolbar" style="margin-bottom:10px">
-      <input type="date" class="filter-select" id="lap-h-tgl"/>
-      <select class="filter-select" id="lap-h-pic"><option value="">Semua PIC</option></select>
-      <button class="btn" onclick="loadLapHarian()">Tampilkan Histori</button>
-    </div>
-    <div id="lap-harian-content"></div>
   </div>
   <div class="laporan-tab-content" id="lap-mingguan">
     <div class="toolbar">
@@ -833,6 +1069,8 @@ table.adm-tbl,table.mkt-tbl,table.gm-tbl{width:100%;border-collapse:separate;bor
   </div>
 </div>
 
+
+
   </div><!-- /content -->
 </div><!-- /main -->
 </div><!-- /shell -->
@@ -845,7 +1083,7 @@ table.adm-tbl,table.mkt-tbl,table.gm-tbl{width:100%;border-collapse:separate;bor
       <!-- 1. Nama Lengkap + 2. No HP/WA -->
       <div class="f-row-2">
         <div><div class="f-lbl">1. Nama Lengkap *</div><input class="f-inp" id="l-nama" placeholder="cth: Budi Santoso"/></div>
-        <div><div class="f-lbl">2. No HP / WA *</div><input class="f-inp" id="l-hp" placeholder="08xx-xxxx-xxxx"/></div>
+        <div><div class="f-lbl">2. No HP / WA *</div><input class="f-inp" id="l-hp" inputmode="tel" placeholder="08xx-xxxx-xxxx"/></div>
       </div>
       <!-- 3. Program Diminati + 4. Prodi -->
       <div class="f-row-2">
@@ -881,7 +1119,11 @@ table.adm-tbl,table.mkt-tbl,table.gm-tbl{width:100%;border-collapse:separate;bor
       <div class="f-row" id="fu-closing-info" style="display:none">
         <div class="alert success"><span><i class=bi-stars aria-hidden=true></i></span><span>Status <b>Closing</b> — data ini akan otomatis masuk ke halaman Data Closing.</span></div>
       </div>
-      <div class="f-row"><div class="f-lbl">Catatan Hasil Follow Up</div><textarea class="f-ta" id="fu-catatan" placeholder="Tuliskan hasil percakapan, keberatan, janji..."></textarea></div>
+      <div class="f-row-2">
+        <div><div class="f-lbl">Tanggal Follow Up</div><input class="f-inp" type="date" id="fu-tanggal"/></div>
+        <div></div>
+      </div>
+      <div class="f-row"><div class="f-lbl">Catatan Hasil Follow Up *</div><textarea class="f-ta" id="fu-catatan" placeholder="Tuliskan hasil percakapan, keberatan, janji..."></textarea></div>
     </div>
     <div class="modal-foot"><button class="btn" onclick="closeModal('modal-fu')">Batal</button><button class="btn primary" onclick="saveFollowUp()"><i class=bi-check-circle-fill aria-hidden=true></i> Update</button></div>
   </div>
@@ -899,11 +1141,11 @@ table.adm-tbl,table.mkt-tbl,table.gm-tbl{width:100%;border-collapse:separate;bor
       <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px;padding-bottom:4px;border-bottom:1px solid var(--border)"><i class=bi-person-fill aria-hidden=true></i> Identitas Mahasiswa</div>
       <div class="f-row-2">
         <div><div class="f-lbl">Nama Lengkap *</div><input class="f-inp" id="c-nama" placeholder="Sesuai KTP"/></div>
-        <div><div class="f-lbl">No HP / WA</div><input class="f-inp" id="c-hp" placeholder="08xx-xxxx-xxxx"/></div>
+        <div><div class="f-lbl">No HP / WA</div><input class="f-inp" id="c-hp" inputmode="tel" placeholder="08xx-xxxx-xxxx"/></div>
       </div>
       <div class="f-row-2">
         <div><div class="f-lbl">Email</div><input class="f-inp" id="c-email" placeholder="email@domain.com" type="email"/></div>
-        <div><div class="f-lbl">NIK (16 digit)</div><input class="f-inp" id="c-nik" placeholder="3271xxxxxxxxxxxx" maxlength="16"/></div>
+        <div><div class="f-lbl">NIK (16 digit)</div><input class="f-inp" id="c-nik" inputmode="numeric" maxlength="16" placeholder="3271xxxxxxxxxxxx" maxlength="16"/></div>
       </div>
       <div class="f-row-2">
         <div><div class="f-lbl">Tempat Lahir</div><input class="f-inp" id="c-tempat-lahir" placeholder="cth: Jakarta"/></div>
@@ -971,7 +1213,7 @@ table.adm-tbl,table.mkt-tbl,table.gm-tbl{width:100%;border-collapse:separate;bor
       <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin:12px 0 8px;padding-bottom:4px;border-bottom:1px solid var(--border)"><i class=bi-bar-chart-fill aria-hidden=true></i> Data Marketing</div>
       <div class="f-row-2">
         <div><div class="f-lbl">Sumber Closing</div>
-          <select class="f-inp" id="c-sumber">
+          <select class="f-inp" id="c-sumber" onchange="onCSumberChange(this.value)">
             <option>Tim PMB</option><option>Koordinator</option>
           </select>
         </div>
@@ -1009,10 +1251,10 @@ table.adm-tbl,table.mkt-tbl,table.gm-tbl{width:100%;border-collapse:separate;bor
         <div class="f-lbl" style="margin-bottom:8px">Riwayat Status</div>
         <div id="cls-riwayat"></div>
       </div>
-      <div class="f-row"><div class="f-lbl">Status Baru</div><select class="f-sel" id="cls-status"></select></div>
-      <div class="f-row"><div class="f-lbl">Catatan / Keterangan</div><textarea class="f-ta" id="cls-catatan" placeholder="cth: Sudah daftar ulang, bukti transfer sudah dikirim..."></textarea></div>
+      <div class="f-row-2"><div><div class="f-lbl">Status</div><select class="f-sel" id="cls-status"></select></div><div><div class="f-lbl">Tanggal Status</div><input class="f-inp" type="date" id="cls-tanggal"/></div></div>
+      <div class="f-row"><div class="f-lbl">Catatan / Keterangan *</div><textarea class="f-ta" id="cls-catatan" placeholder="cth: Sudah daftar ulang, bukti transfer sudah dikirim..."></textarea></div>
     </div>
-    <div class="modal-foot"><button class="btn" onclick="closeModal('modal-cl-status')">Batal</button><button class="btn primary" onclick="saveClosingStatus()"><i class=bi-check-circle-fill aria-hidden=true></i> Update Status</button></div>
+    <div class="modal-foot"><button class="btn" onclick="closeModal('modal-cl-status')">Batal</button><button class="btn primary" id="cls-save-btn" onclick="saveClosingStatus()"><i class=bi-check-circle-fill aria-hidden=true></i> Simpan Status</button></div>
   </div>
 </div>
 
@@ -1023,24 +1265,24 @@ table.adm-tbl,table.mkt-tbl,table.gm-tbl{width:100%;border-collapse:separate;bor
     <div class="modal-body">
       <div class="f-row"><div class="f-lbl">Nama Kampanye *</div><input class="f-inp" id="ik-nama" placeholder="cth: RPL STISDU Juli - Tito"/></div>
       <div class="f-row-2">
-        <div><div class="f-lbl">Platform</div><select class="f-sel" id="ik-platform"></select></div>
-        <div><div class="f-lbl">Status</div><select class="f-sel" id="ik-status"><option>Aktif</option><option>Dijeda</option><option>Selesai</option></select></div>
+        <div><div class="f-lbl">Platform *</div><select class="f-sel" id="ik-platform"></select></div>
+        <div><div class="f-lbl">Status *</div><select class="f-sel" id="ik-status"><option>Aktif</option><option>Dijeda</option><option>Selesai</option></select></div>
       </div>
       <div class="f-row-2">
-        <div><div class="f-lbl">Tanggal Mulai</div><input class="f-inp" type="date" id="ik-mulai"/></div>
+        <div><div class="f-lbl">Tanggal Mulai *</div><input class="f-inp" type="date" id="ik-mulai"/></div>
         <div><div class="f-lbl">Tanggal Selesai</div><input class="f-inp" type="date" id="ik-selesai"/></div>
       </div>
       <div class="f-row-2">
-        <div><div class="f-lbl">Budget (Rp)</div><input class="f-inp" type="number" id="ik-budget" placeholder="0"/></div>
-        <div><div class="f-lbl">Belanja Aktual (Rp)</div><input class="f-inp" type="number" id="ik-belanja" placeholder="0"/></div>
+        <div><div class="f-lbl">Budget (Rp)</div><input class="f-inp" type="number" min="0" step="1" id="ik-budget" placeholder="0"/></div>
+        <div><div class="f-lbl">Belanja Aktual (Rp)</div><input class="f-inp" type="number" min="0" step="1" id="ik-belanja" placeholder="0"/></div>
       </div>
       <div class="f-row-2">
-        <div><div class="f-lbl">Impresi</div><input class="f-inp" type="number" id="ik-impresi" placeholder="0"/></div>
-        <div><div class="f-lbl">Klik</div><input class="f-inp" type="number" id="ik-klik" placeholder="0"/></div>
+        <div><div class="f-lbl">Impresi</div><input class="f-inp" type="number" min="0" step="1" id="ik-impresi" placeholder="0"/></div>
+        <div><div class="f-lbl">Klik</div><input class="f-inp" type="number" min="0" step="1" id="ik-klik" placeholder="0"/></div>
       </div>
       <div class="f-row-2">
-        <div><div class="f-lbl">Lead Masuk</div><input class="f-inp" type="number" id="ik-lead" placeholder="0"/></div>
-        <div><div class="f-lbl">Closing dari Iklan</div><input class="f-inp" type="number" id="ik-closing" placeholder="0"/></div>
+        <div><div class="f-lbl">Lead Masuk</div><input class="f-inp" type="number" min="0" step="1" id="ik-lead" placeholder="0"/></div>
+        <div><div class="f-lbl">Closing dari Iklan</div><input class="f-inp" type="number" min="0" step="1" id="ik-closing" placeholder="0"/></div>
       </div>
       <div class="f-row"><div class="f-lbl">Catatan</div><textarea class="f-ta" id="ik-catatan" placeholder="Target, strategi, hasil observasi..."></textarea></div>
     </div>
@@ -1092,11 +1334,11 @@ table.adm-tbl,table.mkt-tbl,table.gm-tbl{width:100%;border-collapse:separate;bor
       <div class="f-row"><div class="f-lbl">Judul Tugas *</div><input class="f-inp" id="tg-judul" placeholder="cth: Kirim brosur ke koordinator Bekasi"/></div>
       <div class="f-row"><div class="f-lbl">Deskripsi</div><textarea class="f-ta" id="tg-deskripsi" placeholder="Detail tugas atau masalah..."></textarea></div>
       <div class="f-row-2">
-        <div><div class="f-lbl">Status</div><select class="f-sel" id="tg-status"><option>Belum Mulai</option><option>Proses</option><option>Selesai</option></select></div>
-        <div><div class="f-lbl">Prioritas</div><select class="f-sel" id="tg-prioritas"><option>Rendah</option><option selected>Sedang</option><option>Tinggi</option><option>Urgent</option></select></div>
+        <div><div class="f-lbl">Status *</div><select class="f-sel" id="tg-status"><option>Belum Mulai</option><option>Proses</option><option>Selesai</option></select></div>
+        <div><div class="f-lbl">Prioritas *</div><select class="f-sel" id="tg-prioritas"><option>Rendah</option><option selected>Sedang</option><option>Tinggi</option><option>Urgent</option></select></div>
       </div>
       <div class="f-row-2">
-        <div><div class="f-lbl">PIC</div><select class="f-sel" id="tg-pic"></select></div>
+        <div><div class="f-lbl">PIC *</div><select class="f-sel" id="tg-pic"></select></div>
         <div><div class="f-lbl">Deadline</div><input class="f-inp" type="date" id="tg-deadline"/></div>
       </div>
       <div class="f-row"><div class="f-lbl">Catatan / Update Progress</div><textarea class="f-ta" id="tg-catatan" placeholder="Update terkini..."></textarea></div>
@@ -1124,7 +1366,7 @@ table.adm-tbl,table.mkt-tbl,table.gm-tbl{width:100%;border-collapse:separate;bor
     <div class="modal-body">
       <div class="f-row"><div class="f-lbl">Nama Lengkap *</div><input class="f-inp" id="koord-nama" placeholder="Nama koordinator"/></div>
       <div class="f-row"><div class="f-lbl">Wilayah/Area</div><input class="f-inp" id="koord-wilayah" placeholder="cth: Bekasi, Depok"/></div>
-      <div class="f-row"><div class="f-lbl">No HP (opsional)</div><input class="f-inp" id="koord-hp" placeholder="08xx-xxxx-xxxx"/></div>
+      <div class="f-row"><div class="f-lbl">No HP (opsional)</div><input class="f-inp" id="koord-hp" inputmode="tel" placeholder="08xx-xxxx-xxxx"/></div>
     </div>
     <div class="modal-foot"><button class="btn" onclick="closeModal('modal-koord')">Batal</button><button class="btn primary" onclick="saveKoord()"><i class=bi-floppy-fill aria-hidden=true></i> Simpan</button></div>
   </div>
@@ -1165,7 +1407,8 @@ let PENGATURAN={
 let TIM_PMB=[], KOORDINATOR=[], ALL_LEADS=[], ALL_CLOSING=[], ALL_IKLAN=[], ALL_TUGAS=[];
 let _editClosingId=null;
 let editingId={lead:null,closing:null,iklan:null,tugas:null,tim:null,koord:null};
-let fuLeadId=null, clStatusId=null;
+let fuLeadId=null, clStatusId=null, _editClosingStatusIndex=null;
+const MARKETING_HISTORY={key:'',page:1,pageSize:15,total:0,totalPages:1,rows:[],returnPage:'page-dashboard',editing:false,search:'',from:'',to:'',sort:'newest'};
 
 // ── Init ──────────────────────────────────────────────────────────
 // ── RESPONSIVE: buka/tutup sidebar di layar HP ─────────────────────
@@ -1218,12 +1461,29 @@ function setDefaultDates(){
   const ps=document.getElementById('lap-bul-periode');if(ps)ps.innerHTML=opts.join('');
 }
 
-async function initialLoad(){
-  try{const data=await apiGet({action:'getMktInit'});if(data){TIM_PMB=(data.timPMB||[]).filter(t=>t.aktif!==false);KOORDINATOR=(data.koordinator||[]).filter(k=>k.aktif!==false);if(data.pengaturan)PENGATURAN={...PENGATURAN,...data.pengaturan};}}
-  catch(e){TIM_PMB=[];KOORDINATOR=[];toast('<i class="bi bi-x-circle-fill"></i> Gagal memuat',e.message,'err');}
-  populateUserSelect();populateAllSelects();await loadAllData();loadPengaturan();updatePgLists();
-  setTimeout(()=>loadLapMktHarian(todayStr()), 500); // load form laporan harian
+// ── SNAPSHOT LOKAL (v5) — data terakhir disimpan di perangkat sehingga
+// aplikasi langsung menampilkan isi (bukan layar kosong) begitu dibuka,
+// lalu diperbarui otomatis dari server di belakang layar.
+function snapSave(k,d){try{localStorage.setItem(k,JSON.stringify({t:Date.now(),d}))}catch(e){}}
+function snapLoad(k,maxMs){try{const o=JSON.parse(localStorage.getItem(k));if(o&&o.d&&(Date.now()-o.t)<maxMs)return o.d;}catch(e){}return null;}
+function applyMktBoot(d){
+  TIM_PMB=(d.timPMB||[]).filter(t=>t.aktif!==false);
+  KOORDINATOR=(d.koordinator||[]).filter(k=>k.aktif!==false);
+  if(d.pengaturan)PENGATURAN={...PENGATURAN,...d.pengaturan};
+  ALL_LEADS=Array.isArray(d.leads)?d.leads:[];
+  ALL_CLOSING=Array.isArray(d.closing)?d.closing:[];
+  ALL_IKLAN=Array.isArray(d.iklan)?d.iklan:[];
+  ALL_TUGAS=[...(d.tugas||[]),...(d.gmTugas||[]).map(t=>({...t,_fromGM:true}))];
+  populateUserSelect();populateAllSelects();
+  renderDashboard();renderLeads();renderFollowUp();renderClosing();renderIklan();renderTugas();
+  updateBadges();loadPengaturan();updatePgLists();
   const sel=document.getElementById('user-select');if(USER&&sel)sel.value=USER;
+}
+async function initialLoad(){
+  const snap=snapLoad('mkt-snap', 24*3600*1000);
+  if(snap){try{applyMktBoot(snap);}catch(e){}}
+  await loadAllData();
+  setTimeout(()=>loadLapMktHarian(todayStr()), 300); // load form laporan harian
 }
 
 // ── User ──────────────────────────────────────────────────────────
@@ -1299,6 +1559,13 @@ async function apiPost(action, payload){
 
 // ── Load data ─────────────────────────────────────────────────────
 async function loadAllData(){
+  // Jalur cepat v5: SATU request memuat semua data awal (backend Code.gs v5).
+  try{
+    const d=await apiGet({action:'getMktBoot'});
+    applyMktBoot(d);snapSave('mkt-snap',d);
+    return;
+  }catch(e){/* backend lama → fallback ke request terpisah di bawah */}
+  try{const data=await apiGet({action:'getMktInit'});if(data){TIM_PMB=(data.timPMB||[]).filter(t=>t.aktif!==false);KOORDINATOR=(data.koordinator||[]).filter(k=>k.aktif!==false);if(data.pengaturan)PENGATURAN={...PENGATURAN,...data.pengaturan};populateUserSelect();populateAllSelects();}}catch(e){}
   await Promise.all([loadLeads(),loadClosing(),loadIklan(),loadTugas()]);
   // Re-render semua halaman setelah data lengkap
   renderDashboard();
@@ -1311,23 +1578,23 @@ async function loadLeads(){
   try{
     const d=await apiGet({action:'getMktLead'});
     ALL_LEADS=d&&Array.isArray(d.leads)?d.leads:Array.isArray(d)?d:[];
-  }catch(e){ALL_LEADS=[];console.warn('loadLeads:',e.message);}
+  }catch(e){console.warn('loadLeads:',e.message);return;} // gagal jaringan → pertahankan data yang sudah tampil
   renderLeads();renderFollowUp();updateBadges();
 }
 async function loadClosing(){
   try{
     const d=await apiGet({action:'getMktClosing'});
     ALL_CLOSING=d&&Array.isArray(d.closing)?d.closing:Array.isArray(d)?d:[];
-  }catch(e){ALL_CLOSING=[];console.warn('loadClosing:',e.message);}
+  }catch(e){console.warn('loadClosing:',e.message);return;}
   renderClosing();updateBadges();
 }
 async function loadIklan(){
   try{const d=await apiGet({action:'getMktIklan'});ALL_IKLAN=d&&Array.isArray(d.iklan)?d.iklan:[];}
-  catch(e){ALL_IKLAN=[];console.warn('loadIklan error:',e.message);}
+  catch(e){console.warn('loadIklan error:',e.message);return;}
   renderIklan();
 }
 async function loadTugas(){
-  try{const d=await apiGet({action:'getMktTugas'});ALL_TUGAS=d?d.tugas:[];}catch(e){ALL_TUGAS=[];}
+  try{const d=await apiGet({action:'getMktTugas'});ALL_TUGAS=d?d.tugas:[];}catch(e){renderTugas();updateBadges();return;}
   // Merge tugas dari GM
   try{const gd=await apiGet({action:'getGMTugas',divisi:'Marketing'});const gm=(gd?.tugas||[]).map(t=>({...t,_fromGM:true}));ALL_TUGAS=[...ALL_TUGAS,...gm];}catch(e){}
   renderTugas();updateBadges();
@@ -1390,6 +1657,8 @@ function getLeadsFiltered(){
   );
 }
 function filterLead(){renderLeads(getLeadsFiltered());}
+// Debounce pencarian: render tabel besar hanya setelah pengguna berhenti mengetik (150ms)
+const _DEB={};function debounced(fn,ms){clearTimeout(_DEB[fn.name]);_DEB[fn.name]=setTimeout(fn,ms||150);}
 
 // ── RENDER: Follow Up ─────────────────────────────────────────────
 function renderFollowUp(){
@@ -1561,7 +1830,7 @@ function renderClosing(_clList){
     return `<tr>
       <td>
         <div style="font-weight:600">${escH(c.nama_lengkap||'—')}</div>
-        <div style="font-size:11px;color:var(--muted)">${escH(c.nik||'')}</div>
+        <div style="font-size:11px;color:var(--muted)">${escH(c.no_ktp||'')}</div>
       </td>
       <td>
         <div>${c.no_hp ? `<a href="https://wa.me/${String(c.no_hp||'').replace(/\D/g,'')}" target="_blank" style="color:var(--green)">${escH(c.no_hp)}</a>` : '—'}</div>
@@ -1668,135 +1937,118 @@ function openLeadModal(id){
   openModal('modal-lead');
 }
 async function saveLead(){
-  const nama=getInp('l-nama');if(!nama){toast('<i class=bi-exclamation-triangle-fill aria-hidden=true></i>','Nama wajib diisi.','warn');return;}
-  const p={
-    nama_lengkap: nama,              // 1
-    no_hp:        getInp('l-hp'),    // 2
-    program_minat:getSel('l-program'),// 3
-    prodi:        getSel('l-prodi'), // 4
-    kampus:       getSel('l-kampus'),// 5
-    sumber_lead:  getSel('l-sumber'),// 6
-    status:       getSel('l-status'),// 7
-    pic:          getSel('l-pic'),   // 8
-    catatan:      getInp('l-catatan'),// 9
-    tanggal_masuk:getInp('l-tanggal'),// 10
-    tanggal_update:todayStr(),dibuat_oleh:USER
-  };
-  try{if(editingId.lead){p.id=editingId.lead;await apiPost('updateMktLead',p);const idx=ALL_LEADS.findIndex(x=>x.id===editingId.lead);if(idx>=0)ALL_LEADS[idx]={...ALL_LEADS[idx],...p};}else{const res=await apiPost('addMktLead',p);p.id=res?.id;if(!p.id)throw new Error('ID lead tidak diterima dari server.');ALL_LEADS.unshift(p);}closeModal('modal-lead');renderLeads();renderDashboard();updateBadges();toast('<i class=bi-check-circle-fill aria-hidden=true></i> Lead Tersimpan','"'+nama+'" berhasil '+(editingId.lead?'diperbarui':'ditambahkan')+'.');}
-  catch(e){toast('<i class=bi-x-circle-fill aria-hidden=true></i> Gagal',e.message,'err');}
+  mktClearFieldErrors();if(!mktRequireUser())return;
+  const isEdit=!!editingId.lead;
+  const nama=getInp('l-nama').trim();if(nama.length<2||nama==='-')return mktInvalid('l-nama','Nama lead wajib diisi dengan benar.');
+  const hp=mktNormalizePhone(getInp('l-hp'));if(!/^0\d{9,14}$/.test(hp))return mktInvalid('l-hp','Nomor HP/WA harus 10–15 digit, misalnya 081234567890.');
+  const required=[['l-program','Program diminati'],['l-prodi','Program studi'],['l-kampus','Kampus'],['l-sumber','Sumber lead'],['l-status','Status'],['l-pic','PIC'],['l-tanggal','Tanggal masuk']];
+  for(const [id,label] of required){if(!getSel(id)&&!getInp(id))return mktInvalid(id,label+' wajib diisi.');}
+  const dup=ALL_LEADS.find(x=>mktNormalizePhone(x.no_hp)===hp&&String(x.id)!==String(editingId.lead||''));
+  let allow_duplicate=false;
+  if(dup){const exact=String(dup.nama_lengkap||'').trim().toLowerCase()===nama.toLowerCase()&&String(dup.tanggal_masuk||'')===getInp('l-tanggal');if(exact)return mktInvalid('l-hp','Lead yang sama sudah tersimpan sebagai '+dup.id+'. Gunakan Edit.');allow_duplicate=await confirmAction({title:'Nomor HP sudah tercatat',message:'Nomor ini digunakan oleh '+(dup.nama_lengkap||dup.id)+' ('+dup.id+'). Simpan hanya jika memang orang berbeda.',confirmText:'Orang berbeda'});if(!allow_duplicate)return;}
+  const p={nama_lengkap:nama,no_hp:hp,program_minat:getSel('l-program'),prodi:getSel('l-prodi'),kampus:getSel('l-kampus'),sumber_lead:getSel('l-sumber'),status:getSel('l-status'),pic:getSel('l-pic'),catatan:getInp('l-catatan').trim(),tanggal_masuk:getInp('l-tanggal'),tanggal_update:todayStr(),oleh:USER,allow_duplicate};
+  if(!isEdit)p.dibuat_oleh=USER;
+  try{
+    if(isEdit){p.id=editingId.lead;await apiPost('updateMktLead',p);const idx=ALL_LEADS.findIndex(x=>x.id===editingId.lead);if(idx>=0)ALL_LEADS[idx]={...ALL_LEADS[idx],...p};}
+    else{const res=await apiPost('addMktLead',p);p.id=res?.id;if(!p.id)throw new Error('ID lead tidak diterima dari server.');ALL_LEADS.unshift(p);}
+    editingId.lead=null;closeModal('modal-lead');renderLeads();renderFollowUp();renderDashboard();updateBadges();await refreshMarketingHistoryIfOpen();await returnToMarketingHistoryIfEditing();toast('<i class="bi bi-check-circle-fill"></i> Lead Tersimpan','Data '+nama+' berhasil '+(isEdit?'diperbarui':'ditambahkan')+'.');
+  }catch(e){toast('<i class="bi bi-x-circle-fill"></i> Gagal',e.message,'err');}
 }
-async function delLead(id){const l=ALL_LEADS.find(x=>x.id===id);if(!(await confirmAction({title:'Hapus lead?',message:'Lead '+(l?.nama_lengkap||'ini')+' akan dihapus permanen.',confirmText:'Hapus',danger:true})))return;try{await apiPost('deleteMktLead',{id});ALL_LEADS=ALL_LEADS.filter(x=>x.id!==id);renderLeads();renderDashboard();updateBadges();toast('<i class=bi-trash3-fill aria-hidden=true></i> Lead Dihapus','');}catch(e){toast('<i class=bi-x-circle-fill aria-hidden=true></i> Gagal',e.message,'err');}}
+async function delLead(id){const l=ALL_LEADS.find(x=>x.id===id);if(!(await confirmAction({title:'Hapus lead?',message:'Lead '+(l?.nama_lengkap||id)+' akan dihapus permanen. Data closing yang sudah dibuat tidak ikut terhapus.',confirmText:'Hapus',danger:true})))return;try{if(!mktRequireUser())return;await apiPost('deleteMktLead',{id,oleh:USER});ALL_LEADS=ALL_LEADS.filter(x=>x.id!==id);renderLeads();renderFollowUp();renderDashboard();updateBadges();await refreshMarketingHistoryIfOpen();toast('<i class="bi bi-trash3-fill"></i> Lead Dihapus','');}catch(e){toast('<i class="bi bi-x-circle-fill"></i> Gagal',e.message,'err');}}
 
 // ── MODAL: Follow Up ──────────────────────────────────────────────
-function openFuModal(id){fuLeadId=id;const l=ALL_LEADS.find(x=>x.id===id);if(!l)return;setEl('fu-modal-nama',l.nama_lengkap+' · '+(l.no_hp||'')+(l.prodi?' · '+l.prodi:'')+(l.kampus?' — '+l.kampus:''));popSel('fu-status',PENGATURAN.statusLead,l.status);setInp('fu-catatan','');document.getElementById('fu-closing-info').style.display='none';openModal('modal-fu');}
+function openFuModal(id){fuLeadId=id;const l=ALL_LEADS.find(x=>x.id===id);if(!l)return;setEl('fu-modal-nama',l.nama_lengkap+' · '+(l.no_hp||'')+(l.prodi?' · '+l.prodi:'')+(l.kampus?' — '+l.kampus:''));popSel('fu-status',PENGATURAN.statusLead,l.status);setInp('fu-tanggal',l.tanggal_update||todayStr());setInp('fu-catatan',l.catatan||'');document.getElementById('fu-closing-info').style.display=l.status==='Closing'?'block':'none';openModal('modal-fu');}
 function onFuStatusChange(val){document.getElementById('fu-closing-info').style.display=val==='Closing'?'block':'none';}
 async function saveFollowUp(){
-  const status=getSel('fu-status');const catatan=getInp('fu-catatan');const l=ALL_LEADS.find(x=>x.id===fuLeadId);if(!l)return;
-  try{const p={id:fuLeadId,status,catatan,tanggal_update:todayStr(),pic:USER};await apiPost('updateMktLead',p);Object.assign(l,p);
-  if(status==='Closing'){const cp={nama_lengkap:l.nama_lengkap,no_hp:l.no_hp,program:l.program_minat,pic:USER,sumber_closing:'Tim PMB',status:'Pendaftaran',tanggal_closing:todayStr(),dibuat_oleh:USER,catatan};const res=await apiPost('addMktClosing',cp);cp.id=res?.id;if(!cp.id)throw new Error('ID closing tidak diterima dari server.');cp.riwayat_status=[{status:'Pendaftaran',tanggal:todayStr(),catatan,oleh:USER}];ALL_CLOSING.unshift(cp);toast('<i class=bi-trophy-fill aria-hidden=true></i> Closing!',l.nama_lengkap+' dipindahkan ke Data Closing.');}else{toast('<i class=bi-check-circle-fill aria-hidden=true></i> FU Updated','Status '+l.nama_lengkap+' → '+status);}
-  closeModal('modal-fu');renderLeads();renderFollowUp();renderClosing();renderDashboard();updateBadges();}
-  catch(e){toast('<i class=bi-x-circle-fill aria-hidden=true></i> Gagal',e.message,'err');}
+  mktClearFieldErrors();if(!mktRequireUser())return;
+  const status=getSel('fu-status');if(!status)return mktInvalid('fu-status','Status follow up wajib dipilih.');
+  const tanggal=getInp('fu-tanggal');if(!tanggal)return mktInvalid('fu-tanggal','Tanggal follow up wajib dipilih.');
+  const catatan=getInp('fu-catatan').trim();if(catatan.length<3)return mktInvalid('fu-catatan','Catatan follow up wajib diisi minimal 3 karakter.');
+  const l=ALL_LEADS.find(x=>x.id===fuLeadId);if(!l)return;
+  try{const res=await apiPost('saveMktFollowUp',{id:fuLeadId,status,catatan,tanggal_update:tanggal,pic:USER,dibuat_oleh:USER});await Promise.all([loadLeads(),loadClosing()]);closeModal('modal-fu');renderDashboard();updateBadges();await refreshMarketingHistoryIfOpen();await returnToMarketingHistoryIfEditing();if(status==='Closing')toast('<i class="bi bi-trophy-fill"></i> Closing Tersimpan',res?.existingClosing?'Data closing sudah ada dan tidak dibuat ganda.':'Lead otomatis dibuatkan Data Closing.');else toast('<i class="bi bi-check-circle-fill"></i> Follow Up Tersimpan','Status '+l.nama_lengkap+' diperbarui menjadi '+status+'.');}
+  catch(e){toast('<i class="bi bi-x-circle-fill"></i> Gagal',e.message,'err');}
 }
 
 // ── MODAL: Closing ────────────────────────────────────────────────
 function openClosingModal(id){
-  const c = id ? ALL_CLOSING.find(x=>x.id===id) : null;
-  _editClosingId = id || null;
-  setEl('modal-closing-title', id ? 'Edit Data Closing' : 'Tambah Data Closing');
-
-  // Identitas
-  setInp('c-nama',         c?.nama_lengkap  ||'');
-  setInp('c-hp',           c?.no_hp         ||'');
-  setInp('c-email',        c?.email         ||'');
-  setInp('c-nik',          c?.nik           ||'');
-  setInp('c-tempat-lahir', c?.tempat_lahir  ||'');
-  setInp('c-tgl-lahir',    c?.tanggal_lahir ||'');
-  const jk = document.getElementById('c-jk'); if(jk) jk.value = c?.jenis_kelamin||'';
-  const ag = document.getElementById('c-agama'); if(ag) ag.value = c?.agama||'';
-  setInp('c-nama-ibu',     c?.nama_ibu      ||'');
-
-  // Alamat
-  setInp('c-kelurahan',    c?.kelurahan     ||'');
-  setInp('c-kecamatan',    c?.kecamatan     ||'');
-  setInp('c-kab-kota',     c?.kab_kota      ||'');
-  setInp('c-provinsi',     c?.provinsi      ||'');
-
-  // Akademik
-  const prog = PENGATURAN.programStudi || ['RPL Khusus','RPL Reguler (6 Bln)','RPL Reguler (1 Thn)','RPL Reguler (2 Thn)','Kelas Karyawan'];
-  const prodi = PENGATURAN.prodiList   || [];
-  const pt    = PENGATURAN.perguruanTinggi || PENGATURAN.kampusList || ['STISDU','STITBU'];
-  popSel('c-program', prog,  c?.program||'');
-  popSel('c-prodi',   prodi, c?.program_studi||'');
-  popSel('c-pt',      pt,    c?.perguruan_tinggi||'');
-  setInp('c-thn-lulus',    c?.tahun_lulus_sma ||'');
-  setInp('c-req-lulus',    c?.req_tahun_lulus  ||'');
-  setInp('c-ket-dokumen',  c?.ket_dokumen      ||'');
-
-  // Marketing
-  const src = document.getElementById('c-sumber'); if(src) src.value = c?.sumber_closing||'Tim PMB';
-  const picList = [...TIM_PMB.map(t=>t.nama), ...KOORDINATOR.map(k=>k.nama)];
-  if(USER && !picList.includes(USER)) picList.unshift(USER);
-  popSel('c-pic',    picList, c?.pic||USER||'');
-  popSel('c-status', PENGATURAN.statusClosing||['Pendaftaran','Daftar Ulang','Validasi Data','On PDDikti','Terkirim'], c?.status||'Pendaftaran');
-  setInp('c-tanggal', c?.tanggal_closing || todayStr());
-  setInp('c-catatan', c?.catatan||'');
-
-  openModal('modal-closing');
-}function onCSumberChange(val){popCPic(val);}
-function popCPic(sumber,sel){const opts=sumber==='Koordinator'?KOORDINATOR.map(k=>k.nama):TIM_PMB.map(t=>t.nama);popSel('c-pic',opts,sel);}
+  const c=id?ALL_CLOSING.find(x=>x.id===id):null;_editClosingId=id||null;setEl('modal-closing-title',id?'Edit Data Closing':'Tambah Data Closing');
+  setInp('c-nama',c?.nama_lengkap||'');setInp('c-hp',c?.no_hp||'');setInp('c-email',c?.email||'');setInp('c-nik',c?.no_ktp||'');setInp('c-tempat-lahir',c?.tempat_lahir||'');setInp('c-tgl-lahir',c?.tanggal_lahir||'');
+  const jk=document.getElementById('c-jk');if(jk)jk.value=c?.jenis_kelamin||'';const ag=document.getElementById('c-agama');if(ag)ag.value=c?.agama||'';setInp('c-nama-ibu',c?.nama_ibu||'');
+  setInp('c-kelurahan',c?.kelurahan||'');setInp('c-kecamatan',c?.kecamatan||'');setInp('c-kab-kota',c?.kab_kota||'');setInp('c-provinsi',c?.provinsi||'');
+  const prog=PENGATURAN.programStudi||['RPL Khusus','RPL 6 Bln','RPL 1 Thn','K. Karyawan'];const prodi=PENGATURAN.prodiList||[];const pt=PENGATURAN.perguruanTinggi||['STISDU','STITBU'];
+  popSel('c-program',prog,c?.program||'');popSel('c-prodi',prodi,c?.program_studi||'');popSel('c-pt',pt,c?.perguruan_tinggi||'');setInp('c-thn-lulus',c?.tahun_lulus_sma||'');setInp('c-req-lulus',c?.req_tahun_lulus||'');setInp('c-ket-dokumen',c?.ket_dokumen||'');
+  const source=c?.sumber_closing||'Tim PMB';const src=document.getElementById('c-sumber');if(src)src.value=source;popCPic(source,c?.pic||USER||'');popSel('c-status',PENGATURAN.statusClosing||[],c?.status||'Pendaftaran');setInp('c-tanggal',c?.tanggal_closing||todayStr());setInp('c-catatan',c?.catatan||'');openModal('modal-closing');
+}
+function onCSumberChange(val){popCPic(val,'');}
+function popCPic(sumber,sel){const opts=sumber==='Koordinator'?KOORDINATOR.map(k=>k.nama):TIM_PMB.map(t=>t.nama);popSel('c-pic',opts,sel||USER||'');}
 async function saveClosing(){
-  const nama=getInp('c-nama');if(!nama){toast('<i class=bi-exclamation-triangle-fill aria-hidden=true></i>','Nama wajib diisi.','warn');return;}
-  const sumber=getSel('c-sumber');
-  const p={nama_lengkap:nama,no_hp:getInp('c-hp'),no_ktp:getInp('c-ktp'),asal_sekolah:getInp('c-sekolah'),asal_daerah:getInp('c-daerah'),program:getSel('c-program'),perguruan_tinggi:getSel('c-pt'),pic:getSel('c-pic'),sumber_closing:sumber,koordinator:sumber==='Koordinator'?getSel('c-pic'):'',status:getSel('c-status'),catatan:getInp('c-catatan'),tanggal_closing:getInp('c-tanggal'),tanggal_update:todayStr(),dibuat_oleh:USER};
-  try{if(_editClosingId){p.id=_editClosingId;await apiPost('updateMktClosing',p);const idx=ALL_CLOSING.findIndex(x=>x.id===_editClosingId);if(idx>=0)ALL_CLOSING[idx]={...ALL_CLOSING[idx],...p};}else{const res=await apiPost('addMktClosing',p);p.id=res?.id;if(!p.id)throw new Error('ID closing tidak diterima dari server.');p.riwayat_status=[{status:p.status,tanggal:todayStr(),catatan:p.catatan,oleh:USER}];ALL_CLOSING.unshift(p);}closeModal('modal-closing');renderClosing();renderDashboard();updateBadges();toast('<i class=bi-check-circle-fill aria-hidden=true></i> Closing Tersimpan','"'+nama+'" berhasil '+(_editClosingId?'diperbarui':'ditambahkan')+'.');}
-  catch(e){toast('<i class=bi-x-circle-fill aria-hidden=true></i> Gagal',e.message,'err');}
+  mktClearFieldErrors();if(!mktRequireUser())return;const isEdit=!!_editClosingId;
+  const nama=getInp('c-nama').trim();if(nama.length<2||nama==='-')return mktInvalid('c-nama','Nama mahasiswa wajib diisi dengan benar.');
+  const hp=mktNormalizePhone(getInp('c-hp'));if(!/^0\d{9,14}$/.test(hp))return mktInvalid('c-hp','Nomor HP/WA harus 10–15 digit.');
+  const email=getInp('c-email').trim();if(email&&!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))return mktInvalid('c-email','Format email tidak valid.');
+  const nik=getInp('c-nik').replace(/\D/g,'');if(nik&&nik.length!==16)return mktInvalid('c-nik','NIK harus tepat 16 digit.');
+  const required=[['c-program','Program'],['c-pt','Perguruan tinggi'],['c-sumber','Sumber closing'],['c-pic','PIC/Koordinator'],['c-status','Status'],['c-tanggal','Tanggal closing']];for(const [id,label] of required){if(!getSel(id)&&!getInp(id))return mktInvalid(id,label+' wajib diisi.');}
+  for(const id of ['c-thn-lulus','c-req-lulus']){const v=getInp(id);if(v&&(Number(v)<1950||Number(v)>2100))return mktInvalid(id,'Tahun tidak valid.');}
+  const dup=ALL_CLOSING.find(x=>mktNormalizePhone(x.no_hp)===hp&&String(x.id)!==String(_editClosingId||''));let allow_duplicate=false;if(dup){const exact=String(dup.nama_lengkap||'').trim().toLowerCase()===nama.toLowerCase()&&String(dup.tanggal_closing||'')===getInp('c-tanggal')&&String(dup.program||'')===getSel('c-program');if(exact)return mktInvalid('c-hp','Data Closing yang sama sudah tersimpan sebagai '+dup.id+'. Gunakan Edit.');allow_duplicate=await confirmAction({title:'Nomor sudah ada di Closing',message:'Nomor ini digunakan oleh '+(dup.nama_lengkap||dup.id)+' ('+dup.id+'). Simpan hanya jika memang orang berbeda.',confirmText:'Orang berbeda'});if(!allow_duplicate)return;}
+  const source=getSel('c-sumber');const old=isEdit?ALL_CLOSING.find(x=>x.id===_editClosingId):null;
+  const p={lead_id:old?.lead_id||'',nama_lengkap:nama,no_hp:hp,email,no_ktp:nik,tempat_lahir:getInp('c-tempat-lahir').trim(),tanggal_lahir:getInp('c-tgl-lahir'),jenis_kelamin:getSel('c-jk'),agama:getSel('c-agama'),nama_ibu:getInp('c-nama-ibu').trim(),kelurahan:getInp('c-kelurahan').trim(),kecamatan:getInp('c-kecamatan').trim(),kab_kota:getInp('c-kab-kota').trim(),provinsi:getInp('c-provinsi').trim(),program:getSel('c-program'),program_studi:getSel('c-prodi'),perguruan_tinggi:getSel('c-pt'),tahun_lulus_sma:getInp('c-thn-lulus'),req_tahun_lulus:getInp('c-req-lulus'),ket_dokumen:getInp('c-ket-dokumen').trim(),pic:getSel('c-pic'),sumber_closing:source,koordinator:source==='Koordinator'?getSel('c-pic'):'',status:getSel('c-status'),catatan:getInp('c-catatan').trim(),tanggal_closing:getInp('c-tanggal'),tanggal_update:todayStr(),oleh:USER,allow_duplicate};
+  if(!isEdit){p.dibuat_oleh=USER;p.riwayat_status=[{status:p.status,tanggal:p.tanggal_closing,catatan:p.catatan,oleh:USER}];}
+  try{if(isEdit){p.id=_editClosingId;await apiPost('updateMktClosing',p);}else{const res=await apiPost('addMktClosing',p);p.id=res?.id;if(!p.id)throw new Error('ID closing tidak diterima dari server.');}_editClosingId=null;closeModal('modal-closing');await loadClosing();renderDashboard();updateBadges();await refreshMarketingHistoryIfOpen();await returnToMarketingHistoryIfEditing();toast('<i class="bi bi-check-circle-fill"></i> Closing Tersimpan','Data '+nama+' berhasil '+(isEdit?'diperbarui':'ditambahkan')+'.');}catch(e){toast('<i class="bi bi-x-circle-fill"></i> Gagal',e.message,'err');}
 }
-async function delClosing(id){const c=ALL_CLOSING.find(x=>x.id===id);if(!(await confirmAction({title:'Hapus closing?',message:'Data closing '+(c?.nama_lengkap||'ini')+' akan dihapus permanen.',confirmText:'Hapus',danger:true})))return;try{await apiPost('deleteMktClosing',{id});ALL_CLOSING=ALL_CLOSING.filter(x=>x.id!==id);renderClosing();renderDashboard();toast('<i class=bi-trash3-fill aria-hidden=true></i> Dihapus','');}catch(e){toast('<i class=bi-x-circle-fill aria-hidden=true></i> Gagal',e.message,'err');}}
+async function delClosing(id){const c=ALL_CLOSING.find(x=>x.id===id);if(!(await confirmAction({title:'Hapus closing?',message:'Data closing '+(c?.nama_lengkap||id)+' akan dihapus permanen.',confirmText:'Hapus',danger:true})))return;try{if(!mktRequireUser())return;await apiPost('deleteMktClosing',{id,oleh:USER});ALL_CLOSING=ALL_CLOSING.filter(x=>x.id!==id);renderClosing();renderDashboard();updateBadges();await refreshMarketingHistoryIfOpen();toast('<i class="bi bi-trash3-fill"></i> Closing Dihapus','');}catch(e){toast('<i class="bi bi-x-circle-fill"></i> Gagal',e.message,'err');}}
 
-// ── MODAL: Update Status Closing ──────────────────────────────────
-function openClStatusModal(id){
-  clStatusId=id;const c=ALL_CLOSING.find(x=>x.id===id);if(!c)return;
-  setEl('cls-modal-nama',c.nama_lengkap);setEl('cls-modal-info',(c.program||'')+' · '+(c.perguruan_tinggi||'')+' · PIC: '+(c.pic||''));
-  const rw=Array.isArray(c.riwayat_status)?c.riwayat_status:[];
-  const rwEl=document.getElementById('cls-riwayat');
-  if(rwEl)rwEl.innerHTML=rw.length?'<div class="riwayat-list">'+[...rw].reverse().map((r,i)=>'<div class="riwayat-item"><div class="riwayat-dot '+(i===0?'latest':'')+'"></div><div class="riwayat-status"><span class="pill '+sCC(r.status)+'">'+r.status+'</span></div><div class="riwayat-meta">'+(r.tanggal||'')+(r.oleh?' · '+r.oleh:'')+(r.catatan?' — '+escH(r.catatan):'')+'</div></div>').join('')+'</div>':'<div style="color:var(--muted);font-size:12.5px">Belum ada riwayat.</div>';
-  popSel('cls-status',PENGATURAN.statusClosing,c.status);setInp('cls-catatan','');openModal('modal-cl-status');
-}
-async function saveClosingStatus(){
-  const status=getSel('cls-status');const catatan=getInp('cls-catatan');const c=ALL_CLOSING.find(x=>x.id===clStatusId);if(!c)return;
-  try{await apiPost('updateMktClosingStatus',{id:clStatusId,status,catatan,oleh:USER});c.status=status;if(!Array.isArray(c.riwayat_status))c.riwayat_status=[];c.riwayat_status.push({status,tanggal:todayStr(),catatan,oleh:USER});c.tanggal_update=todayStr();closeModal('modal-cl-status');renderClosing();renderDashboard();toast('<i class=bi-check-circle-fill aria-hidden=true></i> Status Diperbarui',c.nama_lengkap+' → '+status);}
-  catch(e){toast('<i class=bi-x-circle-fill aria-hidden=true></i> Gagal',e.message,'err');}
-}
+function renderClosingStatusHistory(c){const rw=Array.isArray(c?.riwayat_status)?c.riwayat_status:[];const el=document.getElementById('cls-riwayat');if(!el)return;el.innerHTML=rw.length?'<div class="riwayat-list">'+[...rw].map((r,idx)=>({r,idx})).reverse().map((x,pos)=>'<div class="riwayat-item"><div class="riwayat-dot '+(pos===0?'latest':'')+'"></div><div style="display:flex;justify-content:space-between;gap:8px"><div><div class="riwayat-status"><span class="pill '+sCC(x.r.status)+'">'+escH(x.r.status)+'</span></div><div class="riwayat-meta">'+escH(x.r.tanggal||'')+(x.r.oleh?' · '+escH(x.r.oleh):'')+(x.r.catatan?' — '+escH(x.r.catatan):'')+'</div></div><div class="actions"><button class="btn sm" onclick="editClosingStatusEntry('+x.idx+')"><i class="bi bi-pencil-square"></i></button><button class="btn sm danger" onclick="deleteClosingStatusEntry('+x.idx+')"><i class="bi bi-trash3"></i></button></div></div></div>').join('')+'</div>':'<div style="color:var(--muted);font-size:12.5px">Belum ada riwayat.</div>';}
+function openClStatusModal(id){clStatusId=id;_editClosingStatusIndex=null;const c=ALL_CLOSING.find(x=>x.id===id);if(!c)return;setEl('cls-modal-nama',c.nama_lengkap);setEl('cls-modal-info',(c.program||'')+' · '+(c.perguruan_tinggi||'')+' · PIC: '+(c.pic||''));renderClosingStatusHistory(c);popSel('cls-status',PENGATURAN.statusClosing,c.status);setInp('cls-tanggal',todayStr());setInp('cls-catatan','');const b=document.getElementById('cls-save-btn');if(b)b.innerHTML='<i class="bi bi-check-circle-fill"></i> Simpan Status';openModal('modal-cl-status');}
+function editClosingStatusEntry(index){const c=ALL_CLOSING.find(x=>x.id===clStatusId);const r=c?.riwayat_status?.[index];if(!r)return;_editClosingStatusIndex=index;popSel('cls-status',PENGATURAN.statusClosing,r.status);setInp('cls-tanggal',r.tanggal||todayStr());setInp('cls-catatan',r.catatan||'');const b=document.getElementById('cls-save-btn');if(b)b.innerHTML='<i class="bi bi-pencil-square"></i> Simpan Perubahan';}
+async function deleteClosingStatusEntry(index){const c=ALL_CLOSING.find(x=>x.id===clStatusId);if(!c||!Array.isArray(c.riwayat_status))return;if(c.riwayat_status.length<=1){toast('<i class="bi bi-exclamation-triangle-fill"></i> Tidak dapat dihapus','Status terakhir satu-satunya harus diedit, bukan dihapus.','warn');return;}const r=c.riwayat_status[index];if(!(await confirmAction({title:'Hapus riwayat status?',message:(r?.status||'Status')+' tanggal '+(r?.tanggal||'')+' akan dihapus.',confirmText:'Hapus',danger:true})))return;const next=c.riwayat_status.filter((_,i)=>i!==index);try{const res=await apiPost('saveMktClosingStatusHistory',{id:c.id,riwayat:next,oleh:USER});c.riwayat_status=res?.riwayat||next;c.status=res?.status||c.riwayat_status[c.riwayat_status.length-1].status;c.tanggal_update=c.riwayat_status[c.riwayat_status.length-1].tanggal;renderClosingStatusHistory(c);renderClosing();renderDashboard();await refreshMarketingHistoryIfOpen();toast('<i class="bi bi-trash3-fill"></i> Riwayat Status Dihapus','');}catch(e){toast('<i class="bi bi-x-circle-fill"></i> Gagal',e.message,'err');}}
+async function saveClosingStatus(){mktClearFieldErrors();if(!mktRequireUser())return;const status=getSel('cls-status');const tanggal=getInp('cls-tanggal');const catatan=getInp('cls-catatan').trim();if(!status)return mktInvalid('cls-status','Status wajib dipilih.');if(!tanggal)return mktInvalid('cls-tanggal','Tanggal status wajib dipilih.');if(catatan.length<3)return mktInvalid('cls-catatan','Catatan wajib diisi minimal 3 karakter.');const c=ALL_CLOSING.find(x=>x.id===clStatusId);if(!c)return;const next=Array.isArray(c.riwayat_status)?c.riwayat_status.map(x=>({...x})):[];const entry={status,tanggal,catatan,oleh:USER};if(_editClosingStatusIndex===null)next.push(entry);else next[_editClosingStatusIndex]=entry;try{const res=await apiPost('saveMktClosingStatusHistory',{id:c.id,riwayat:next,oleh:USER});c.riwayat_status=res?.riwayat||next;c.status=res?.status||status;c.tanggal_update=c.riwayat_status[c.riwayat_status.length-1].tanggal;_editClosingStatusIndex=null;renderClosingStatusHistory(c);renderClosing();renderDashboard();await refreshMarketingHistoryIfOpen();setInp('cls-catatan','');setInp('cls-tanggal',todayStr());const b=document.getElementById('cls-save-btn');if(b)b.innerHTML='<i class="bi bi-check-circle-fill"></i> Simpan Status';toast('<i class="bi bi-check-circle-fill"></i> Status Tersimpan',c.nama_lengkap+' → '+c.status);}catch(e){toast('<i class="bi bi-x-circle-fill"></i> Gagal',e.message,'err');}}
 
 // ── MODAL: Iklan ──────────────────────────────────────────────────
 function openIklanModal(id){
-  const ik=id?ALL_IKLAN.find(x=>x.id===id):null;editingId.iklan=id||null;setEl('modal-iklan-title',id?'Edit Kampanye':'Tambah Kampanye');
+  const ik=id?ALL_IKLAN.find(x=>x.id===id):null;editingId.iklan=id||null;mktClearFieldErrors();setEl('modal-iklan-title',id?'Edit Kampanye':'Tambah Kampanye');
   setInp('ik-nama',ik?.nama_kampanye||'');setInp('ik-mulai',ik?.tanggal_mulai||todayStr());setInp('ik-selesai',ik?.tanggal_selesai||'');setInp('ik-budget',ik?.budget||'');setInp('ik-belanja',ik?.belanja_aktual||'');setInp('ik-impresi',ik?.impresi||'');setInp('ik-klik',ik?.klik||'');setInp('ik-lead',ik?.lead_masuk||'');setInp('ik-closing',ik?.closing_dari_iklan||'');setInp('ik-catatan',ik?.catatan||'');
-  popSel('ik-platform',PENGATURAN.platform,ik?.platform);const ss=document.getElementById('ik-status');if(ss)ss.value=ik?.status||'Aktif';openModal('modal-iklan');
+  popSel('ik-platform',PENGATURAN.platform||[],ik?.platform||'','Pilih platform...');const ss=document.getElementById('ik-status');if(ss)ss.value=ik?.status||'Aktif';openModal('modal-iklan');
 }
 async function saveIklan(){
-  const nama=getInp('ik-nama');if(!nama){toast('<i class=bi-exclamation-triangle-fill aria-hidden=true></i>','Nama kampanye wajib diisi.','warn');return;}
-  const p={nama_kampanye:nama,platform:getSel('ik-platform'),status:getSel('ik-status'),tanggal_mulai:getInp('ik-mulai'),tanggal_selesai:getInp('ik-selesai'),budget:getInp('ik-budget'),belanja_aktual:getInp('ik-belanja'),impresi:getInp('ik-impresi'),klik:getInp('ik-klik'),lead_masuk:getInp('ik-lead'),closing_dari_iklan:getInp('ik-closing'),catatan:getInp('ik-catatan'),dibuat_oleh:USER};
-  try{if(editingId.iklan){p.id=editingId.iklan;await apiPost('updateMktIklan',p);const idx=ALL_IKLAN.findIndex(x=>x.id===editingId.iklan);if(idx>=0)ALL_IKLAN[idx]={...ALL_IKLAN[idx],...p};}else{const res=await apiPost('addMktIklan',p);p.id=res?.id;if(!p.id)throw new Error('ID iklan tidak diterima dari server.');ALL_IKLAN.unshift(p);}closeModal('modal-iklan');renderIklan();toast('<i class=bi-check-circle-fill aria-hidden=true></i> Kampanye Tersimpan','');}
-  catch(e){toast('<i class=bi-x-circle-fill aria-hidden=true></i> Gagal',e.message,'err');}
+  mktClearFieldErrors();if(!mktRequireUser())return;const isEdit=!!editingId.iklan;
+  const nama=getInp('ik-nama').trim();if(nama.length<3)return mktInvalid('ik-nama','Nama kampanye wajib diisi minimal 3 karakter.');
+  const platform=getSel('ik-platform');if(!platform)return mktInvalid('ik-platform','Platform wajib dipilih.');
+  const status=getSel('ik-status');if(!status)return mktInvalid('ik-status','Status kampanye wajib dipilih.');
+  const mulai=getInp('ik-mulai');if(!mulai)return mktInvalid('ik-mulai','Tanggal mulai wajib dipilih.');
+  const selesai=getInp('ik-selesai');if(selesai&&selesai<mulai)return mktInvalid('ik-selesai','Tanggal selesai tidak boleh sebelum tanggal mulai.');
+  const nums={budget:Number(getInp('ik-budget')||0),belanja_aktual:Number(getInp('ik-belanja')||0),impresi:Number(getInp('ik-impresi')||0),klik:Number(getInp('ik-klik')||0),lead_masuk:Number(getInp('ik-lead')||0),closing_dari_iklan:Number(getInp('ik-closing')||0)};
+  const idMap={budget:'ik-budget',belanja_aktual:'ik-belanja',impresi:'ik-impresi',klik:'ik-klik',lead_masuk:'ik-lead',closing_dari_iklan:'ik-closing'};
+  for(const [key,val] of Object.entries(nums)){if(!Number.isFinite(val)||val<0)return mktInvalid(idMap[key],key.replace(/_/g,' ')+' tidak boleh negatif.');}
+  if(nums.klik>nums.impresi)return mktInvalid('ik-klik','Jumlah klik tidak boleh lebih besar dari impresi.');
+  if(nums.klik>0&&nums.lead_masuk>nums.klik)return mktInvalid('ik-lead','Jumlah lead tidak boleh lebih besar dari klik.');
+  if(nums.closing_dari_iklan>nums.lead_masuk)return mktInvalid('ik-closing','Jumlah closing tidak boleh lebih besar dari lead.');
+  const dup=ALL_IKLAN.find(x=>String(x.nama_kampanye||'').trim().toLowerCase()===nama.toLowerCase()&&String(x.tanggal_mulai||'')===mulai&&String(x.id)!==String(editingId.iklan||''));
+  if(dup)return mktInvalid('ik-nama','Kampanye yang sama sudah tersimpan sebagai '+dup.id+'. Gunakan Edit.');
+  const p={nama_kampanye:nama,platform,status,tanggal_mulai:mulai,tanggal_selesai:selesai,...nums,catatan:getInp('ik-catatan').trim(),oleh:USER};if(!isEdit)p.dibuat_oleh=USER;
+  try{if(isEdit){p.id=editingId.iklan;await apiPost('updateMktIklan',p);}else{const res=await apiPost('addMktIklan',p);p.id=res?.id;if(!p.id)throw new Error('ID iklan tidak diterima dari server.');}editingId.iklan=null;closeModal('modal-iklan');await loadIklan();renderDashboard();await refreshMarketingHistoryIfOpen();await returnToMarketingHistoryIfEditing();toast('<i class="bi bi-check-circle-fill"></i> Kampanye Tersimpan',nama+' berhasil '+(isEdit?'diperbarui':'ditambahkan')+'.');}
+  catch(e){toast('<i class="bi bi-x-circle-fill"></i> Gagal',e.message,'err');}
 }
-async function delIklan(id){if(!(await confirmAction({title:'Hapus kampanye?',message:'Kampanye ini akan dihapus permanen.',confirmText:'Hapus',danger:true})))return;try{await apiPost('deleteMktIklan',{id});ALL_IKLAN=ALL_IKLAN.filter(x=>x.id!==id);renderIklan();toast('<i class=bi-trash3-fill aria-hidden=true></i> Dihapus','');}catch(e){toast('<i class=bi-x-circle-fill aria-hidden=true></i> Gagal',e.message,'err');}}
+async function delIklan(id){const ik=ALL_IKLAN.find(x=>x.id===id);if(!(await confirmAction({title:'Hapus kampanye?',message:(ik?.nama_kampanye||id)+' akan dihapus permanen dari database.',confirmText:'Hapus',danger:true})))return;if(!mktRequireUser())return;try{await apiPost('deleteMktIklan',{id,oleh:USER});ALL_IKLAN=ALL_IKLAN.filter(x=>x.id!==id);renderIklan();renderDashboard();await refreshMarketingHistoryIfOpen();toast('<i class="bi bi-trash3-fill"></i> Kampanye Dihapus','');}catch(e){toast('<i class="bi bi-x-circle-fill"></i> Gagal',e.message,'err');}}
 
 // ── MODAL: Tugas ──────────────────────────────────────────────────
 function openTugasModal(id){
-  const t=id?ALL_TUGAS.find(x=>x.id===id):null;editingId.tugas=id||null;setEl('modal-tugas-title',id?'Edit Tugas':'Tambah Tugas / Masalah');
+  const t=id?ALL_TUGAS.find(x=>x.id===id):null;editingId.tugas=id||null;mktClearFieldErrors();setEl('modal-tugas-title',id?'Edit Tugas':'Tambah Tugas / Masalah');
   setInp('tg-judul',t?.judul||'');setInp('tg-deskripsi',t?.deskripsi||'');setInp('tg-catatan',t?.catatan||'');setInp('tg-deadline',t?.deadline||'');
   const ts=document.getElementById('tg-status');const tp=document.getElementById('tg-prioritas');if(ts)ts.value=t?.status||'Belum Mulai';if(tp)tp.value=t?.prioritas||'Sedang';
   popSel('tg-pic',['Semua',...TIM_PMB.map(x=>x.nama),...KOORDINATOR.map(x=>x.nama)],t?.pic||USER||'Semua');openModal('modal-tugas');
 }
 async function saveTugas(){
-  const judul=getInp('tg-judul');if(!judul){toast('<i class=bi-exclamation-triangle-fill aria-hidden=true></i>','Judul wajib diisi.','warn');return;}
-  const p={judul,deskripsi:getInp('tg-deskripsi'),status:getSel('tg-status'),prioritas:getSel('tg-prioritas'),pic:getSel('tg-pic'),deadline:getInp('tg-deadline'),catatan:getInp('tg-catatan'),dibuat_oleh:USER};
-  try{if(editingId.tugas){p.id=editingId.tugas;await apiPost('updateMktTugas',p);const idx=ALL_TUGAS.findIndex(x=>x.id===editingId.tugas);if(idx>=0)ALL_TUGAS[idx]={...ALL_TUGAS[idx],...p};}else{const res=await apiPost('addMktTugas',p);p.id=res?.id;if(!p.id)throw new Error('ID tugas tidak diterima dari server.');ALL_TUGAS.push(p);}closeModal('modal-tugas');renderTugas();toast('<i class=bi-check-circle-fill aria-hidden=true></i> Tugas Tersimpan','');}
-  catch(e){toast('<i class=bi-x-circle-fill aria-hidden=true></i> Gagal',e.message,'err');}
+  mktClearFieldErrors();if(!mktRequireUser())return;const isEdit=!!editingId.tugas;
+  const judul=getInp('tg-judul').trim();if(judul.length<3)return mktInvalid('tg-judul','Judul tugas wajib diisi minimal 3 karakter.');
+  const status=getSel('tg-status');if(!status)return mktInvalid('tg-status','Status wajib dipilih.');const prioritas=getSel('tg-prioritas');if(!prioritas)return mktInvalid('tg-prioritas','Prioritas wajib dipilih.');const pic=getSel('tg-pic');if(!pic)return mktInvalid('tg-pic','PIC wajib dipilih.');
+  const deadline=getInp('tg-deadline');const dup=ALL_TUGAS.find(x=>String(x.judul||'').trim().toLowerCase()===judul.toLowerCase()&&String(x.deadline||'')===deadline&&String(x.pic||'')===pic&&String(x.id)!==String(editingId.tugas||''));
+  if(dup)return mktInvalid('tg-judul','Tugas yang sama sudah tersimpan sebagai '+dup.id+'. Gunakan Edit.');
+  const p={judul,deskripsi:getInp('tg-deskripsi').trim(),status,prioritas,pic,deadline,catatan:getInp('tg-catatan').trim(),oleh:USER};if(!isEdit)p.dibuat_oleh=USER;
+  try{if(isEdit){p.id=editingId.tugas;await apiPost('updateMktTugas',p);}else{const res=await apiPost('addMktTugas',p);p.id=res?.id;if(!p.id)throw new Error('ID tugas tidak diterima dari server.');}editingId.tugas=null;closeModal('modal-tugas');await loadTugas();renderDashboard();updateBadges();await refreshMarketingHistoryIfOpen();await returnToMarketingHistoryIfEditing();toast('<i class="bi bi-check-circle-fill"></i> Tugas Tersimpan',judul+' berhasil '+(isEdit?'diperbarui':'ditambahkan')+'.');}
+  catch(e){toast('<i class="bi bi-x-circle-fill"></i> Gagal',e.message,'err');}
 }
-async function updTugasStatus(id,status){const t=ALL_TUGAS.find(x=>x.id===id);if(!t)return;try{await apiPost('updateMktTugasStatus',{id,status});t.status=status;renderTugas();renderDashboard();}catch(e){toast('<i class=bi-x-circle-fill aria-hidden=true></i> Gagal',e.message,'err');}}
-async function delTugas(id){if(!(await confirmAction({title:'Hapus tugas?',message:'Tugas ini akan dihapus permanen.',confirmText:'Hapus',danger:true})))return;try{await apiPost('deleteMktTugas',{id});ALL_TUGAS=ALL_TUGAS.filter(x=>x.id!==id);renderTugas();updateBadges();toast('<i class=bi-trash3-fill aria-hidden=true></i> Dihapus','');}catch(e){toast('<i class=bi-x-circle-fill aria-hidden=true></i> Gagal',e.message,'err');}}
+async function updTugasStatus(id,status){const t=ALL_TUGAS.find(x=>x.id===id);if(!t||t.status===status)return;if(!mktRequireUser())return;const ok=await confirmAction({title:'Ubah status tugas?',message:(t.judul||id)+' akan diubah dari '+(t.status||'—')+' menjadi '+status+'.',confirmText:'Ubah status'});if(!ok)return;try{await apiPost('updateMktTugasStatus',{id,status,oleh:USER});t.status=status;renderTugas();renderDashboard();await refreshMarketingHistoryIfOpen();toast('<i class="bi bi-check-circle-fill"></i> Status Diperbarui',status);}catch(e){toast('<i class="bi bi-x-circle-fill"></i> Gagal',e.message,'err');}}
+async function delTugas(id){const t=ALL_TUGAS.find(x=>x.id===id);if(!(await confirmAction({title:'Hapus tugas?',message:(t?.judul||id)+' akan dihapus permanen dari database.',confirmText:'Hapus',danger:true})))return;if(!mktRequireUser())return;try{await apiPost('deleteMktTugas',{id,oleh:USER});ALL_TUGAS=ALL_TUGAS.filter(x=>x.id!==id);renderTugas();renderDashboard();updateBadges();await refreshMarketingHistoryIfOpen();toast('<i class="bi bi-trash3-fill"></i> Tugas Dihapus','');}catch(e){toast('<i class="bi bi-x-circle-fill"></i> Gagal',e.message,'err');}}
 
 // ── LAPORAN ───────────────────────────────────────────────────────
 function switchLapTab(el,id){document.querySelectorAll('.laporan-tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.laporan-tab-content').forEach(c=>c.classList.remove('active'));el.classList.add('active');document.getElementById(id)?.classList.add('active');}
@@ -1853,26 +2105,15 @@ async function saveLapDraft(btn){ return simpanLapMkt('draft',btn); }
 async function saveLapSubmit(btn){const ok=await confirmAction({title:'Submit laporan Marketing?',message:'Data akan disimpan sebagai laporan resmi dan baru setelah itu dipakai untuk perhitungan Ringkasan Marketing serta dashboard GM.',confirmText:'Ya, submit'});if(!ok)return;return simpanLapMkt('submitted',btn);}
 
 async function simpanLapMkt(status,btn){
-  const tanggal = document.getElementById('lap-input-tgl')?.value || todayStr();
-  const gn = id => Number(document.getElementById(id)?.value)||0;
-  const payload = {
-    tanggal, divisi:'Marketing', diisi_oleh:USER, status,
-    leadBaru:    gn('lap-lead-baru'),
-    fuCount:     gn('lap-fu-count'),
-    closingBaru: gn('lap-closing-baru'),
-    catatan:     document.getElementById('lap-catatan')?.value||''
-  };
+  mktClearFieldErrors();if(!mktRequireUser())return false;
+  const tanggal=document.getElementById('lap-input-tgl')?.value;if(!tanggal)return mktInvalid('lap-input-tgl','Tanggal laporan wajib dipilih.');
+  const gn=id=>Number(document.getElementById(id)?.value)||0;const vals={leadBaru:gn('lap-lead-baru'),fuCount:gn('lap-fu-count'),closingBaru:gn('lap-closing-baru')};
+  if(Object.values(vals).some(v=>v<0)){toast('<i class="bi bi-exclamation-triangle-fill"></i> Periksa Input','Angka laporan tidak boleh negatif.','warn');return false;}
+  const payload={tanggal,divisi:'Marketing',diisi_oleh:USER,oleh:USER,status,...vals,catatan:document.getElementById('lap-catatan')?.value.trim()||''};
   if(btn)setButtonLoading(btn,true);
-  try {
-    await apiPost('saveLaporanHarian', payload);
-    await loadLapMktHarian(tanggal);
-    if(status==='submitted')await loadMktRingkasanAuto();
-    const chip = document.getElementById('lap-input-chip');
-    if(chip){ chip.innerHTML=status==='submitted'?'<i class=bi-check-lg aria-hidden=true></i> Terisi':'Draft'; chip.style.background=status==='submitted'?'var(--green2)':'var(--gold2)'; chip.style.color=status==='submitted'?'#14532D':'#92400E'; }
-    toast(status==='submitted'?'<i class=bi-check-circle-fill aria-hidden=true></i> Laporan Terkirim':'<i class=bi-floppy-fill aria-hidden=true></i> Draft Tersimpan', status==='submitted'?'Data marketing hari ini sudah masuk ke dashboard GM.':'Laporan tersimpan sebagai draft.');
-  } catch(e){ toast('<i class=bi-x-circle-fill aria-hidden=true></i> Gagal', e.message,'err'); }finally{if(btn)setButtonLoading(btn,false);}
+  try{await apiPost('saveLaporanHarian',payload);await loadLapMktHarian(tanggal);if(status==='submitted')await loadMktRingkasanAuto();const chip=document.getElementById('lap-input-chip');if(chip){chip.innerHTML=status==='submitted'?'<i class=bi-check-lg aria-hidden=true></i> Terisi':'Draft';chip.style.background=status==='submitted'?'var(--green2)':'var(--gold2)';chip.style.color=status==='submitted'?'#14532D':'#92400E';}await refreshMarketingHistoryIfOpen();await returnToMarketingHistoryIfEditing();toast(status==='submitted'?'<i class=bi-check-circle-fill aria-hidden=true></i> Laporan Terkirim':'<i class=bi-floppy-fill aria-hidden=true></i> Draft Tersimpan',status==='submitted'?'Laporan resmi tanggal '+tanggal+' berhasil disimpan.':'Draft tanggal '+tanggal+' tersimpan.');return true;}
+  catch(e){toast('<i class=bi-x-circle-fill aria-hidden=true></i> Gagal',e.message,'err');return false;}finally{if(btn)setButtonLoading(btn,false);}
 }
-
 async function loadLapHarian(){
   const tgl=getInp('lap-h-tgl')||todayStr();const el=document.getElementById('lap-harian-content');if(!el)return;
   el.innerHTML=animatedLoader('Memuat laporan resmi...');
@@ -1917,17 +2158,16 @@ function removeTag(key,idx){PENGATURAN[key].splice(idx,1);loadPengaturan();}
 function addTag(key){const inp=document.getElementById('pg-inp-'+key);const val=inp?.value?.trim();if(!val)return;if(!PENGATURAN[key])PENGATURAN[key]=[];if(!PENGATURAN[key].includes(val))PENGATURAN[key].push(val);if(inp)inp.value='';loadPengaturan();populateAllSelects();}
 async function savePengaturan(){try{await apiPost('saveMktPengaturan',PENGATURAN);populateAllSelects();toast('<i class=bi-check-circle-fill aria-hidden=true></i> Pengaturan Tersimpan','');}catch(e){toast('<i class=bi-x-circle-fill aria-hidden=true></i> Gagal',e.message,'err');}}
 function updatePgLists(){
-  const timEl=document.getElementById('pg-tim-list');
-  if(timEl)timEl.innerHTML=TIM_PMB.map(t=>'<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)"><div style="flex:1"><div style="font-weight:600">'+escH(t.nama)+'</div><div style="font-size:11.5px;color:var(--muted)">'+escH(t.jabatan||'')+'</div></div><button class="btn sm danger" onclick="delTim(\''+t.id+'\')"><i class=bi-x-lg aria-hidden=true></i></button></div>').join('')||'<div style="color:var(--muted);font-size:12.5px">Belum ada anggota tim.</div>';
-  const koordEl=document.getElementById('pg-koord-list');
-  if(koordEl)koordEl.innerHTML=KOORDINATOR.map(k=>'<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)"><div style="flex:1"><div style="font-weight:600">'+escH(k.nama)+'</div><div style="font-size:11.5px;color:var(--muted)">'+escH(k.wilayah||'')+(k.telepon?' · '+k.telepon:'')+'</div></div><button class="btn sm danger" onclick="delKoord(\''+k.id+'\')"><i class=bi-x-lg aria-hidden=true></i></button></div>').join('')||'<div style="color:var(--muted);font-size:12.5px">Belum ada koordinator.</div>';
+  const row=(title,sub,edit,del)=>'<div style="display:flex;align-items:center;gap:9px;padding:9px 0;border-bottom:1px solid var(--border)"><div style="flex:1;min-width:0"><div style="font-weight:650">'+escH(title)+'</div><div style="font-size:11.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+escH(sub||'')+'</div></div><button class="btn sm" title="Edit" onclick="'+edit+'"><i class="bi bi-pencil-square"></i></button><button class="btn sm danger" title="Hapus" onclick="'+del+'"><i class="bi bi-trash3"></i></button></div>';
+  const timEl=document.getElementById('pg-tim-list');if(timEl)timEl.innerHTML=TIM_PMB.map(t=>row(t.nama,t.jabatan||'',"openTimModal('"+t.id+"')","delTim('"+t.id+"')")).join('')||'<div style="color:var(--muted);font-size:12.5px">Belum ada anggota tim.</div>';
+  const koordEl=document.getElementById('pg-koord-list');if(koordEl)koordEl.innerHTML=KOORDINATOR.map(k=>row(k.nama,(k.wilayah||'')+(k.telepon?' · '+k.telepon:''),"openKoordModal('"+k.id+"')","delKoord('"+k.id+"')")).join('')||'<div style="color:var(--muted);font-size:12.5px">Belum ada koordinator.</div>';
 }
-function openTimModal(id){editingId.tim=id||null;const t=id?TIM_PMB.find(x=>x.id===id):null;setInp('tim-nama',t?.nama||'');setInp('tim-jabatan',t?.jabatan||'');openModal('modal-tim');}
-async function saveTim(){const nama=getInp('tim-nama');if(!nama){toast('<i class=bi-exclamation-triangle-fill aria-hidden=true></i>','Nama wajib diisi.','warn');return;}const p={nama,jabatan:getInp('tim-jabatan')};try{if(editingId.tim){p.id=editingId.tim;await apiPost('updateTimPMB',p);const t=TIM_PMB.find(x=>x.id===editingId.tim);if(t)Object.assign(t,p);}else{const res=await apiPost('addTimPMB',p);p.id=res?.id;if(!p.id)throw new Error('ID tim tidak diterima dari server.');TIM_PMB.push(p);}closeModal('modal-tim');populateUserSelect();updatePgLists();populateAllSelects();toast('<i class=bi-check-circle-fill aria-hidden=true></i> Tim PMB Tersimpan','');}catch(e){toast('<i class=bi-x-circle-fill aria-hidden=true></i> Gagal',e.message,'err');}}
-async function delTim(id){if(!(await confirmAction({title:'Hapus anggota tim?',message:'Anggota tim ini akan dihapus dari daftar.',confirmText:'Hapus',danger:true})))return;try{await apiPost('deleteTimPMB',{id});TIM_PMB=TIM_PMB.filter(x=>x.id!==id);populateUserSelect();updatePgLists();populateAllSelects();}catch(e){toast('<i class=bi-x-circle-fill aria-hidden=true></i> Gagal',e.message,'err');}}
-function openKoordModal(id){editingId.koord=id||null;const k=id?KOORDINATOR.find(x=>x.id===id):null;setInp('koord-nama',k?.nama||'');setInp('koord-wilayah',k?.wilayah||'');setInp('koord-hp',k?.telepon||'');openModal('modal-koord');}
-async function saveKoord(){const nama=getInp('koord-nama');if(!nama){toast('<i class=bi-exclamation-triangle-fill aria-hidden=true></i>','Nama wajib diisi.','warn');return;}const p={nama,wilayah:getInp('koord-wilayah'),telepon:getInp('koord-hp')};try{if(editingId.koord){p.id=editingId.koord;await apiPost('updateKoordinator',p);const k=KOORDINATOR.find(x=>x.id===editingId.koord);if(k)Object.assign(k,p);}else{const res=await apiPost('addKoordinator',p);p.id=res?.id;if(!p.id)throw new Error('ID koordinator tidak diterima dari server.');KOORDINATOR.push(p);}closeModal('modal-koord');updatePgLists();populateAllSelects();toast('<i class=bi-check-circle-fill aria-hidden=true></i> Koordinator Tersimpan','');}catch(e){toast('<i class=bi-x-circle-fill aria-hidden=true></i> Gagal',e.message,'err');}}
-async function delKoord(id){if(!(await confirmAction({title:'Hapus koordinator?',message:'Koordinator ini akan dihapus dari daftar.',confirmText:'Hapus',danger:true})))return;try{await apiPost('deleteKoordinator',{id});KOORDINATOR=KOORDINATOR.filter(x=>x.id!==id);updatePgLists();populateAllSelects();}catch(e){toast('<i class=bi-x-circle-fill aria-hidden=true></i> Gagal',e.message,'err');}}
+function openTimModal(id){editingId.tim=id||null;const t=id?TIM_PMB.find(x=>x.id===id):null;setEl('modal-tim-title',id?'Edit Anggota Tim':'Tambah Anggota Tim');setInp('tim-nama',t?.nama||'');setInp('tim-jabatan',t?.jabatan||'');openModal('modal-tim');}
+async function saveTim(){mktClearFieldErrors();if(!mktRequireUser())return;const nama=getInp('tim-nama').trim();if(nama.length<2||nama==='-')return mktInvalid('tim-nama','Nama anggota tim wajib diisi dengan benar.');const p={nama,jabatan:getInp('tim-jabatan').trim(),oleh:USER};try{if(editingId.tim){p.id=editingId.tim;await apiPost('updateTimPMB',p);}else{const res=await apiPost('addTimPMB',p);p.id=res?.id;if(!p.id)throw new Error('ID tim tidak diterima dari server.');}editingId.tim=null;closeModal('modal-tim');const init=await apiGet({action:'getMktInit'});TIM_PMB=init.timPMB||TIM_PMB;populateUserSelect();updatePgLists();populateAllSelects();toast('<i class="bi bi-check-circle-fill"></i> Tim PMB Tersimpan','');}catch(e){toast('<i class="bi bi-x-circle-fill"></i> Gagal',e.message,'err');}}
+async function delTim(id){const t=TIM_PMB.find(x=>x.id===id);if(!(await confirmAction({title:'Hapus anggota tim?',message:(t?.nama||id)+' akan dihapus dari master Tim PMB. Data transaksi lama tetap menyimpan nama tersebut.',confirmText:'Hapus',danger:true})))return;if(!mktRequireUser())return;try{await apiPost('deleteTimPMB',{id,oleh:USER});TIM_PMB=TIM_PMB.filter(x=>x.id!==id);populateUserSelect();updatePgLists();populateAllSelects();toast('<i class="bi bi-trash3-fill"></i> Anggota Tim Dihapus','');}catch(e){toast('<i class="bi bi-x-circle-fill"></i> Gagal',e.message,'err');}}
+function openKoordModal(id){editingId.koord=id||null;const k=id?KOORDINATOR.find(x=>x.id===id):null;setEl('modal-koord-title',id?'Edit Koordinator':'Tambah Koordinator');setInp('koord-nama',k?.nama||'');setInp('koord-wilayah',k?.wilayah||'');setInp('koord-hp',k?.telepon||'');openModal('modal-koord');}
+async function saveKoord(){mktClearFieldErrors();if(!mktRequireUser())return;const nama=getInp('koord-nama').trim();if(nama.length<2||nama==='-')return mktInvalid('koord-nama','Nama koordinator wajib diisi dengan benar.');const raw=getInp('koord-hp').trim();const hp=raw?mktNormalizePhone(raw):'';if(hp&&!/^0\d{9,14}$/.test(hp))return mktInvalid('koord-hp','Nomor HP harus 10–15 digit.');const p={nama,wilayah:getInp('koord-wilayah').trim(),telepon:hp,oleh:USER};try{if(editingId.koord){p.id=editingId.koord;await apiPost('updateKoordinator',p);}else{const res=await apiPost('addKoordinator',p);p.id=res?.id;if(!p.id)throw new Error('ID koordinator tidak diterima dari server.');}editingId.koord=null;closeModal('modal-koord');const init=await apiGet({action:'getMktInit'});KOORDINATOR=init.koordinator||KOORDINATOR;updatePgLists();populateAllSelects();toast('<i class="bi bi-check-circle-fill"></i> Koordinator Tersimpan','');}catch(e){toast('<i class="bi bi-x-circle-fill"></i> Gagal',e.message,'err');}}
+async function delKoord(id){const k=KOORDINATOR.find(x=>x.id===id);if(!(await confirmAction({title:'Hapus koordinator?',message:(k?.nama||id)+' akan dihapus dari master Koordinator. Data transaksi lama tetap menyimpan nama tersebut.',confirmText:'Hapus',danger:true})))return;if(!mktRequireUser())return;try{await apiPost('deleteKoordinator',{id,oleh:USER});KOORDINATOR=KOORDINATOR.filter(x=>x.id!==id);updatePgLists();populateAllSelects();toast('<i class="bi bi-trash3-fill"></i> Koordinator Dihapus','');}catch(e){toast('<i class="bi bi-x-circle-fill"></i> Gagal',e.message,'err');}}
 
 // ── Populate selects ──────────────────────────────────────────────
 function populateAllSelects(){
@@ -2132,7 +2372,7 @@ async function loadMktRingkasanAuto(btn){
     totalClosing+=Number(lap.closingBaru)||0;
   });
 
-  // Tidak ada fallback dari data operasional: laporan resmi wajib melalui submit.
+  // Laporan resmi hanya berasal dari data yang sudah disubmit.
 
   // Konversi
   var konversi=totalLead>0?Math.round(totalClosing/totalLead*100):0;
@@ -2224,12 +2464,131 @@ function setEl(id,v){const e=document.getElementById(id);if(e)e.textContent=v;}
 function setInp(id,v){const e=document.getElementById(id);if(e)e.value=v;}
 function getInp(id){return document.getElementById(id)?.value||'';}
 function getSel(id){return document.getElementById(id)?.value||'';}
+function mktNormalizePhone(v){let n=String(v||'').replace(/\D/g,'');if(n.startsWith('62'))n='0'+n.slice(2);else if(n.startsWith('8'))n='0'+n;return n;}
+function mktRequireUser(){if(!USER||USER==='Semua Tim'){toast('<i class="bi bi-person-exclamation"></i> Pilih Pengguna','Pilih nama karyawan yang sedang menginput data.','warn');return false;}return true;}
+function mktClearFieldErrors(){document.querySelectorAll('.field-error').forEach(e=>e.classList.remove('field-error'));}
+function mktInvalid(id,message){const e=document.getElementById(id);if(e){e.classList.add('field-error');e.focus();}toast('<i class="bi bi-exclamation-triangle-fill"></i> Periksa Input',message,'warn');return false;}
+function refreshMarketingHistoryIfOpen(){const pane=document.querySelector('[data-history-key="'+MARKETING_HISTORY.key+'"] [data-pane="data"]');if(pane&&!pane.hidden&&MARKETING_HISTORY.key&&!MARKETING_HISTORY.editing)return loadMarketingHistory();return Promise.resolve();}
+async function returnToMarketingHistoryIfEditing(){if(!MARKETING_HISTORY.editing||!MARKETING_HISTORY.key)return false;const key=MARKETING_HISTORY.key;MARKETING_HISTORY.editing=false;await switchMarketingDataTab(key,'data',true);return true;}
+
 function popSel(id,opts,selected,placeholder){const el=document.getElementById(id);if(!el)return;let html=placeholder?'<option value="">'+placeholder+'</option>':'';html+=opts.map(o=>'<option value="'+escH(o)+'"'+(o===selected?' selected':'')+'>'+escH(o)+'</option>').join('');el.innerHTML=html;}
 function openModal(id){document.getElementById(id)?.classList.add('open');}
 function closeModal(id){document.getElementById(id)?.classList.remove('open');}
 const SLC={'New Lead':'pill-new','Dihubungi':'pill-dihubungi','Tertarik':'pill-tertarik','Negosiasi':'pill-negosiasi','Closing':'pill-closing','Gagal':'pill-gagal'};
 const SCC={'Pendaftaran':'pill-pendaftaran','Daftar Ulang':'pill-daftar-ulang','Validasi Data':'pill-validasi','Proses PDDikti':'pill-pddikti','Aktif PDDikti':'pill-aktif-pddikti','Lulus':'pill-lulus','Lunas':'pill-lunas','Cetak Berkas':'pill-cetak','Terkirim':'pill-terkirim'};
 function sLC(s){return SLC[s]||'pill-new';}function sCC(s){return SCC[s]||'pill-pendaftaran';}
+
+const APP_HISTORY_CONFIG={
+ 'mkt-lead':{page:'page-lead',workLabel:'Input & Kelola',title:'Data Lead Tersimpan',deleteLabel:'Hapus Lead',cols:[{key:'id',label:'ID'},{key:'nama_lengkap',label:'Nama'},{key:'no_hp',label:'No. HP'},{key:'program_minat',label:'Program'},{key:'status',label:'Status'},{key:'pic',label:'PIC'},{key:'tanggal_masuk',label:'Tanggal'}]},
+ 'mkt-followup':{page:'page-followup',workLabel:'Follow Up Aktif',title:'Data Follow Up Tersimpan',deleteLabel:'Hapus Lead',cols:[{key:'id',label:'ID'},{key:'nama_lengkap',label:'Nama'},{key:'no_hp',label:'No. HP'},{key:'status',label:'Status Terakhir'},{key:'catatan',label:'Catatan FU'},{key:'pic',label:'PIC'},{key:'tanggal_update',label:'Tanggal FU'}]},
+ 'mkt-closing':{page:'page-closing',workLabel:'Input & Kelola',title:'Data Closing Tersimpan',deleteLabel:'Hapus Closing',cols:[{key:'id',label:'ID'},{key:'nama_lengkap',label:'Nama'},{key:'program',label:'Program'},{key:'perguruan_tinggi',label:'Kampus'},{key:'status',label:'Status'},{key:'pic',label:'PIC'},{key:'tanggal_closing',label:'Tanggal'}]},
+ 'mkt-iklan':{page:'page-iklan',workLabel:'Input & Kelola',title:'Data Iklan Tersimpan',deleteLabel:'Hapus Iklan',cols:[{key:'id',label:'ID'},{key:'nama_kampanye',label:'Kampanye'},{key:'platform',label:'Platform'},{key:'status',label:'Status'},{key:'belanja_aktual',label:'Belanja',type:'money'},{key:'lead_masuk',label:'Lead'},{key:'closing_dari_iklan',label:'Closing'},{key:'tanggal_mulai',label:'Mulai'}]},
+ 'mkt-tugas':{page:'page-tugas',workLabel:'Papan Tugas',title:'Data Tugas Tersimpan',deleteLabel:'Hapus Tugas',cols:[{key:'id',label:'ID'},{key:'judul',label:'Tugas'},{key:'pic',label:'PIC'},{key:'prioritas',label:'Prioritas'},{key:'status',label:'Status'},{key:'deadline',label:'Deadline'}]},
+ 'mkt-laporan':{page:'page-laporan',workLabel:'Input & Ringkasan',title:'Data Laporan Tersimpan',deleteLabel:'Hapus Laporan',cols:[{key:'id',label:'ID'},{key:'tanggal',label:'Tanggal'},{key:'status',label:'Status'},{key:'diisi_oleh',label:'Diisi Oleh'},{key:'leadBaru',label:'Lead'},{key:'fuCount',label:'FU'},{key:'closingBaru',label:'Closing'}]}
+};
+const MARKETING_HISTORY_STATES={};
+function marketingHistorySlug(key){return String(key||'').replace(/^mkt-/,'');}
+function saveMarketingHistoryState(){
+  if(!MARKETING_HISTORY.key)return;
+  MARKETING_HISTORY_STATES[MARKETING_HISTORY.key]={page:MARKETING_HISTORY.page,search:MARKETING_HISTORY.search,from:MARKETING_HISTORY.from,to:MARKETING_HISTORY.to,sort:MARKETING_HISTORY.sort};
+}
+function getMarketingDataShell(){
+  let shell=document.getElementById('marketing-inline-data-shell');
+  if(shell)return shell;
+  shell=document.createElement('div');shell.id='marketing-inline-data-shell';shell.className='embedded-data-shell';
+  shell.innerHTML=`<div class="embedded-data-head"><div><div class="embedded-data-title" id="mh-title">Data Tersimpan</div><div class="embedded-data-sub" id="mh-sub">Maksimal 15 data per halaman agar aplikasi tetap ringan.</div></div><button class="btn sm" onclick="loadMarketingHistory()"><i class="bi bi-arrow-repeat"></i> Muat ulang</button></div>
+  <div class="mh-filter-card"><div class="mh-filters">
+    <div class="mh-field"><label>Pencarian</label><input class="mh-input" id="mh-search" placeholder="Cari nama, ID, nomor HP, status..." onkeydown="if(event.key==='Enter')applyMarketingHistoryFilters()"></div>
+    <div class="mh-field"><label>Dari tanggal</label><input type="date" class="mh-input" id="mh-from"></div>
+    <div class="mh-field"><label>Sampai tanggal</label><input type="date" class="mh-input" id="mh-to"></div>
+    <div class="mh-field"><label>Urutkan</label><select class="mh-input" id="mh-sort"><option value="newest">Terbaru</option><option value="oldest">Terlama</option><option value="amount_desc">Nilai terbesar</option><option value="amount_asc">Nilai terkecil</option></select></div>
+    <button class="btn" onclick="resetMarketingHistoryFilters()"><i class="bi bi-arrow-counterclockwise"></i> Reset</button>
+    <button class="btn primary" onclick="applyMarketingHistoryFilters()"><i class="bi bi-search"></i> Tampilkan</button>
+  </div></div>
+  <div class="mh-stats"><div class="mh-stat"><div class="mh-stat-lbl">Total data</div><div class="mh-stat-val" id="mh-total">0</div></div><div class="mh-stat"><div class="mh-stat-lbl">Halaman ini</div><div class="mh-stat-val" id="mh-shown">0</div></div><div class="mh-stat"><div class="mh-stat-lbl">Data mirip</div><div class="mh-stat-val warn" id="mh-duplicates">0</div></div></div>
+  <div class="mh-shell"><div class="mh-table-wrap" id="mh-body"><div class="mh-empty"><i class="bi bi-arrow-repeat spin"></i><br>Memuat data...</div></div><div class="mh-pagination"><div class="mh-page-info" id="mh-page-info">Data 0–0 dari 0</div><div class="mh-page-buttons"><button class="mh-page-btn" id="mh-prev" onclick="changeMarketingHistoryPage(-1)" aria-label="Sebelumnya"><i class="bi bi-chevron-left"></i></button><button class="mh-page-btn" id="mh-next" onclick="changeMarketingHistoryPage(1)" aria-label="Berikutnya"><i class="bi bi-chevron-right"></i></button></div></div></div>
+  <div class="mh-delete-note"><i class="bi bi-info-circle"></i> Edit memperbarui data pada ID yang sama. Hapus menghilangkan data dari database setelah konfirmasi.</div>`;
+  return shell;
+}
+function installMarketingDataTabs(){
+  Object.entries(APP_HISTORY_CONFIG).forEach(([key,cfg])=>{
+    const page=document.getElementById(cfg.page);if(!page||page.dataset.tabsInstalled==='1')return;
+    const oldChildren=[...page.children];
+    const slug=marketingHistorySlug(key);
+    const tabs=document.createElement('div');tabs.className='data-workspace-tabs';tabs.dataset.historyKey=key;tabs.setAttribute('role','tablist');
+    tabs.innerHTML='<button class="data-workspace-tab active" data-mode="work" role="tab" aria-selected="true" onclick="switchMarketingDataTab(\''+key+'\',\'work\')"><i class="bi bi-pencil-square"></i> '+escH(cfg.workLabel||'Input & Kelola')+'</button><button class="data-workspace-tab" data-mode="data" role="tab" aria-selected="false" onclick="switchMarketingDataTab(\''+key+'\',\'data\')"><i class="bi bi-database-fill"></i> Data Tersimpan</button>';
+    const work=document.createElement('div');work.className='data-workspace-pane';work.id='mkt-work-'+slug;work.dataset.pane='work';
+    oldChildren.forEach(ch=>work.appendChild(ch));
+    const data=document.createElement('div');data.className='data-workspace-pane';data.id='mkt-data-'+slug;data.dataset.pane='data';data.hidden=true;data.innerHTML='<div class="data-pane-placeholder"><i class="bi bi-database"></i><br>Data tersimpan akan dimuat saat tab dibuka.</div>';
+    page.append(tabs,work,data);page.dataset.tabsInstalled='1';page.dataset.historyKey=key;
+  });
+}
+function switchMarketingDataTab(key,mode,keepState){
+  const cfg=APP_HISTORY_CONFIG[key],page=cfg&&document.getElementById(cfg.page);if(!page)return;
+  page.querySelectorAll('.data-workspace-tab').forEach(btn=>{const active=btn.dataset.mode===mode;btn.classList.toggle('active',active);btn.setAttribute('aria-selected',active?'true':'false');});
+  const work=page.querySelector('[data-pane="work"]'),data=page.querySelector('[data-pane="data"]');if(work)work.hidden=mode!=='work';if(data)data.hidden=mode!=='data';
+  if(mode==='data')return openHistoryInline(key,!!keepState);
+  return Promise.resolve();
+}
+function historyValue(row,col){const raw=row[col.key];if(col.type==='money')return formatRp(Number(raw)||0);return raw===null||raw===undefined||raw===''?'—':String(raw);}
+function openHistoryInline(key,keepState){
+  const cfg=APP_HISTORY_CONFIG[key];if(!cfg)return;
+  saveMarketingHistoryState();
+  const target=document.querySelector('#'+cfg.page+' [data-pane="data"]');if(!target)return;
+  const shell=getMarketingDataShell();target.innerHTML='';target.appendChild(shell);
+  const saved=MARKETING_HISTORY_STATES[key]||{};
+  Object.assign(MARKETING_HISTORY,{key,page:keepState?(MARKETING_HISTORY.page||1):(saved.page||1),search:keepState?(MARKETING_HISTORY.search||''):(saved.search||''),from:keepState?(MARKETING_HISTORY.from||''):(saved.from||''),to:keepState?(MARKETING_HISTORY.to||''):(saved.to||''),sort:keepState?(MARKETING_HISTORY.sort||'newest'):(saved.sort||'newest')});
+  setInp('mh-search',MARKETING_HISTORY.search);setInp('mh-from',MARKETING_HISTORY.from);setInp('mh-to',MARKETING_HISTORY.to);const sort=document.getElementById('mh-sort');if(sort)sort.value=MARKETING_HISTORY.sort||'newest';
+  setEl('mh-title',cfg.title);setEl('mh-sub','Maksimal 15 data per halaman · Edit dan Hapus tersedia pada setiap data.');return loadMarketingHistory();
+}
+function resetMarketingHistoryFilters(){setInp('mh-search','');setInp('mh-from','');setInp('mh-to','');const sort=document.getElementById('mh-sort');if(sort)sort.value='newest';Object.assign(MARKETING_HISTORY,{search:'',from:'',to:'',sort:'newest',page:1});saveMarketingHistoryState();loadMarketingHistory();}
+function applyMarketingHistoryFilters(){
+  MARKETING_HISTORY.search=getInp('mh-search').trim();MARKETING_HISTORY.from=getInp('mh-from');MARKETING_HISTORY.to=getInp('mh-to');MARKETING_HISTORY.sort=getSel('mh-sort')||'newest';
+  if(MARKETING_HISTORY.from&&MARKETING_HISTORY.to&&MARKETING_HISTORY.from>MARKETING_HISTORY.to){toast('<i class="bi bi-exclamation-triangle-fill"></i> Filter Tanggal','Tanggal awal tidak boleh setelah tanggal akhir.','warn');return;}
+  MARKETING_HISTORY.page=1;saveMarketingHistoryState();loadMarketingHistory();
+}
+async function loadMarketingHistory(){
+  const cfg=APP_HISTORY_CONFIG[MARKETING_HISTORY.key];if(!cfg)return;const body=document.getElementById('mh-body');if(body)body.innerHTML='<div class="mh-empty"><i class="bi bi-arrow-repeat spin"></i><br>Memuat data...</div>';
+  try{
+    const data=await apiGet({action:'getHistory',key:MARKETING_HISTORY.key,page:MARKETING_HISTORY.page,search:MARKETING_HISTORY.search,from:MARKETING_HISTORY.from,to:MARKETING_HISTORY.to,sort:MARKETING_HISTORY.sort});
+    // Jaring pengaman v5: kalau backend BELUM di-deploy ulang (masih versi lama yang
+    // mengirim seluruh baris tanpa dipotong), paksa tetap 15/halaman di sisi browser.
+    const rawRows=Array.isArray(data?.rows)?data.rows:[];
+    const pageSize=15;
+    const backendPaginated=Number(data?.totalPages)>0 && rawRows.length<=pageSize;
+    if(backendPaginated){
+      Object.assign(MARKETING_HISTORY,{rows:rawRows,total:data?.total||0,totalPages:data?.totalPages||1,page:data?.page||1,pageSize:data?.pageSize||pageSize,start:data?.start||0,end:data?.end||0,duplicates:data?.duplicates||0});
+    }else{
+      const totalPages=Math.max(1,Math.ceil(rawRows.length/pageSize));
+      const page=Math.min(Math.max(1,MARKETING_HISTORY.page||1),totalPages);
+      const offset=(page-1)*pageSize;
+      Object.assign(MARKETING_HISTORY,{rows:rawRows.slice(offset,offset+pageSize),total:rawRows.length,totalPages,page,pageSize,start:rawRows.length?offset+1:0,end:Math.min(offset+pageSize,rawRows.length),duplicates:data?.duplicates||0});
+    }
+    saveMarketingHistoryState();renderMarketingHistory();
+  }
+  catch(e){if(body)body.innerHTML='<div class="mh-empty"><i class="bi bi-exclamation-triangle"></i><br>'+escH(e.message||String(e))+'</div>';}
+}
+function renderMarketingHistory(){
+  const cfg=APP_HISTORY_CONFIG[MARKETING_HISTORY.key];const rows=MARKETING_HISTORY.rows||[];setEl('mh-total',MARKETING_HISTORY.total||0);setEl('mh-shown',rows.length);setEl('mh-duplicates',MARKETING_HISTORY.duplicates||0);setEl('mh-page-info','Data '+(MARKETING_HISTORY.start||0)+'–'+(MARKETING_HISTORY.end||0)+' dari '+(MARKETING_HISTORY.total||0));
+  const prev=document.getElementById('mh-prev'),next=document.getElementById('mh-next');if(prev)prev.disabled=MARKETING_HISTORY.page<=1;if(next)next.disabled=MARKETING_HISTORY.page>=MARKETING_HISTORY.totalPages;const body=document.getElementById('mh-body');if(!body)return;
+  if(!rows.length){body.innerHTML='<div class="mh-empty"><i class="bi bi-inbox"></i><br>Belum ada data yang sesuai filter.</div>';return;}
+  const cols=cfg.cols||[];body.innerHTML='<table class="mh-table"><thead><tr>'+cols.map(c=>'<th>'+escH(c.label)+'</th>').join('')+'<th>Aksi</th></tr></thead><tbody>'+rows.map((r,i)=>'<tr class="'+(r.__duplicate?'is-dup':'')+'">'+cols.map((c,ci)=>'<td data-label="'+escH(c.label)+'">'+escH(historyValue(r,c))+(ci===0&&r.__duplicate?'<span class="mh-badge dup"><i class="bi bi-copy"></i> Mirip</span>':'')+'</td>').join('')+'<td data-label="Aksi"><div class="mh-actions"><button class="btn sm" onclick="editMarketingHistoryRow('+i+')"><i class="bi bi-pencil-square"></i> Edit</button>'+(cfg.noDelete?'':'<button class="btn sm danger" onclick="deleteMarketingHistoryRow('+i+')"><i class="bi bi-trash3"></i> Hapus</button>')+'</div></td></tr>').join('')+'</tbody></table>';
+}
+function changeMarketingHistoryPage(delta){const next=MARKETING_HISTORY.page+delta;if(next<1||next>MARKETING_HISTORY.totalPages)return;MARKETING_HISTORY.page=next;saveMarketingHistoryState();loadMarketingHistory();document.querySelector('#'+APP_HISTORY_CONFIG[MARKETING_HISTORY.key]?.page+' .data-workspace-tabs')?.scrollIntoView({behavior:'smooth',block:'start'});}
+function editMarketingHistoryRow(index){
+  const row=MARKETING_HISTORY.rows[index],key=MARKETING_HISTORY.key,cfg=APP_HISTORY_CONFIG[key];if(!row||!cfg)return;MARKETING_HISTORY.editing=true;
+  if(!document.getElementById(cfg.page)?.classList.contains('active'))navTo(cfg.page);
+  if(key==='mkt-lead')openLeadModal(row.id);else if(key==='mkt-followup')openFuModal(row.id);else if(key==='mkt-closing')openClosingModal(row.id);else if(key==='mkt-iklan')openIklanModal(row.id);else if(key==='mkt-tugas')openTugasModal(row.id);else if(key==='mkt-laporan'){switchMarketingDataTab(key,'work');setInp('lap-input-tgl',row.tanggal);loadLapMktHarian(row.tanggal);document.querySelector('#page-laporan .data-workspace-tabs')?.scrollIntoView({behavior:'smooth',block:'start'});}
+}
+async function deleteMarketingHistoryRow(index){
+  const row=MARKETING_HISTORY.rows[index],cfg=APP_HISTORY_CONFIG[MARKETING_HISTORY.key];if(!row||!cfg||cfg.noDelete)return;if(!mktRequireUser())return;
+  const extra=MARKETING_HISTORY.key==='mkt-followup'?' Menghapus di sini berarti menghapus seluruh data Lead, bukan hanya catatan follow up.':'';const name=row.nama_lengkap||row.nama_kampanye||row.judul||row.tanggal||row.id;
+  if(!(await confirmAction({title:cfg.deleteLabel||'Hapus data?',message:(row.id||'')+' · '+name+' akan dihapus permanen.'+extra,confirmText:'Hapus',danger:true})))return;
+  try{await apiPost('deleteHistoryRecord',{key:MARKETING_HISTORY.key,id:row.id,oleh:USER});await loadAllData();if(MARKETING_HISTORY.page>1&&MARKETING_HISTORY.rows.length===1)MARKETING_HISTORY.page--;saveMarketingHistoryState();await loadMarketingHistory();toast('<i class="bi bi-trash3-fill"></i> Data Dihapus',(row.id||'')+' sudah dihapus dari database.');}
+  catch(e){toast('<i class="bi bi-x-circle-fill"></i> Gagal',e.message,'err');}
+}
+document.addEventListener('DOMContentLoaded',()=>setTimeout(installMarketingDataTabs,80));
+
 </script>
 </body>
 </html>
