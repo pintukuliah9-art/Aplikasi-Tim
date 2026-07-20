@@ -253,19 +253,6 @@ body.dark .hamburger-btn{color:var(--text)}
 @media(max-width:480px){.marketing-summary-grid{grid-template-columns:1fr}.laporan-mini-summary{grid-template-columns:1fr}.laporan-input-actions{display:grid;grid-template-columns:1fr;align-items:stretch;width:100%}.laporan-input-actions>*{width:100%!important;max-width:none!important;min-width:0!important;flex:none!important;transform:none!important;margin:0!important}.laporan-input-actions .filter-select{height:40px;min-height:40px}.laporan-input-actions .btn{width:100%;height:40px;justify-content:center}.laporan-input-actions #lap-input-chip{text-align:center}.report-tab-buttons{display:grid;grid-template-columns:1fr 1fr}.report-tab-buttons .btn{width:100%;justify-content:center}}
 
 
-/* ── Komponen Data Tersimpan Marketing ───────────────────────────── */
-.mh-header{position:sticky;top:55px;z-index:35;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px;margin:-2px 0 14px;background:color-mix(in srgb,var(--surface) 94%,transparent);backdrop-filter:blur(8px);border:1px solid var(--border);border-radius:12px;box-shadow:0 4px 16px rgba(15,23,42,.06)}
-.mh-heading{display:flex;align-items:center;gap:10px;min-width:0}.mh-back{width:36px;height:36px;border:1px solid var(--border);border-radius:9px;background:var(--card);color:var(--text);cursor:pointer;display:grid;place-items:center;flex:0 0 auto}.mh-back:hover{background:var(--surface)}
-.mh-title{font-family:'DM Serif Display',serif;font-size:18px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.mh-sub{font-size:11px;color:var(--muted);margin-top:1px}
-.mh-filter-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px;margin-bottom:12px;box-shadow:0 1px 3px rgba(15,23,42,.04)}
-.mh-filters{display:grid;grid-template-columns:minmax(210px,1.4fr) repeat(2,minmax(140px,.7fr)) minmax(150px,.7fr) auto;gap:9px;align-items:end}.mh-filters.has-pic{grid-template-columns:minmax(210px,1.4fr) repeat(4,minmax(125px,.72fr)) auto auto}.mh-field label{display:block;font-size:9.5px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.55px;margin-bottom:4px}.mh-input{width:100%;border:1px solid var(--border);border-radius:8px;padding:8px 10px;background:var(--card);color:var(--text);font:inherit;outline:none}.mh-input:focus{border-color:var(--purple)}
-.mh-stats{display:grid;grid-template-columns:repeat(3,minmax(130px,1fr));gap:10px;margin-bottom:12px}.mh-stat{background:var(--card);border:1px solid var(--border);border-radius:11px;padding:11px 13px}.mh-stat-lbl{font-size:9.5px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}.mh-stat-val{font-family:'DM Serif Display',serif;font-size:19px;margin-top:2px}.mh-stat-val.warn{color:var(--gold)}
-.mh-shell{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden}.mh-table-wrap{overflow:auto;min-height:240px}.mh-table{width:100%;border-collapse:collapse;font-size:12px}.mh-table th{position:sticky;top:0;z-index:2;background:var(--surface);padding:10px;text-align:left;color:var(--muted);font-size:9px;text-transform:uppercase;letter-spacing:.55px;border-bottom:1px solid var(--border);white-space:nowrap}.mh-table td{padding:10px;border-bottom:1px solid var(--border);vertical-align:top}.mh-table tr:last-child td{border-bottom:0}.mh-table tr:hover td{background:color-mix(in srgb,var(--purple2) 38%,var(--card))}.mh-table tr.is-dup td{background:color-mix(in srgb,var(--gold2) 70%,var(--card))}
-.mh-actions{display:flex;gap:5px;white-space:nowrap}.mh-badge{display:inline-flex;align-items:center;gap:4px;border-radius:999px;padding:2px 7px;font-size:9px;font-weight:800;margin-left:5px}.mh-badge.dup{background:var(--gold2);color:#92400e;border:1px solid #fde68a}.mh-badge.updated{background:var(--blue2);color:#1e40af;border:1px solid #bfdbfe}
-.mh-empty{padding:42px 18px;text-align:center;color:var(--muted)}.mh-pagination{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:11px 13px;border-top:1px solid var(--border);background:var(--surface)}.mh-page-info{font-size:11px;color:var(--muted)}.mh-page-buttons{display:flex;gap:7px}.mh-page-btn{width:36px;height:34px;border:1px solid var(--border);border-radius:8px;background:var(--card);color:var(--text);cursor:pointer}.mh-page-btn:disabled{opacity:.4;cursor:not-allowed}
-.mh-delete-note{font-size:10.5px;color:var(--muted);margin-top:7px}.field-error{border-color:var(--red)!important;box-shadow:0 0 0 2px color-mix(in srgb,var(--red) 12%,transparent)!important}
-@media(max-width:900px){.mh-filters{grid-template-columns:1fr 1fr}.mh-filters>.btn{width:100%;justify-content:center}.mh-stats{grid-template-columns:repeat(3,1fr)}}
-@media(max-width:680px){.mh-header{top:49px;align-items:flex-start}.mh-title{font-size:16px}.mh-filters,.mh-filters.has-pic{grid-template-columns:1fr}.mh-stats{grid-template-columns:1fr 1fr}.mh-stat:last-child{grid-column:1/-1}.mh-table-wrap{overflow:visible;padding:10px}.mh-table,.mh-table tbody,.mh-table tr,.mh-table td{display:block;width:100%}.mh-table thead{display:none}.mh-table tr{border:1px solid var(--border);border-radius:10px;padding:10px 12px;margin-bottom:10px;background:var(--card)}.mh-table td{display:flex;justify-content:space-between;gap:12px;padding:6px 0;border-bottom:1px solid var(--border);text-align:right}.mh-table td:last-child{border-bottom:0}.mh-table td::before{content:attr(data-label);max-width:44%;text-align:left;color:var(--muted);font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.5px}.mh-actions{justify-content:flex-end;flex-wrap:wrap}.mh-pagination{flex-direction:column}.mh-page-buttons{width:100%}.mh-page-btn{flex:1;width:auto}}
 </style>
 
 <style id="premium-redesign-2026">
@@ -363,6 +350,11 @@ body.dark ::selection{color:#fff}
 .sec-body,.pg-sec-body{padding:18px}
 .date-bar{border-radius:var(--r);padding:12px 16px;margin-bottom:18px;border-top:3px solid var(--brand)}
 .toolbar,.kanban-filter{border-radius:var(--r);padding:11px 12px;margin-bottom:16px;gap:8px}
+.lead-date-filter{display:inline-flex;align-items:center;gap:6px;min-height:40px;padding-left:9px;border:1px solid var(--border-strong);border-radius:var(--r-sm);background:var(--card);color:var(--muted);font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.45px;white-space:nowrap}
+.lead-date-filter .filter-select{min-width:132px;height:38px;min-height:38px;border:0;border-left:1px solid var(--border);border-radius:0 var(--r-sm) var(--r-sm) 0;box-shadow:none;background:transparent}
+.lead-date-filter:focus-within{border-color:var(--brand);box-shadow:var(--focus)}
+.lead-date-filter:focus-within .filter-select{border-left-color:color-mix(in srgb,var(--brand) 30%,var(--border))}
+@media(max-width:680px){.lead-date-filter{width:100%;justify-content:space-between}.lead-date-filter .filter-select{flex:1;min-width:0}}
 
 /* Statistik */
 .stat-row{grid-template-columns:repeat(auto-fit,minmax(175px,1fr));gap:13px;margin-bottom:20px}
@@ -512,21 +504,6 @@ table.adm-tbl,table.mkt-tbl,table.gm-tbl{width:100%;border-collapse:separate;bor
 @media(max-width:680px){.history-page-bar{align-items:flex-start;flex-direction:column}.history-page-bar .btn{width:100%;justify-content:center}.history-overlay{padding:8px}.history-panel{max-height:96vh;border-radius:12px}.history-head,.history-tools,.history-body{padding-left:12px;padding-right:12px}.history-table-shell{border:0;overflow:visible}.history-table,.history-table tbody,.history-table tr,.history-table td{display:block;width:100%}.history-table thead{display:none}.history-table tr{border:1px solid var(--border);border-radius:10px;padding:10px 12px;margin-bottom:10px;background:var(--card)}.history-table td{display:flex;justify-content:space-between;gap:12px;padding:6px 0;border-bottom:1px solid var(--border);text-align:right}.history-table td:last-child{border-bottom:0}.history-table td::before{content:attr(data-label);max-width:46%;text-align:left;color:var(--muted);font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.5px}.history-table tr.history-dup{background:var(--gold2)}}
 
 /* ── Tab kerja + Data Tersimpan Marketing ───────────────────────── */
-.data-workspace-tabs{display:flex;align-items:center;gap:6px;margin-bottom:14px;padding:5px;border:1px solid var(--border);border-radius:12px;background:var(--surface);width:max-content;max-width:100%;box-shadow:0 1px 2px rgba(15,23,42,.04)}
-.data-workspace-tab{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:38px;padding:8px 14px;border:0;border-radius:9px;background:transparent;color:var(--muted);font:inherit;font-size:12.5px;font-weight:750;cursor:pointer;white-space:nowrap;transition:.16s ease}
-.data-workspace-tab:hover{color:var(--text);background:var(--card)}
-.data-workspace-tab.active{color:var(--purple);background:var(--card);box-shadow:0 1px 4px rgba(15,23,42,.10)}
-.data-workspace-pane[hidden]{display:none!important}
-.embedded-data-shell{display:block}
-.embedded-data-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px;padding:14px 16px;border:1px solid var(--border);border-radius:12px;background:var(--card);box-shadow:0 1px 3px rgba(15,23,42,.05)}
-.embedded-data-title{font-size:15px;font-weight:800;color:var(--text)}
-.embedded-data-sub{font-size:11.5px;color:var(--muted);margin-top:3px}
-.embedded-data-shell .mh-filter-card{margin-bottom:10px}
-.embedded-data-shell .mh-filters{grid-template-columns:minmax(220px,1.4fr) repeat(2,minmax(140px,.7fr)) minmax(145px,.7fr) auto auto}
-.embedded-data-shell .mh-stats{margin-bottom:10px}
-.data-pane-placeholder{padding:32px;text-align:center;color:var(--muted);border:1px dashed var(--border);border-radius:12px;background:var(--surface)}
-@media(max-width:1100px){.embedded-data-shell .mh-filters{grid-template-columns:repeat(3,minmax(0,1fr))}.embedded-data-shell .mh-filters>.btn{width:100%;justify-content:center}}
-@media(max-width:680px){.data-workspace-tabs{display:grid;grid-template-columns:1fr 1fr;width:100%}.data-workspace-tab{width:100%;padding:8px 10px}.embedded-data-head{align-items:flex-start;flex-direction:column}.embedded-data-head .btn{width:100%;justify-content:center}.embedded-data-shell .mh-filters{grid-template-columns:1fr}}
 
 </style>
 
@@ -827,6 +804,12 @@ body.dark ::selection{color:#fff}
     <select class="filter-select" id="lead-f-sumber" onchange="filterLead()"><option value="">Semua Sumber</option></select>
     <select class="filter-select" id="lead-f-prodi"  onchange="filterLead()"><option value="">Semua Prodi</option></select>
     <select class="filter-select" id="lead-f-kampus" onchange="filterLead()"><option value="">Semua Kampus</option></select>
+    <label class="lead-date-filter"><span>Dari</span><input class="filter-select" type="date" id="lead-f-from" aria-label="Dari tanggal masuk" onchange="filterLead()"></label>
+    <label class="lead-date-filter"><span>Sampai</span><input class="filter-select" type="date" id="lead-f-to" aria-label="Sampai tanggal masuk" onchange="filterLead()"></label>
+    <select class="filter-select" id="lead-f-sort" onchange="filterLead()" aria-label="Urutkan Data Lead">
+      <option value="newest">Terbaru</option><option value="oldest">Terlama</option><option value="name_asc">Nama A–Z</option><option value="name_desc">Nama Z–A</option>
+    </select>
+    <button class="btn sm" type="button" onclick="resetLeadFilters()"><i class="bi bi-arrow-counterclockwise"></i> Reset</button>
     <span style="font-size:12px;color:var(--muted)" id="lead-count"></span>
     <button class="btn primary" onclick="openLeadModal()"><i class=bi-plus-lg aria-hidden=true></i> Tambah Lead</button>
   </div>
@@ -1597,7 +1580,7 @@ async function loadAllData(){
   }catch(e){/* backend lama → fallback ke request terpisah di bawah */}
   try{const data=await apiGet({action:'getMktInit'});if(data){TIM_PMB=(data.timPMB||[]).filter(t=>t.aktif!==false);KOORDINATOR=(data.koordinator||[]).filter(k=>k.aktif!==false);if(data.pengaturan)PENGATURAN={...PENGATURAN,...data.pengaturan};populateUserSelect();populateAllSelects();}}catch(e){}
   await Promise.all([loadLeads(),loadClosing(),loadIklan(),loadTugas()]);
-  populateAllSelects(); // pastikan filter PIC memuat PIC dari data Lead serta master tim
+  populateAllSelects(); // filter PIC Lead hanya memuat PIC yang sudah ada pada data MktLead
   // Re-render semua halaman setelah data lengkap
   renderDashboard();
   renderLeads();
@@ -1610,6 +1593,7 @@ async function loadLeads(){
     const d=await apiGet({action:'getMktLead'});
     ALL_LEADS=d&&Array.isArray(d.leads)?d.leads:Array.isArray(d)?d:[];
   }catch(e){console.warn('loadLeads:',e.message);return;} // gagal jaringan → pertahankan data yang sudah tampil
+  refreshLeadPicFilter();
   renderLeads();renderFollowUp();updateBadges();
 }
 async function loadClosing(){
@@ -1680,16 +1664,43 @@ function getLeadsFiltered(){
   const smb=  document.getElementById('lead-f-sumber')?.value||'';
   const prodi= document.getElementById('lead-f-prodi')?.value||'';
   const kampus=document.getElementById('lead-f-kampus')?.value||'';
-  return ALL_LEADS.filter(l=>
-    (!q     || [l.nama_lengkap,l.no_hp,l.program_minat,l.prodi,l.kampus].some(v=>String(v||'').toLowerCase().includes(q))) &&
-    (!stat  || l.status===stat) &&
-    (!pic   || l.pic===pic) &&
-    (!smb   || l.sumber_lead===smb) &&
-    (!prodi || l.prodi===prodi) &&
-    (!kampus|| l.kampus===kampus)
-  );
+  const from= document.getElementById('lead-f-from')?.value||'';
+  const to=   document.getElementById('lead-f-to')?.value||'';
+  const sort= document.getElementById('lead-f-sort')?.value||'newest';
+  const list=ALL_LEADS.filter(l=>{
+    const t=String(l.tanggal_masuk||'');
+    return (!q     || [l.nama_lengkap,l.no_hp,l.program_minat,l.prodi,l.kampus,l.sumber_lead,l.status,l.pic].some(v=>String(v||'').toLowerCase().includes(q))) &&
+      (!stat  || l.status===stat) &&
+      (!pic   || l.pic===pic) &&
+      (!smb   || l.sumber_lead===smb) &&
+      (!prodi || l.prodi===prodi) &&
+      (!kampus|| l.kampus===kampus) &&
+      (!from  || t>=from) &&
+      (!to    || t<=to);
+  });
+  return list.sort((a,b)=>{
+    if(sort==='oldest')return String(a.tanggal_masuk||'').localeCompare(String(b.tanggal_masuk||''))||String(a.id||'').localeCompare(String(b.id||''));
+    if(sort==='name_asc')return String(a.nama_lengkap||'').localeCompare(String(b.nama_lengkap||''),'id',{sensitivity:'base'});
+    if(sort==='name_desc')return String(b.nama_lengkap||'').localeCompare(String(a.nama_lengkap||''),'id',{sensitivity:'base'});
+    return String(b.tanggal_masuk||'').localeCompare(String(a.tanggal_masuk||''))||String(b.id||'').localeCompare(String(a.id||''));
+  });
 }
-function filterLead(){renderLeads(getLeadsFiltered());}
+function filterLead(){
+  const from=document.getElementById('lead-f-from')?.value||'',to=document.getElementById('lead-f-to')?.value||'';
+  const invalid=!!(from&&to&&from>to);
+  document.getElementById('lead-f-from')?.classList.toggle('field-error',invalid);
+  document.getElementById('lead-f-to')?.classList.toggle('field-error',invalid);
+  if(invalid){
+    renderLeads([]);
+    if(!filterLead._dateWarned){toast('<i class="bi bi-exclamation-triangle-fill"></i> Filter Tanggal','Tanggal awal tidak boleh setelah tanggal akhir.','warn');filterLead._dateWarned=true;}
+    return;
+  }
+  filterLead._dateWarned=false;renderLeads(getLeadsFiltered());
+}
+function resetLeadFilters(){
+  ['lead-search','lead-f-status','lead-f-pic','lead-f-sumber','lead-f-prodi','lead-f-kampus','lead-f-from','lead-f-to'].forEach(id=>setInp(id,''));
+  setInp('lead-f-sort','newest');filterLead();
+}
 // Debounce pencarian: render tabel besar hanya setelah pengguna berhenti mengetik (150ms)
 const _DEB={};function debounced(fn,ms){clearTimeout(_DEB[fn.name]);_DEB[fn.name]=setTimeout(fn,ms||150);}
 
@@ -1984,10 +1995,10 @@ async function saveLead(){
   try{
     if(isEdit){p.id=editingId.lead;await apiPost('updateMktLead',p);const idx=ALL_LEADS.findIndex(x=>x.id===editingId.lead);if(idx>=0)ALL_LEADS[idx]={...ALL_LEADS[idx],...p};}
     else{const res=await apiPost('addMktLead',p);p.id=res?.id;if(!p.id)throw new Error('ID lead tidak diterima dari server.');ALL_LEADS.unshift(p);}
-    editingId.lead=null;closeModal('modal-lead');renderLeads();renderFollowUp();renderDashboard();updateBadges();await refreshMarketingHistoryIfOpen();await returnToMarketingHistoryIfEditing();toast('<i class="bi bi-check-circle-fill"></i> Lead Tersimpan','Data '+nama+' berhasil '+(isEdit?'diperbarui':'ditambahkan')+'.');
+    editingId.lead=null;closeModal('modal-lead');refreshLeadPicFilter();renderLeads();renderFollowUp();renderDashboard();updateBadges();await refreshMarketingHistoryIfOpen();await returnToMarketingHistoryIfEditing();toast('<i class="bi bi-check-circle-fill"></i> Lead Tersimpan','Data '+nama+' berhasil '+(isEdit?'diperbarui':'ditambahkan')+'.');
   }catch(e){toast('<i class="bi bi-x-circle-fill"></i> Gagal',e.message,'err');}
 }
-async function delLead(id){const l=ALL_LEADS.find(x=>x.id===id);if(!(await confirmAction({title:'Hapus lead?',message:'Lead '+(l?.nama_lengkap||id)+' akan dihapus permanen. Data closing yang sudah dibuat tidak ikut terhapus.',confirmText:'Hapus',danger:true})))return;try{if(!mktRequireUser())return;await apiPost('deleteMktLead',{id,oleh:USER});ALL_LEADS=ALL_LEADS.filter(x=>x.id!==id);renderLeads();renderFollowUp();renderDashboard();updateBadges();await refreshMarketingHistoryIfOpen();toast('<i class="bi bi-trash3-fill"></i> Lead Dihapus','');}catch(e){toast('<i class="bi bi-x-circle-fill"></i> Gagal',e.message,'err');}}
+async function delLead(id){const l=ALL_LEADS.find(x=>x.id===id);if(!(await confirmAction({title:'Hapus lead?',message:'Lead '+(l?.nama_lengkap||id)+' akan dihapus permanen. Data closing yang sudah dibuat tidak ikut terhapus.',confirmText:'Hapus',danger:true})))return;try{if(!mktRequireUser())return;await apiPost('deleteMktLead',{id,oleh:USER});ALL_LEADS=ALL_LEADS.filter(x=>x.id!==id);refreshLeadPicFilter();renderLeads();renderFollowUp();renderDashboard();updateBadges();await refreshMarketingHistoryIfOpen();toast('<i class="bi bi-trash3-fill"></i> Lead Dihapus','');}catch(e){toast('<i class="bi bi-x-circle-fill"></i> Gagal',e.message,'err');}}
 
 // ── MODAL: Follow Up ──────────────────────────────────────────────
 function openFuModal(id){fuLeadId=id;const l=ALL_LEADS.find(x=>x.id===id);if(!l)return;setEl('fu-modal-nama',l.nama_lengkap+' · '+(l.no_hp||'')+(l.prodi?' · '+l.prodi:'')+(l.kampus?' — '+l.kampus:''));popSel('fu-status',PENGATURAN.statusLead,l.status);setInp('fu-tanggal',l.tanggal_update||todayStr());setInp('fu-catatan',l.catatan||'');document.getElementById('fu-closing-info').style.display=l.status==='Closing'?'block':'none';openModal('modal-fu');}
@@ -2206,13 +2217,25 @@ async function saveKoord(){mktClearFieldErrors();if(!mktRequireUser())return;con
 async function delKoord(id){const k=KOORDINATOR.find(x=>x.id===id);if(!(await confirmAction({title:'Hapus koordinator?',message:(k?.nama||id)+' akan dihapus dari master Koordinator. Data transaksi lama tetap menyimpan nama tersebut.',confirmText:'Hapus',danger:true})))return;if(!mktRequireUser())return;try{await apiPost('deleteKoordinator',{id,oleh:USER});KOORDINATOR=KOORDINATOR.filter(x=>x.id!==id);updatePgLists();populateAllSelects();toast('<i class="bi bi-trash3-fill"></i> Koordinator Dihapus','');}catch(e){toast('<i class="bi bi-x-circle-fill"></i> Gagal',e.message,'err');}}
 
 // ── Populate selects ──────────────────────────────────────────────
+function getLeadPicFilterOptions(){
+  return [...new Set((ALL_LEADS||[])
+    .map(l=>String(l?.pic||'').trim())
+    .filter(Boolean))]
+    .sort((a,b)=>a.localeCompare(b,'id'));
+}
+function refreshLeadPicFilter(){
+  const el=document.getElementById('lead-f-pic');
+  const current=el?.value||'';
+  const options=getLeadPicFilterOptions();
+  popSel('lead-f-pic',options,options.includes(current)?current:'','Semua PIC');
+}
 function populateAllSelects(){
   popSel('lead-f-status',PENGATURAN.statusLead,'','Semua Status');popSel('lead-f-sumber',PENGATURAN.sumberLead,'','Semua Sumber');
   popSel('cl-f-status',PENGATURAN.statusClosing,'','Semua Status');
   popSel('cl-f-prog',PENGATURAN.programStudi,'','Semua Program');
   popSel('cl-f-pt', PENGATURAN.perguruanTinggi||PENGATURAN.kampusList||[],'','Semua PT');
+  refreshLeadPicFilter();
   const allPICs=[...new Set([...(ALL_LEADS||[]).map(l=>l.pic),...TIM_PMB.map(t=>t.nama),...KOORDINATOR.map(k=>k.nama)].filter(Boolean))].sort((a,b)=>String(a).localeCompare(String(b),'id'));
-  popSel('lead-f-pic',allPICs,'','Semua PIC');
   popSel('cl-f-pic',  allPICs, '', 'Semua PIC');
   popSel('c-prodi',   PENGATURAN.prodiList||[], '', 'Pilih Prodi...');
   popSel('ik-f-platform',PENGATURAN.platform,'','Semua Platform');
@@ -2506,8 +2529,8 @@ function mktNormalizePhone(v){let n=String(v||'').replace(/\D/g,'');if(n.startsW
 function mktRequireUser(){if(!USER||USER==='Semua Tim'){toast('<i class="bi bi-person-exclamation"></i> Pilih Pengguna','Pilih nama karyawan yang sedang menginput data.','warn');return false;}return true;}
 function mktClearFieldErrors(){document.querySelectorAll('.field-error').forEach(e=>e.classList.remove('field-error'));}
 function mktInvalid(id,message){const e=document.getElementById(id);if(e){e.classList.add('field-error');e.focus();}toast('<i class="bi bi-exclamation-triangle-fill"></i> Periksa Input',message,'warn');return false;}
-function refreshMarketingHistoryIfOpen(){const pane=document.querySelector('[data-history-key="'+MARKETING_HISTORY.key+'"] [data-pane="data"]');if(pane&&!pane.hidden&&MARKETING_HISTORY.key&&!MARKETING_HISTORY.editing)return loadMarketingHistory();return Promise.resolve();}
-async function returnToMarketingHistoryIfEditing(){if(!MARKETING_HISTORY.editing||!MARKETING_HISTORY.key)return false;const key=MARKETING_HISTORY.key;MARKETING_HISTORY.editing=false;await switchMarketingDataTab(key,'data',true);return true;}
+function refreshMarketingHistoryIfOpen(){return Promise.resolve();}
+async function returnToMarketingHistoryIfEditing(){return false;}
 
 function popSel(id,opts,selected,placeholder){const el=document.getElementById(id);if(!el)return;let html=placeholder?'<option value="">'+placeholder+'</option>':'';html+=opts.map(o=>'<option value="'+escH(o)+'"'+(o===selected?' selected':'')+'>'+escH(o)+'</option>').join('');el.innerHTML=html;}
 function openModal(id){document.getElementById(id)?.classList.add('open');}
@@ -2516,119 +2539,8 @@ const SLC={'New Lead':'pill-new','Dihubungi':'pill-dihubungi','Tertarik':'pill-t
 const SCC={'Pendaftaran':'pill-pendaftaran','Daftar Ulang':'pill-daftar-ulang','Validasi Data':'pill-validasi','Proses PDDikti':'pill-pddikti','Aktif PDDikti':'pill-aktif-pddikti','Lulus':'pill-lulus','Lunas':'pill-lunas','Cetak Berkas':'pill-cetak','Terkirim':'pill-terkirim'};
 function sLC(s){return SLC[s]||'pill-new';}function sCC(s){return SCC[s]||'pill-pendaftaran';}
 
-const APP_HISTORY_CONFIG={
- 'mkt-lead':{page:'page-lead',workLabel:'Input & Kelola',title:'Data Lead Tersimpan',deleteLabel:'Hapus Lead',cols:[{key:'id',label:'ID'},{key:'nama_lengkap',label:'Nama'},{key:'no_hp',label:'No. HP'},{key:'program_minat',label:'Program'},{key:'status',label:'Status'},{key:'pic',label:'PIC'},{key:'tanggal_masuk',label:'Tanggal'}]},
- 'mkt-followup':{page:'page-followup',workLabel:'Follow Up Aktif',title:'Data Follow Up Tersimpan',deleteLabel:'Hapus Lead',cols:[{key:'id',label:'ID'},{key:'nama_lengkap',label:'Nama'},{key:'no_hp',label:'No. HP'},{key:'status',label:'Status Terakhir'},{key:'catatan',label:'Catatan FU'},{key:'pic',label:'PIC'},{key:'tanggal_update',label:'Tanggal FU'}]},
- 'mkt-closing':{page:'page-closing',workLabel:'Input & Kelola',title:'Data Closing Tersimpan',deleteLabel:'Hapus Closing',cols:[{key:'id',label:'ID'},{key:'nama_lengkap',label:'Nama'},{key:'program',label:'Program'},{key:'perguruan_tinggi',label:'Kampus'},{key:'status',label:'Status'},{key:'pic',label:'PIC'},{key:'tanggal_closing',label:'Tanggal'}]},
- 'mkt-iklan':{page:'page-iklan',workLabel:'Input & Kelola',title:'Data Iklan Tersimpan',deleteLabel:'Hapus Iklan',cols:[{key:'id',label:'ID'},{key:'nama_kampanye',label:'Kampanye'},{key:'platform',label:'Platform'},{key:'status',label:'Status'},{key:'belanja_aktual',label:'Belanja',type:'money'},{key:'lead_masuk',label:'Lead'},{key:'closing_dari_iklan',label:'Closing'},{key:'tanggal_mulai',label:'Mulai'}]},
- 'mkt-tugas':{page:'page-tugas',workLabel:'Papan Tugas',title:'Data Tugas Tersimpan',deleteLabel:'Hapus Tugas',cols:[{key:'id',label:'ID'},{key:'judul',label:'Tugas'},{key:'pic',label:'PIC'},{key:'prioritas',label:'Prioritas'},{key:'status',label:'Status'},{key:'deadline',label:'Deadline'}]},
- 'mkt-laporan':{page:'page-laporan',workLabel:'Input & Ringkasan',title:'Data Laporan Tersimpan',deleteLabel:'Hapus Laporan',cols:[{key:'id',label:'ID'},{key:'tanggal',label:'Tanggal'},{key:'status',label:'Status'},{key:'diisi_oleh',label:'Diisi Oleh'},{key:'leadBaru',label:'Lead'},{key:'fuCount',label:'FU'},{key:'closingBaru',label:'Closing'}]}
-};
-const MARKETING_HISTORY_STATES={};
-function marketingHistorySlug(key){return String(key||'').replace(/^mkt-/,'');}
-function saveMarketingHistoryState(){
-  if(!MARKETING_HISTORY.key)return;
-  MARKETING_HISTORY_STATES[MARKETING_HISTORY.key]={page:MARKETING_HISTORY.page,search:MARKETING_HISTORY.search,pic:MARKETING_HISTORY.pic,from:MARKETING_HISTORY.from,to:MARKETING_HISTORY.to,sort:MARKETING_HISTORY.sort};
-}
-function getMarketingDataShell(){
-  let shell=document.getElementById('marketing-inline-data-shell');
-  if(shell)return shell;
-  shell=document.createElement('div');shell.id='marketing-inline-data-shell';shell.className='embedded-data-shell';
-  shell.innerHTML=`<div class="embedded-data-head"><div><div class="embedded-data-title" id="mh-title">Data Tersimpan</div><div class="embedded-data-sub" id="mh-sub">Maksimal 15 data per halaman agar aplikasi tetap ringan.</div></div><button class="btn sm" onclick="loadMarketingHistory()"><i class="bi bi-arrow-repeat"></i> Muat ulang</button></div>
-  <div class="mh-filter-card"><div class="mh-filters" id="mh-filters">
-    <div class="mh-field"><label>Pencarian</label><input class="mh-input" id="mh-search" placeholder="Cari nama, ID, nomor HP, status..." onkeydown="if(event.key==='Enter')applyMarketingHistoryFilters()"></div>
-    <div class="mh-field" id="mh-pic-wrap" hidden><label>PIC</label><select class="mh-input" id="mh-pic"><option value="">Semua PIC</option></select></div>
-    <div class="mh-field"><label>Dari tanggal</label><input type="date" class="mh-input" id="mh-from"></div>
-    <div class="mh-field"><label>Sampai tanggal</label><input type="date" class="mh-input" id="mh-to"></div>
-    <div class="mh-field"><label>Urutkan</label><select class="mh-input" id="mh-sort"><option value="newest">Terbaru</option><option value="oldest">Terlama</option><option value="amount_desc">Nilai terbesar</option><option value="amount_asc">Nilai terkecil</option></select></div>
-    <button class="btn" onclick="resetMarketingHistoryFilters()"><i class="bi bi-arrow-counterclockwise"></i> Reset</button>
-    <button class="btn primary" onclick="applyMarketingHistoryFilters()"><i class="bi bi-search"></i> Tampilkan</button>
-  </div></div>
-  <div class="mh-stats"><div class="mh-stat"><div class="mh-stat-lbl">Total data</div><div class="mh-stat-val" id="mh-total">0</div></div><div class="mh-stat"><div class="mh-stat-lbl">Halaman ini</div><div class="mh-stat-val" id="mh-shown">0</div></div><div class="mh-stat"><div class="mh-stat-lbl">Data mirip</div><div class="mh-stat-val warn" id="mh-duplicates">0</div></div></div>
-  <div class="mh-shell"><div class="mh-table-wrap" id="mh-body"><div class="mh-empty"><i class="bi bi-arrow-repeat spin"></i><br>Memuat data...</div></div><div class="mh-pagination"><div class="mh-page-info" id="mh-page-info">Data 0–0 dari 0</div><div class="mh-page-buttons"><button class="mh-page-btn" id="mh-prev" onclick="changeMarketingHistoryPage(-1)" aria-label="Sebelumnya"><i class="bi bi-chevron-left"></i></button><button class="mh-page-btn" id="mh-next" onclick="changeMarketingHistoryPage(1)" aria-label="Berikutnya"><i class="bi bi-chevron-right"></i></button></div></div></div>
-  <div class="mh-delete-note"><i class="bi bi-info-circle"></i> Edit memperbarui data pada ID yang sama. Hapus menghilangkan data dari database setelah konfirmasi.</div>`;
-  return shell;
-}
-function installMarketingDataTabs(){
-  Object.entries(APP_HISTORY_CONFIG).forEach(([key,cfg])=>{
-    const page=document.getElementById(cfg.page);if(!page||page.dataset.tabsInstalled==='1')return;
-    const oldChildren=[...page.children];
-    const slug=marketingHistorySlug(key);
-    const tabs=document.createElement('div');tabs.className='data-workspace-tabs';tabs.dataset.historyKey=key;tabs.setAttribute('role','tablist');
-    tabs.innerHTML='<button class="data-workspace-tab active" data-mode="work" role="tab" aria-selected="true" onclick="switchMarketingDataTab(\''+key+'\',\'work\')"><i class="bi bi-pencil-square"></i> '+escH(cfg.workLabel||'Input & Kelola')+'</button><button class="data-workspace-tab" data-mode="data" role="tab" aria-selected="false" onclick="switchMarketingDataTab(\''+key+'\',\'data\')"><i class="bi bi-database-fill"></i> Data Tersimpan</button>';
-    const work=document.createElement('div');work.className='data-workspace-pane';work.id='mkt-work-'+slug;work.dataset.pane='work';
-    oldChildren.forEach(ch=>work.appendChild(ch));
-    const data=document.createElement('div');data.className='data-workspace-pane';data.id='mkt-data-'+slug;data.dataset.pane='data';data.hidden=true;data.innerHTML='<div class="data-pane-placeholder"><i class="bi bi-database"></i><br>Data tersimpan akan dimuat saat tab dibuka.</div>';
-    page.append(tabs,work,data);page.dataset.tabsInstalled='1';page.dataset.historyKey=key;
-  });
-}
-function switchMarketingDataTab(key,mode,keepState){
-  const cfg=APP_HISTORY_CONFIG[key],page=cfg&&document.getElementById(cfg.page);if(!page)return;
-  page.querySelectorAll('.data-workspace-tab').forEach(btn=>{const active=btn.dataset.mode===mode;btn.classList.toggle('active',active);btn.setAttribute('aria-selected',active?'true':'false');});
-  const work=page.querySelector('[data-pane="work"]'),data=page.querySelector('[data-pane="data"]');if(work)work.hidden=mode!=='work';if(data)data.hidden=mode!=='data';
-  if(mode==='data')return openHistoryInline(key,!!keepState);
-  return Promise.resolve();
-}
-function historyValue(row,col){const raw=row[col.key];if(col.type==='money')return formatRp(Number(raw)||0);return raw===null||raw===undefined||raw===''?'—':String(raw);}
-function openHistoryInline(key,keepState){
-  const cfg=APP_HISTORY_CONFIG[key];if(!cfg)return;
-  saveMarketingHistoryState();
-  const target=document.querySelector('#'+cfg.page+' [data-pane="data"]');if(!target)return;
-  const shell=getMarketingDataShell();target.innerHTML='';target.appendChild(shell);
-  const saved=MARKETING_HISTORY_STATES[key]||{};
-  Object.assign(MARKETING_HISTORY,{key,page:keepState?(MARKETING_HISTORY.page||1):(saved.page||1),search:keepState?(MARKETING_HISTORY.search||''):(saved.search||''),pic:key==='mkt-lead'?(keepState?(MARKETING_HISTORY.pic||''):(saved.pic||'')):'',from:keepState?(MARKETING_HISTORY.from||''):(saved.from||''),to:keepState?(MARKETING_HISTORY.to||''):(saved.to||''),sort:keepState?(MARKETING_HISTORY.sort||'newest'):(saved.sort||'newest')});
-  setInp('mh-search',MARKETING_HISTORY.search);setInp('mh-from',MARKETING_HISTORY.from);setInp('mh-to',MARKETING_HISTORY.to);const sort=document.getElementById('mh-sort');if(sort)sort.value=MARKETING_HISTORY.sort||'newest';
-  const isLeadHistory=key==='mkt-lead';const picWrap=document.getElementById('mh-pic-wrap');if(picWrap)picWrap.hidden=!isLeadHistory;document.getElementById('mh-filters')?.classList.toggle('has-pic',isLeadHistory);
-  if(isLeadHistory){const pics=[...new Set([...(ALL_LEADS||[]).map(l=>l.pic),...TIM_PMB.map(t=>t.nama),...KOORDINATOR.map(k=>k.nama)].filter(Boolean))].sort((a,b)=>String(a).localeCompare(String(b),'id'));popSel('mh-pic',pics,MARKETING_HISTORY.pic,'Semua PIC');}
-  setEl('mh-title',cfg.title);setEl('mh-sub','Maksimal 15 data per halaman · Edit dan Hapus tersedia pada setiap data.');return loadMarketingHistory();
-}
-function resetMarketingHistoryFilters(){setInp('mh-search','');setInp('mh-pic','');setInp('mh-from','');setInp('mh-to','');const sort=document.getElementById('mh-sort');if(sort)sort.value='newest';Object.assign(MARKETING_HISTORY,{search:'',pic:'',from:'',to:'',sort:'newest',page:1});saveMarketingHistoryState();loadMarketingHistory();}
-function applyMarketingHistoryFilters(){
-  MARKETING_HISTORY.search=getInp('mh-search').trim();MARKETING_HISTORY.pic=MARKETING_HISTORY.key==='mkt-lead'?getSel('mh-pic'):'';MARKETING_HISTORY.from=getInp('mh-from');MARKETING_HISTORY.to=getInp('mh-to');MARKETING_HISTORY.sort=getSel('mh-sort')||'newest';
-  if(MARKETING_HISTORY.from&&MARKETING_HISTORY.to&&MARKETING_HISTORY.from>MARKETING_HISTORY.to){toast('<i class="bi bi-exclamation-triangle-fill"></i> Filter Tanggal','Tanggal awal tidak boleh setelah tanggal akhir.','warn');return;}
-  MARKETING_HISTORY.page=1;saveMarketingHistoryState();loadMarketingHistory();
-}
-async function loadMarketingHistory(){
-  const cfg=APP_HISTORY_CONFIG[MARKETING_HISTORY.key];if(!cfg)return;const body=document.getElementById('mh-body');if(body)body.innerHTML='<div class="mh-empty"><i class="bi bi-arrow-repeat spin"></i><br>Memuat data...</div>';
-  try{
-    const data=await apiGet({action:'getHistory',key:MARKETING_HISTORY.key,page:MARKETING_HISTORY.page,search:MARKETING_HISTORY.search,pic:MARKETING_HISTORY.pic,from:MARKETING_HISTORY.from,to:MARKETING_HISTORY.to,sort:MARKETING_HISTORY.sort});
-    // Jaring pengaman v5: kalau backend BELUM di-deploy ulang (masih versi lama yang
-    // mengirim seluruh baris tanpa dipotong), paksa tetap 15/halaman di sisi browser.
-    const rawRows=Array.isArray(data?.rows)?data.rows:[];
-    const pageSize=15;
-    const backendPaginated=Number(data?.totalPages)>0 && rawRows.length<=pageSize;
-    if(backendPaginated){
-      Object.assign(MARKETING_HISTORY,{rows:rawRows,total:data?.total||0,totalPages:data?.totalPages||1,page:data?.page||1,pageSize:data?.pageSize||pageSize,start:data?.start||0,end:data?.end||0,duplicates:data?.duplicates||0});
-    }else{
-      const totalPages=Math.max(1,Math.ceil(rawRows.length/pageSize));
-      const page=Math.min(Math.max(1,MARKETING_HISTORY.page||1),totalPages);
-      const offset=(page-1)*pageSize;
-      Object.assign(MARKETING_HISTORY,{rows:rawRows.slice(offset,offset+pageSize),total:rawRows.length,totalPages,page,pageSize,start:rawRows.length?offset+1:0,end:Math.min(offset+pageSize,rawRows.length),duplicates:data?.duplicates||0});
-    }
-    saveMarketingHistoryState();renderMarketingHistory();
-  }
-  catch(e){if(body)body.innerHTML='<div class="mh-empty"><i class="bi bi-exclamation-triangle"></i><br>'+escH(e.message||String(e))+'</div>';}
-}
-function renderMarketingHistory(){
-  const cfg=APP_HISTORY_CONFIG[MARKETING_HISTORY.key];const rows=MARKETING_HISTORY.rows||[];setEl('mh-total',MARKETING_HISTORY.total||0);setEl('mh-shown',rows.length);setEl('mh-duplicates',MARKETING_HISTORY.duplicates||0);setEl('mh-page-info','Data '+(MARKETING_HISTORY.start||0)+'–'+(MARKETING_HISTORY.end||0)+' dari '+(MARKETING_HISTORY.total||0));
-  const prev=document.getElementById('mh-prev'),next=document.getElementById('mh-next');if(prev)prev.disabled=MARKETING_HISTORY.page<=1;if(next)next.disabled=MARKETING_HISTORY.page>=MARKETING_HISTORY.totalPages;const body=document.getElementById('mh-body');if(!body)return;
-  if(!rows.length){body.innerHTML='<div class="mh-empty"><i class="bi bi-inbox"></i><br>Belum ada data yang sesuai filter.</div>';return;}
-  const cols=cfg.cols||[];body.innerHTML='<table class="mh-table"><thead><tr>'+cols.map(c=>'<th>'+escH(c.label)+'</th>').join('')+'<th>Aksi</th></tr></thead><tbody>'+rows.map((r,i)=>'<tr class="'+(r.__duplicate?'is-dup':'')+'">'+cols.map((c,ci)=>'<td data-label="'+escH(c.label)+'">'+escH(historyValue(r,c))+(ci===0&&r.__duplicate?'<span class="mh-badge dup"><i class="bi bi-copy"></i> Mirip</span>':'')+'</td>').join('')+'<td data-label="Aksi"><div class="mh-actions"><button class="btn sm" onclick="editMarketingHistoryRow('+i+')"><i class="bi bi-pencil-square"></i> Edit</button>'+(cfg.noDelete?'':'<button class="btn sm danger" onclick="deleteMarketingHistoryRow('+i+')"><i class="bi bi-trash3"></i> Hapus</button>')+'</div></td></tr>').join('')+'</tbody></table>';
-}
-function changeMarketingHistoryPage(delta){const next=MARKETING_HISTORY.page+delta;if(next<1||next>MARKETING_HISTORY.totalPages)return;MARKETING_HISTORY.page=next;saveMarketingHistoryState();loadMarketingHistory();document.querySelector('#'+APP_HISTORY_CONFIG[MARKETING_HISTORY.key]?.page+' .data-workspace-tabs')?.scrollIntoView({behavior:'smooth',block:'start'});}
-function editMarketingHistoryRow(index){
-  const row=MARKETING_HISTORY.rows[index],key=MARKETING_HISTORY.key,cfg=APP_HISTORY_CONFIG[key];if(!row||!cfg)return;MARKETING_HISTORY.editing=true;
-  if(!document.getElementById(cfg.page)?.classList.contains('active'))navTo(cfg.page);
-  if(key==='mkt-lead')openLeadModal(row.id);else if(key==='mkt-followup')openFuModal(row.id);else if(key==='mkt-closing')openClosingModal(row.id);else if(key==='mkt-iklan')openIklanModal(row.id);else if(key==='mkt-tugas')openTugasModal(row.id);else if(key==='mkt-laporan'){switchMarketingDataTab(key,'work');setInp('lap-input-tgl',row.tanggal);loadLapMktHarian(row.tanggal);document.querySelector('#page-laporan .data-workspace-tabs')?.scrollIntoView({behavior:'smooth',block:'start'});}
-}
-async function deleteMarketingHistoryRow(index){
-  const row=MARKETING_HISTORY.rows[index],cfg=APP_HISTORY_CONFIG[MARKETING_HISTORY.key];if(!row||!cfg||cfg.noDelete)return;if(!mktRequireUser())return;
-  const extra=MARKETING_HISTORY.key==='mkt-followup'?' Menghapus di sini berarti menghapus seluruh data Lead, bukan hanya catatan follow up.':'';const name=row.nama_lengkap||row.nama_kampanye||row.judul||row.tanggal||row.id;
-  if(!(await confirmAction({title:cfg.deleteLabel||'Hapus data?',message:(row.id||'')+' · '+name+' akan dihapus permanen.'+extra,confirmText:'Hapus',danger:true})))return;
-  try{await apiPost('deleteHistoryRecord',{key:MARKETING_HISTORY.key,id:row.id,oleh:USER});await loadAllData();if(MARKETING_HISTORY.page>1&&MARKETING_HISTORY.rows.length===1)MARKETING_HISTORY.page--;saveMarketingHistoryState();await loadMarketingHistory();toast('<i class="bi bi-trash3-fill"></i> Data Dihapus',(row.id||'')+' sudah dihapus dari database.');}
-  catch(e){toast('<i class="bi bi-x-circle-fill"></i> Gagal',e.message,'err');}
-}
-document.addEventListener('DOMContentLoaded',()=>setTimeout(installMarketingDataTabs,80));
+// Fitur Data Tersimpan terpisah dihapus. Edit dan Hapus tetap tersedia langsung pada tabel masing-masing menu.
+
 
 </script>
 </body>
