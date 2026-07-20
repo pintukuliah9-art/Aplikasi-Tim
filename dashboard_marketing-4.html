@@ -757,7 +757,7 @@ body.dark ::selection{color:#fff}
           <div class="sync-menu-item">Backend: <b id="sync-url">Belum tersambung</b></div>
           <div class="sync-menu-item">Terakhir: <b id="sync-time">—</b></div>
           <button class="sync-btn" onclick="manualRefresh()"><i class=bi-arrow-repeat aria-hidden=true></i> Refresh</button>
-          <button class="sync-btn" onclick="openSetup()"><i class=bi-gear-fill aria-hidden=true></i> Ganti URL</button>
+          <div class="sync-menu-item"><i class="bi bi-lock-fill" aria-hidden="true"></i> URL backend dikunci otomatis</div>
         </div>
       </div>
     </div>
@@ -1361,7 +1361,7 @@ body.dark ::selection{color:#fff}
 </div>
 
 <!-- SETUP OVERLAY -->
-<div class="setup-overlay" id="setup-overlay">
+<div class="setup-overlay hidden" id="setup-overlay" aria-hidden="true">
   <div class="setup-box">
     <div class="setup-title">Dashboard Marketing</div>
     <div class="setup-sub">Masukkan Web App URL dari Google Apps Script untuk menyimpan data ke Google Sheets.</div>
@@ -1378,7 +1378,8 @@ body.dark ::selection{color:#fff}
 <script>
 var _toastT; // hoist ke atas — cegah TDZ
 // ── State ─────────────────────────────────────────────────────────
-let BACKEND='', USER='';
+const HARD_CODED_BACKEND_URL='https://script.google.com/macros/s/AKfycbwUMPXA2t6kl-wq-0ApWM37zWl27OoFBoBM3yor2b9io_ZI85VJoRFgHntRbczozH9z/exec';
+let BACKEND=HARD_CODED_BACKEND_URL, USER='';
 let PENGATURAN={
   statusLead:['New Lead','Dihubungi','Tertarik','Negosiasi','Closing','Gagal'],
   statusClosing:['Pendaftaran','Daftar Ulang','Validasi Data','Proses PDDikti','Aktif PDDikti','Lulus','Lunas','Cetak Berkas','Terkirim'],
@@ -1408,12 +1409,19 @@ document.addEventListener('click', (e)=>{ if(e.target.closest('.sb-item')) close
 
 document.addEventListener('DOMContentLoaded',()=>{
   setDefaultDates();
+  BACKEND=HARD_CODED_BACKEND_URL;
   try{
-    const url=localStorage.getItem('shared-backend-url')||localStorage.getItem('mkt-backend-url');
     const usr=localStorage.getItem('mkt-user');
-    if(url){BACKEND=url;document.getElementById('setup-overlay').classList.add('hidden');setSyncStatus('live');if(usr){USER=usr;}initialLoad();}
+    localStorage.setItem('shared-backend-url',HARD_CODED_BACKEND_URL);
+    localStorage.setItem('mkt-backend-url',HARD_CODED_BACKEND_URL);
+    localStorage.setItem('isma-backend-url',HARD_CODED_BACKEND_URL);
+    if(usr)USER=usr;
   }catch(e){}
-  initTheme();updateDashboardHeader();
+  document.getElementById('setup-overlay')?.classList.add('hidden');
+  setSyncStatus('live');
+  initTheme();
+  updateDashboardHeader();
+  initialLoad();
 });
 
 // ── Auto-refresh saat aplikasi dibuka kembali ──────────────────────
@@ -2248,7 +2256,7 @@ function populateAllSelects(){
 
 // ── Koneksi ───────────────────────────────────────────────────────
 async function connectBackend(){
-  const url   = document.getElementById('setup-url-inp').value.trim();
+  const url  = HARD_CODED_BACKEND_URL;
   const stEl  = document.getElementById('setup-status');
   if(!url.includes('script.google.com')){
     stEl.innerHTML='<i class=bi-exclamation-triangle-fill aria-hidden=true></i> URL tidak valid. Harus berisi script.google.com'; return;
@@ -2285,7 +2293,7 @@ async function connectBackend(){
       '<br><small>Cek: (1) URL sudah benar? (2) Web App di-deploy ulang? (3) Akses diset ke <b>Anyone</b>?</small>';
   }
 }
-function openSetup(){document.getElementById('sync-menu').classList.remove('open');document.getElementById('setup-overlay').classList.remove('hidden');}
+function openSetup(){document.getElementById('sync-menu')?.classList.remove('open');toast('<i class="bi bi-lock-fill" aria-hidden="true"></i> Backend terkunci','URL Google Apps Script sudah ditetapkan otomatis.');}
 function manualRefresh(){document.getElementById('sync-menu').classList.remove('open');Object.keys(_GET_CACHE).forEach(k=>delete _GET_CACHE[k]);loadAllData();toast('<i class=bi-arrow-repeat aria-hidden=true></i> Refresh','Data diperbarui.');}
 function setSyncStatus(s){const badge=document.getElementById('sync-badge');const dot=badge?.querySelector('.live-dot');const lbl=document.getElementById('sync-label');badge?.classList.toggle('live',s==='live');if(dot)dot.style.background=s==='live'?'var(--green)':'var(--muted)';if(lbl)lbl.textContent=s==='live'?'Live':'Offline';}
 
