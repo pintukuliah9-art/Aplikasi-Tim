@@ -732,7 +732,7 @@ body.dark ::selection{color:#fff}
           <div class="sync-menu-item">Backend: <b id="sync-url">Belum tersambung</b></div>
           <div class="sync-menu-item">Update: <b id="sync-time">—</b></div>
           <button class="sync-btn" onclick="manualRefresh()"><i class=bi-arrow-repeat aria-hidden=true></i> Refresh</button>
-          <button class="sync-btn" onclick="openSetup()"><i class=bi-gear-fill aria-hidden=true></i> Ganti URL</button>
+          <div class="sync-menu-item"><i class="bi bi-lock-fill" aria-hidden="true"></i> URL backend dikunci otomatis</div>
         </div>
       </div>
     </div>
@@ -1045,7 +1045,7 @@ body.dark ::selection{color:#fff}
 <!-- SETUP -->
 <div class="confirm-overlay" id="confirm-overlay" role="dialog" aria-modal="true" aria-labelledby="confirm-title"><div class="confirm-box"><div class="confirm-head"><div class="confirm-icon"><i class="bi bi-exclamation-triangle-fill"></i></div><div><div class="confirm-title" id="confirm-title">Konfirmasi</div><div class="confirm-message" id="confirm-message"></div></div></div><div class="confirm-actions"><button class="btn" id="confirm-cancel">Batal</button><button class="btn primary" id="confirm-ok">Lanjutkan</button></div></div></div>
 
-<div class="setup-overlay" id="setup-overlay">
+<div class="setup-overlay hidden" id="setup-overlay" aria-hidden="true">
   <div class="setup-box">
     <div class="setup-title">Dashboard Administrasi</div>
     <div class="setup-sub">Masukkan Web App URL dari Google Apps Script. URL yang sama digunakan oleh semua dashboard.</div>
@@ -1057,7 +1057,8 @@ body.dark ::selection{color:#fff}
 <div class="toast" id="toast"><div class="toast-title" id="toast-title"></div><div class="toast-body" id="toast-body"></div></div>
 <script>
 // ── State ─────────────────────────────────────────────────────────
-let BACKEND='', USER='';
+const HARD_CODED_BACKEND_URL='https://script.google.com/macros/s/AKfycbwUMPXA2t6kl-wq-0ApWM37zWl27OoFBoBM3yor2b9io_ZI85VJoRFgHntRbczozH9z/exec';
+let BACKEND=HARD_CODED_BACKEND_URL, USER='';
 let PENGATURAN={
   kampusList:  ['STISDU','STITBU','UNKRIS','STIA Mensis','STAISU'],
   programList: ['RPL Khusus','RPL Reguler (6 Bln)','RPL Reguler (1 Thn)','RPL Reguler (2 Thn)','Kelas Karyawan'],
@@ -1087,17 +1088,18 @@ document.addEventListener('click', (e)=>{ if(e.target.closest('.sb-item')) close
 
 document.addEventListener('DOMContentLoaded',()=>{
   setDefault();
+  BACKEND=HARD_CODED_BACKEND_URL;
   try{
-    const url=localStorage.getItem('shared-backend-url');
     const usr=localStorage.getItem('adm-user');
-    if(url){BACKEND=url;document.getElementById('setup-overlay').classList.add('hidden');setSyncStatus('live');if(usr)USER=usr;}
-    else {
-      const mktUrl=localStorage.getItem('mkt-backend-url');
-      if(mktUrl){BACKEND=mktUrl;localStorage.setItem('shared-backend-url',mktUrl);document.getElementById('setup-overlay').classList.add('hidden');setSyncStatus('live');}
-    }
+    localStorage.setItem('shared-backend-url',HARD_CODED_BACKEND_URL);
+    localStorage.setItem('mkt-backend-url',HARD_CODED_BACKEND_URL);
+    localStorage.setItem('isma-backend-url',HARD_CODED_BACKEND_URL);
+    if(usr)USER=usr;
   }catch(e){}
+  document.getElementById('setup-overlay')?.classList.add('hidden');
+  setSyncStatus('live');
   initTheme();
-  if(BACKEND) initialLoad();
+  initialLoad();
 });
 
 // ── Auto-refresh saat aplikasi dibuka kembali (dari background/bfcache/tab lain) ──
@@ -1537,7 +1539,7 @@ function updateBadges(){
 
 // ── Koneksi ───────────────────────────────────────────────────────
 async function connectBackend(){
-  const url  = document.getElementById('setup-url-inp').value.trim();
+  const url  = HARD_CODED_BACKEND_URL;
   const stEl = document.getElementById('setup-status');
   if(!url.includes('script.google.com')){
     stEl.innerHTML='<i class=bi-exclamation-triangle-fill aria-hidden=true></i> URL tidak valid. Harus berisi script.google.com'; return;
@@ -1567,7 +1569,7 @@ async function connectBackend(){
       '<br><small>Cek: (1) URL benar? (2) Web App sudah di-deploy ulang? (3) Akses diset ke <b>Anyone</b>?</small>';
   }
 }
-function openSetup(){document.getElementById('sync-menu').classList.remove('open');document.getElementById('setup-overlay').classList.remove('hidden');}
+function openSetup(){document.getElementById('sync-menu')?.classList.remove('open');toast('<i class="bi bi-lock-fill" aria-hidden="true"></i> Backend terkunci','URL Google Apps Script sudah ditetapkan otomatis.');}
 function manualRefresh(){document.getElementById('sync-menu').classList.remove('open');Object.keys(_GET_CACHE).forEach(k=>delete _GET_CACHE[k]);initialLoad();toast('<i class=bi-arrow-repeat aria-hidden=true></i> Refresh','');}
 function setSyncStatus(s){const b=document.getElementById('sync-badge');const d=b?.querySelector('.live-dot');const l=document.getElementById('sync-label');b?.classList.toggle('live',s==='live');if(d)d.style.background=s==='live'?'var(--green)':'var(--muted)';if(l)l.textContent=s==='live'?'Live':'Offline';}
 
