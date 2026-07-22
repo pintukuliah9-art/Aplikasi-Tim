@@ -706,6 +706,22 @@ body.dark ::selection{color:#fff}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
 </style>
 
+<style>
+
+  /* Nomor urut otomatis untuk seluruh tampilan tabel */
+  .auto-row-number-head,
+  .auto-row-number-cell {
+    width: 52px;
+    min-width: 52px;
+    text-align: center !important;
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+  }
+  .auto-row-number-cell {
+    color: var(--muted, #64748b);
+    font-weight: 600;
+  }
+</style>
 </head>
 <body class="app-marketing">
 <div class="shell">
@@ -2551,5 +2567,110 @@ function sLC(s){return SLC[s]||'pill-new';}function sCC(s){return SCC[s]||'pill-
 
 
 </script>
+
+<script>
+/* Nomor urut otomatis untuk seluruh tabel, termasuk tabel yang dirender ulang lewat JavaScript. */
+(function () {
+  'use strict';
+
+  var scanScheduled = false;
+
+  function normalizedHeaderText(value) {
+    return String(value || '')
+      .replace(/\s+/g, ' ')
+      .trim()
+      .toLowerCase();
+  }
+
+  function isExistingNumberHeader(headerCell) {
+    if (!headerCell) return false;
+    var text = normalizedHeaderText(headerCell.textContent);
+    return text === '#' || text === 'no' || text === 'no.' || text === 'nomor';
+  }
+
+  function numberTable(table) {
+    if (!table || !table.tHead || !table.tHead.rows.length) return;
+
+    var headerRow = table.tHead.rows[0];
+    if (!headerRow || !headerRow.cells.length) return;
+
+    /* Tabel yang sudah memiliki kolom nomor/ranking tidak ditambah kolom kedua. */
+    var hasExistingNumberColumn = isExistingNumberHeader(headerRow.cells[0]);
+    var hasAutoNumberColumn = headerRow.cells[0].classList.contains('auto-row-number-head');
+
+    if (!hasExistingNumberColumn && !hasAutoNumberColumn) {
+      var th = document.createElement('th');
+      th.className = 'auto-row-number-head';
+      th.scope = 'col';
+      th.textContent = 'No.';
+      headerRow.insertBefore(th, headerRow.firstChild);
+      hasAutoNumberColumn = true;
+    }
+
+    /* Ranking atau tabel bernomor manual tetap memakai nomor bawaannya. */
+    if (hasExistingNumberColumn && !hasAutoNumberColumn) return;
+
+    Array.prototype.forEach.call(table.tBodies || [], function (tbody) {
+      var visibleNumber = 0;
+      Array.prototype.forEach.call(tbody.rows || [], function (row) {
+        if (!row || !row.cells.length) return;
+
+        var firstCell = row.cells[0];
+        var isEmptyRow = row.classList.contains('tbl-empty') ||
+          firstCell.classList.contains('tbl-empty') ||
+          (row.cells.length === 1 && firstCell.hasAttribute('colspan'));
+
+        if (isEmptyRow) {
+          var expectedColspan = headerRow.cells.length;
+          if (firstCell.hasAttribute('colspan') && Number(firstCell.getAttribute('colspan')) !== expectedColspan) {
+            firstCell.setAttribute('colspan', String(expectedColspan));
+          }
+          return;
+        }
+
+        visibleNumber += 1;
+        var numberCell = row.cells[0];
+        if (!numberCell.classList.contains('auto-row-number-cell')) {
+          numberCell = row.insertCell(0);
+          numberCell.className = 'auto-row-number-cell';
+        }
+        var expectedNumber = String(visibleNumber);
+        if (numberCell.textContent !== expectedNumber) numberCell.textContent = expectedNumber;
+      });
+    });
+  }
+
+  function scanAllTables() {
+    scanScheduled = false;
+    Array.prototype.forEach.call(document.querySelectorAll('table'), numberTable);
+  }
+
+  function scheduleScan() {
+    if (scanScheduled) return;
+    scanScheduled = true;
+    if (window.requestAnimationFrame) requestAnimationFrame(scanAllTables);
+    else setTimeout(scanAllTables, 0);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', scheduleScan, { once: true });
+  } else {
+    scheduleScan();
+  }
+
+  var observer = new MutationObserver(function (mutations) {
+    for (var i = 0; i < mutations.length; i += 1) {
+      if (mutations[i].type === 'childList') {
+        scheduleScan();
+        break;
+      }
+    }
+  });
+
+  observer.observe(document.documentElement, { childList: true, subtree: true });
+  window.refreshAllTableNumbers = scheduleScan;
+})();
+</script>
+
 </body>
 </html>
